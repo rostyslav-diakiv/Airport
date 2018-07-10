@@ -6,14 +6,37 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.WebApi.Controllers
 {
+    using Airport.DAL.Entities;
+    using Airport.DAL.Interfaces;
+
+    using AutoMapper;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IMapper _mapper;
+        public ValuesController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            var st1 = new Stewardess()
+                          {
+                              Crews = new List<ICrew>(),
+                              DateOfBirth = new DateTime(1997, 11, 11),
+                              FirstName = "Lisa",
+                              SecondName = "Ofdfd",
+                              Id = 1
+                          };
+
+            var st2 = _mapper.Map<Stewardess>(st1);
+
+            // It works
+
             return new string[] { "value1", "value2" };
         }
 
