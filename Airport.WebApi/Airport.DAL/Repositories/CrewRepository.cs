@@ -12,5 +12,11 @@
         public CrewRepository(List<Crew> entities, IMapper mapper) : base(entities, mapper)
         {
         }
+
+        public override Crew Create(Crew entity)
+        {
+            entity.Id = Crew.GetGeneratedId();
+            return base.Create(entity);
+        }
     }
 }

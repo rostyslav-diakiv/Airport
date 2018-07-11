@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Airport.WebApi.Controllers
 {
     using System;
+    using System.Linq;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
@@ -12,26 +13,24 @@ namespace Airport.WebApi.Controllers
 
     using AutoMapper;
 
-    using Microsoft.EntityFrameworkCore.Internal;
-
     [Route("api/[controller]")]
     [ApiController]
-    public class StewardessesController : ControllerBase
+    public class CrewsController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IStewardessService _service;
+        private readonly ICrewService _service;
 
-        public StewardessesController(IMapper mapper, IStewardessService service)
+        public CrewsController(IMapper mapper, ICrewService service)
         {
             _mapper = mapper;
             _service = service;
         }
 
-        // GET: api/Stewardesses
+        // GET: api/Crews
         [HttpGet]
-        public ActionResult<IEnumerable<StewardessDto>> Get()
+        public ActionResult<IEnumerable<CrewDto>> Get()
         {
-            var dtos = _service.GetAllStewardesses();
+            var dtos = _service.GetAllCrews();
             if (!dtos.Any())
             {
                 return NoContent();
@@ -40,11 +39,11 @@ namespace Airport.WebApi.Controllers
             return Ok(dtos);
         }
 
-        // GET: api/Stewardesses/5
-        [HttpGet("{id}", Name = "GetStewardess")]
-        public ActionResult<StewardessDto> Get(int id)
+        // GET: api/Crews/5
+        [HttpGet("{id}", Name = "GetCrew")]
+        public ActionResult<CrewDto> Get(int id)
         {
-            var dto = _service.GetStewardessById(id);
+            var dto = _service.GetCrewById(id);
             if (dto == null)
             {
                 return NotFound();
@@ -53,16 +52,16 @@ namespace Airport.WebApi.Controllers
             return Ok(dto);
         }
 
-        // POST: api/Stewardesses
+        // POST: api/Crews
         [HttpPost]
-        public ActionResult<StewardessDto> Post([FromBody] StewardessRequest request)
+        public ActionResult<CrewDto> Post([FromBody] CrewRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = _service.CreateStewardess(request);
+            var dto = _service.CreateCrew(request);
             if (dto == null)
             {
                 return StatusCode(500);
@@ -71,19 +70,19 @@ namespace Airport.WebApi.Controllers
             var host = HttpContext.Request.Host;
             var path = HttpContext.Request.Path;
             var scheme = HttpContext.Request.Scheme;
-            return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"),  dto);
+            return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"), dto);
         }
 
-        // PUT: api/Stewardesses/5
+        // PUT: api/Crews/5
         [HttpPut("{id}")]
-        public ActionResult<StewardessDto> Put([FromRoute] int id, [FromBody] StewardessRequest request)
+        public ActionResult<CrewDto> Put([FromRoute] int id, [FromBody] CrewRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = _service.UpdateStewardessById(request, id);
+            var dto = _service.UpdateCrewById(request, id);
             if (dto == null)
             {
                 return StatusCode(500);
@@ -92,11 +91,11 @@ namespace Airport.WebApi.Controllers
             return Ok(dto);
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Crews/5
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            var res = _service.DeleteStewardessById(id);
+            var res = _service.DeleteCrewById(id);
             if (res)
             {
                 return NoContent();

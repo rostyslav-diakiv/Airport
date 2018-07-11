@@ -48,7 +48,7 @@ namespace Airport.WebApi.Middlewares
 
                 if (ex is HttpStatusCodeException httpException)
                 {
-                    context.Response.StatusCode = httpException.StatusCode;
+                    context.Response.StatusCode = (int)httpException.StatusCode;
                     context.Response.ContentType = httpException.ContentType;
                 }
                 else

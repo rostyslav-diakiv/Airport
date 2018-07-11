@@ -8,7 +8,7 @@
 
         public int Id { get; set; }
 
-        public IEnumerable<PilotDto> Pilots { get; set; }
+        public PilotDto Pilot { get; set; }
 
         public IEnumerable<StewardessDto> Stewardesses{ get; set; }
     }

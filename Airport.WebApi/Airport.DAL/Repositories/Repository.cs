@@ -23,7 +23,6 @@
 
         public virtual TEntity Create(TEntity entity)
         {
-            // entity.Id = _entities.OrderByDescending(e => e.Id).LastOrDefault().Id + 1; // in derived repo
             _entities.Add(entity);
             return entity; // With id
         }

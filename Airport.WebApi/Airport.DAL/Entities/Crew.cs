@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading;
-
+    
     public class Crew : Entity<int>
     {
         public override int Id { get; set; }
