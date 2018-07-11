@@ -1,9 +1,31 @@
 ﻿namespace Airport.DAL.Entities
 {
-    using Airport.DAL.Interfaces;
+    using System.Threading;
 
-    public class Stewardess : Human<int>, IStewardess
+    using Airport.Common.Requests;
+
+    public sealed class Stewardess : Human<int>
     {
+        private static int nextId = 0;
+
         public override int Id { get; set; }
+
+        public Stewardess() { }
+
+        public static Stewardess FromRequest(StewardessRequest request, int id)
+        {
+            return new Stewardess()
+                       {
+                           Id = id,
+                           FirstName = request.Name,
+                           FamilyName = request.FamilyName,
+                           DateOfBirth = request.DateOfBirth
+                       };
+        }
+
+        public static int GetIncrementedId()
+        {
+            return Interlocked.Increment(ref nextId);
+        }
     }
 }

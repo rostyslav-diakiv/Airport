@@ -2,6 +2,8 @@
 
 namespace Airport.BLL.Mapper
 {
+    using Airport.Common.Dtos;
+    using Airport.Common.Requests;
     using Airport.DAL.Entities;
 
     public class MappingProfile : Profile
@@ -13,6 +15,10 @@ namespace Airport.BLL.Mapper
         {
                         // src // dest
             CreateMap<Stewardess, Stewardess>();
+            CreateMap<Stewardess, StewardessDto>()
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.FirstName));
+            CreateMap<StewardessRequest, Stewardess>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Name));
         }
     }
 }

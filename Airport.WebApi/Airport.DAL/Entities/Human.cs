@@ -3,16 +3,18 @@
     using System;
     using System.Collections.Generic;
 
-    using Airport.DAL.Interfaces;
-
-    public abstract class Human<T> : Entity<T>, IHuman<T>
+    public abstract class Human<T> : Entity<T>
     {
         public string FirstName { get; set; }
 
-        public string SecondName { get; set; }
+        public string FamilyName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
-        public ICollection<ICrew> Crews { get; set; }
+        public List<Crew> Crews { get; set; }
+
+        protected Human()
+        {
+        }
     }
 }

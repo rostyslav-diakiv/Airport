@@ -1,6 +1,6 @@
 ﻿namespace Airport.DAL.Entities
 {
-    using Airport.DAL.Interfaces;
+    using Airport.DAL.Interfaces.Entities;
 
     public abstract class Entity<T> : IEntity<T>
     {

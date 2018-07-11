@@ -1,4 +1,4 @@
-﻿namespace Airport.DAL.Interfaces
+﻿namespace Airport.DAL.Interfaces.Entities
 {
     public interface IEntity<T>
     {

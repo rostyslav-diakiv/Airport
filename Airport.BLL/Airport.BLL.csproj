@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Airport.WebApi\Airport.Common\Airport.Common.csproj" />
     <ProjectReference Include="..\Airport.WebApi\Airport.DAL\Airport.DAL.csproj" />
   </ItemGroup>
 
