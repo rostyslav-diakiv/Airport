@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Threading;
 
     public class Departure : Entity<int>
     {
@@ -21,5 +22,11 @@
         public int PlaneId { get; set; }
 
         public Plane Plane { get; set; }
+
+        private static int nextId;
+        public static int GetGeneratedId()
+        {
+            return Interlocked.Increment(ref nextId);
+        }
     }
 }

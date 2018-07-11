@@ -1,6 +1,7 @@
 ﻿namespace Airport.DAL.Entities
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public class Flight : Entity<Guid>
@@ -15,5 +16,12 @@
         public string Destination { get; set; }
 
         public DateTime DestinationArrivalTime { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
+
+        public static Guid GetGeneratedId()
+        {
+            return Guid.NewGuid();
+        }
     }
 }

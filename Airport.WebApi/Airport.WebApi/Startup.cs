@@ -13,6 +13,7 @@ namespace Airport.WebApi
     using Airport.DAL.Interfaces;
     using Airport.DAL.Interfaces.Repositories;
     using Airport.DAL.Repositories;
+    using Airport.WebApi.Extensions;
 
     using AutoMapper;
 
@@ -34,6 +35,8 @@ namespace Airport.WebApi
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 }));
+
+            services.ConfigureSwagger(Configuration);
 
             services.AddSingleton<IDataProvider, DataProvider>();
 
@@ -61,6 +64,9 @@ namespace Airport.WebApi
             }
 
             app.UseCors("Policy");
+
+            app.UseHttpStatusCodeExceptionMiddleware();
+            app.UseConfiguredSwagger();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

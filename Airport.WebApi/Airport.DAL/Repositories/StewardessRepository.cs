@@ -15,7 +15,7 @@
 
         public override Stewardess Create(Stewardess entity)
         {
-            entity.Id = Stewardess.GetIncrementedId();
+            entity.Id = Stewardess.GetGeneratedId();
             return base.Create(entity);
         }
     }

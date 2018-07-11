@@ -23,7 +23,7 @@
                        };
         }
 
-        public static int GetIncrementedId()
+        public static int GetGeneratedId()
         {
             return Interlocked.Increment(ref nextId);
         }

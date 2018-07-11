@@ -14,7 +14,8 @@ namespace Airport.BLL.Mapper
         public MappingProfile()
         {
                         // src // dest
-            CreateMap<Stewardess, Stewardess>();
+            CreateMap<Stewardess, Stewardess>()
+                .ForMember(d => d.Crews, o => o.Ignore());
             CreateMap<Stewardess, StewardessDto>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.FirstName));
             CreateMap<StewardessRequest, Stewardess>()

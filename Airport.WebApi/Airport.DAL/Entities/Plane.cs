@@ -2,6 +2,8 @@
 
 namespace Airport.DAL.Entities
 {
+    using System.Threading;
+
     public class Plane : Entity<int>
     {
         public override int Id { get; set; }
@@ -13,5 +15,11 @@ namespace Airport.DAL.Entities
         public DateTime CreationDate { get; set; }
 
         public TimeSpan LifeTime { get; set; }
+
+        private static int nextId;
+        public static int GetGeneratedId()
+        {
+            return Interlocked.Increment(ref nextId);
+        }
     }
 }

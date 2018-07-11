@@ -18,7 +18,7 @@ namespace Airport.DAL.Repositories
         {
             var st1 = new Stewardess()
             {
-                Id = Stewardess.GetIncrementedId(),
+                Id = Stewardess.GetGeneratedId(),
                 FirstName = "Alex",
                 FamilyName = "Mayer",
                 DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
@@ -26,7 +26,7 @@ namespace Airport.DAL.Repositories
             };
             var st2 = new Stewardess()
             {
-                Id = Stewardess.GetIncrementedId(),
+                Id = Stewardess.GetGeneratedId(),
                 FirstName = "Bobby",
                 FamilyName = "Strand",
                 DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
@@ -34,7 +34,7 @@ namespace Airport.DAL.Repositories
             };
             var st3 = new Stewardess()
             {
-                Id = Stewardess.GetIncrementedId(),
+                Id = Stewardess.GetGeneratedId(),
                 FirstName = "Celse",
                 FamilyName = "Olead",
                 DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
@@ -42,7 +42,7 @@ namespace Airport.DAL.Repositories
             };
             var st4 = new Stewardess()
             {
-                Id = Stewardess.GetIncrementedId(),
+                Id = Stewardess.GetGeneratedId(),
                 FirstName = "Shakira",
                 FamilyName = "Pique",
                 DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
@@ -50,7 +50,7 @@ namespace Airport.DAL.Repositories
             };
             var st5 = new Stewardess()
             {
-                Id = Stewardess.GetIncrementedId(),
+                Id = Stewardess.GetGeneratedId(),
                 FirstName = "Olga",
                 FamilyName = "Petrenko",
                 DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
@@ -61,7 +61,7 @@ namespace Airport.DAL.Repositories
 
             var p1 = new Pilot()
             {
-                Id = 1,
+                Id = Pilot.GetGeneratedId(),
                 FirstName = "Serg",
                 FamilyName = "Karas",
                 DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
@@ -69,7 +69,7 @@ namespace Airport.DAL.Repositories
             };
             var p2 = new Pilot()
             {
-                Id = 6,
+                Id = Pilot.GetGeneratedId(),
                 FirstName = "Ostap",
                 FamilyName = "Bober",
                 DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
@@ -77,7 +77,7 @@ namespace Airport.DAL.Repositories
             };
             var p3 = new Pilot()
             {
-                Id = 3,
+                Id = Pilot.GetGeneratedId(),
                 FirstName = "Sanya",
                 FamilyName = "Morkva",
                 DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
@@ -85,7 +85,7 @@ namespace Airport.DAL.Repositories
             };
             var p4 = new Pilot()
             {
-                Id = 4,
+                Id = Pilot.GetGeneratedId(),
                 FirstName = "John",
                 FamilyName = "Opler",
                 DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
@@ -93,7 +93,7 @@ namespace Airport.DAL.Repositories
             };
             var p5 = new Pilot() // TODO: unused 
             {
-                Id = 5,
+                Id = Pilot.GetGeneratedId(),
                 FirstName = "Michael",
                 FamilyName = "Stoor",
                 DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
@@ -106,35 +106,35 @@ namespace Airport.DAL.Repositories
                         {
                             new Crew()
                                        {
-                                           Id = 1,
+                                           Id = Crew.GetGeneratedId(),
                                            Pilot = p1,
                                            PilotId = p1.Id,
                                            Stewardesses = new List<Stewardess>() { st1, st2 }
                                        },
                                    new Crew()
                                        {
-                                           Id = 2,
+                                           Id = Crew.GetGeneratedId(),
                                            Pilot = p1,
                                            PilotId = p1.Id,
                                            Stewardesses = new List<Stewardess>() { st1, st4 }
                                        },
                                    new Crew()
                                        {
-                                           Id = 3,
+                                           Id = Crew.GetGeneratedId(),
                                            Pilot = p3,
                                            PilotId = p3.Id,
                                            Stewardesses = new List<Stewardess>() { st2, st3, st4 }
                                        },
                                    new Crew()
                                        {
-                                           Id = 4,
+                                           Id = Crew.GetGeneratedId(),
                                            Pilot = p2,
                                            PilotId = p2.Id,
                                            Stewardesses = new List<Stewardess>() { st5}
                                        },
                                    new Crew()
                                        {
-                                           Id = 5,
+                                           Id = Crew.GetGeneratedId(),
                                            Pilot = p4,
                                            PilotId = p4.Id,
                                            Stewardesses = new List<Stewardess>() { st3, st1, st2 }

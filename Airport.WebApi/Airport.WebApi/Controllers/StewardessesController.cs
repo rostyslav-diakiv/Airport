@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.WebApi.Controllers
 {
+    using System;
+
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
@@ -30,7 +32,6 @@ namespace Airport.WebApi.Controllers
         public ActionResult<IEnumerable<StewardessDto>> Get()
         {
             var dtos = _service.GetAllStewardesses();
-
             if (!dtos.Any())
             {
                 return NoContent();
@@ -44,7 +45,6 @@ namespace Airport.WebApi.Controllers
         public ActionResult<StewardessDto> Get(int id)
         {
             var dto = _service.GetStewardessById(id);
-
             if (dto == null)
             {
                 return NotFound();
@@ -63,8 +63,15 @@ namespace Airport.WebApi.Controllers
             }
 
             var dto = _service.CreateStewardess(request);
+            if (dto == null)
+            {
+                return StatusCode(500);
+            }
 
-            return Ok(dto);
+            var host = HttpContext.Request.Host;
+            var path = HttpContext.Request.Path;
+            var scheme = HttpContext.Request.Scheme;
+            return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"),  dto);
         }
 
         // PUT: api/Stewardesses/5
@@ -77,14 +84,25 @@ namespace Airport.WebApi.Controllers
             }
 
             var dto = _service.UpdateStewardessById(request, id);
+            if (dto == null)
+            {
+                return StatusCode(500);
+            }
 
             return Ok(dto);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
+            var res = _service.DeleteStewardessById(id);
+            if (res)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
         }
     }
 }
