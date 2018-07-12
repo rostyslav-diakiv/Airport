@@ -1,12 +1,13 @@
-﻿using AutoMapper;
-
-namespace Airport.BLL.Mapper
+﻿namespace AirportEf.BLL.Mapper
 {
     using System.Linq;
 
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
-    using Airport.DAL.Entities;
+
+    using AirportEf.DAL.Entities;
+
+    using AutoMapper;
 
     public class MappingProfile : Profile
     {

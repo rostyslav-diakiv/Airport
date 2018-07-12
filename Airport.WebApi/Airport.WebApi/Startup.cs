@@ -6,16 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Airport.WebApi
 {
-    using Airport.BLL.Interfaces;
-    using Airport.BLL.Mapper;
-    using Airport.BLL.Services;
-    using Airport.DAL;
-    using Airport.DAL.Interfaces;
-    using Airport.DAL.Interfaces.Repositories;
-    using Airport.DAL.Repositories;
     using Airport.WebApi.Extensions;
 
+    using AirportEf.BLL.Mapper;
+    using AirportEf.DAL;
+    using AirportEf.DAL.Data;
+    using AirportEf.DAL.Interfaces;
+
     using AutoMapper;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -38,12 +38,15 @@ namespace Airport.WebApi
 
             services.ConfigureSwagger(Configuration);
 
-            services.AddSingleton<IDataProvider, DataProvider>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<IStewardessService, StewardessService>();
-            services.AddTransient<ICrewService, CrewService>();
+            services.AddDbContext<AirportDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
+
+            //services.AddTransient<IStewardessService, StewardessService>();
+            //services.AddTransient<IPilotService, PilotService>();
+            //services.AddTransient<ICrewService, CrewService>();
 
             services.AddAutoMapper(cfg => cfg.AddProfile(typeof(MappingProfile))); // Scoped Lifetime!
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/

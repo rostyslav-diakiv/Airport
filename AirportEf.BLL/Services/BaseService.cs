@@ -1,9 +1,9 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
 
-    using Airport.BLL.Interfaces;
-    using Airport.DAL.Interfaces;
+    using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
 

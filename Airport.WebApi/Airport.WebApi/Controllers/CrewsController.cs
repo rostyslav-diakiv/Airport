@@ -54,7 +54,7 @@ namespace Airport.WebApi.Controllers
 
         // POST: api/Crews
         [HttpPost]
-        public ActionResult<CrewDto> Post([FromBody] CrewRequest request)
+        public ActionResult<CrewDto> Create([FromBody] CrewRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -67,15 +67,16 @@ namespace Airport.WebApi.Controllers
                 return StatusCode(500);
             }
 
-            var host = HttpContext.Request.Host;
-            var path = HttpContext.Request.Path;
-            var scheme = HttpContext.Request.Scheme;
-            return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"), dto);
+            return CreatedAtRoute("GetCrew", new { id = dto.Id }, dto);
+            //var host = HttpContext.Request.Host;
+            //var path = HttpContext.Request.Path;
+            //var scheme = HttpContext.Request.Scheme;
+            //return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"), dto);
         }
 
         // PUT: api/Crews/5
         [HttpPut("{id}")]
-        public ActionResult<CrewDto> Put([FromRoute] int id, [FromBody] CrewRequest request)
+        public ActionResult<CrewDto> Update([FromRoute] int id, [FromBody] CrewRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -85,10 +86,10 @@ namespace Airport.WebApi.Controllers
             var dto = _service.UpdateCrewById(request, id);
             if (dto == null)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
-            return Ok(dto);
+            return NoContent();
         }
 
         // DELETE: api/Crews/5
@@ -96,12 +97,12 @@ namespace Airport.WebApi.Controllers
         public ActionResult<bool> Delete(int id)
         {
             var res = _service.DeleteCrewById(id);
-            if (res)
+            if (!res)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return NotFound();
+            return NoContent();
         }
     }
 }
