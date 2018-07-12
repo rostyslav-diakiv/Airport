@@ -1,5 +1,6 @@
 ﻿namespace Airport.BLL.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -13,48 +14,49 @@
 
     using AutoMapper;
 
-    public class CrewService : BaseService, ICrewService
+    public class CrewService : BaseService<CrewDto, CrewRequest, int>, ICrewService
     {
-        public CrewService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CrewService(IUnitOfWork uow, IMapper mapper)
+            : base(uow, mapper)
         {
         }
 
-        public IEnumerable<CrewDto> GetAllCrews()
+        public override IEnumerable<CrewDto> GetAllEntity()
         {
-            var entity = _uow.CrewRepository.GetRange();
-            var dtos = _mapper.Map<List<Crew>, List<CrewDto>>(entity);
+            var entity = uow.CrewRepository.GetRange();
+            var dtos = mapper.Map<List<Crew>, List<CrewDto>>(entity);
 
             return dtos;
         }
 
-        public CrewDto GetCrewById(int id)
+        public override CrewDto GetEntityById(int id)
         {
-            var entity = _uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
 
             return MapEntity(entity);
         }
 
-        public CrewDto CreateCrew(CrewRequest request)
+        public override CrewDto CreateEntity(CrewRequest request)
         {
             var entity = InstantiateCrew(request);
 
-            entity = _uow.CrewRepository.Create(entity);
+            entity = uow.CrewRepository.Create(entity);
 
             return MapEntity(entity);
         }
 
-        public CrewDto UpdateCrewById(CrewRequest request, int id)
+        public override CrewDto UpdateEntityById(CrewRequest request, int id)
         {
             var entity = InstantiateCrew(request, id);
 
-            var updated = _uow.CrewRepository.Update(entity);
+            var updated = uow.CrewRepository.Update(entity);
 
             return MapEntity(updated);
         }
 
-        public bool DeleteCrewById(int id)
+        public override bool DeleteEntityById(int id)
         {
-            return _uow.CrewRepository.Delete(id);
+            return uow.CrewRepository.Delete(id);
         }
 
         private CrewDto MapEntity(Crew entity)
@@ -64,13 +66,13 @@
                 return null;
             }
 
-            var dto = _mapper.Map<Crew, CrewDto>(entity);
+            var dto = mapper.Map<Crew, CrewDto>(entity);
             return dto;
         }
 
         private Crew InstantiateCrew(CrewRequest request, int id = 0)
         {
-            var sts = _uow.StewardessRepository.GetRange(
+            var sts = uow.StewardessRepository.GetRange(
                 count: request.StewardessesIds.Count(),
                 filter: s => request.StewardessesIds.Contains(s.Id));
 
@@ -80,10 +82,10 @@
             }
 
             var entity = new Crew()
-                             {
-                                 Id = id,
-                                 Stewardesses = sts
-                             };
+            {
+                Id = id,
+                Stewardesses = sts
+            };
 
             return entity;
         }

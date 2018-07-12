@@ -1,20 +1,10 @@
-﻿using System.Collections.Generic;
-using Airport.Common.Dtos;
+﻿using Airport.Common.Dtos;
 
 namespace Airport.BLL.Interfaces
 {
     using Airport.Common.Requests;
 
-    public interface IStewardessService
+    public interface IStewardessService : IService<StewardessDto, StewardessRequest, int>
     {
-        IEnumerable<StewardessDto> GetAllStewardesses();
-
-        StewardessDto GetStewardessById(int id);
-
-        StewardessDto CreateStewardess(StewardessRequest request);
-
-        StewardessDto UpdateStewardessById(StewardessRequest request, int id);
-
-        bool DeleteStewardessById(int id);
     }
 }

@@ -60,5 +60,10 @@
                 return _crewRepository;
             }
         }
+
+        public int SaveChanges()
+        {
+            return 1;
+        }
     }
 }

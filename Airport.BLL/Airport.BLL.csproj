@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\CrewService.cs" />
-    <Compile Remove="Services\StewardessService.cs" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <ProjectReference Include="..\Airport.Common\Airport.Common.csproj" />
+    <ProjectReference Include="..\Airport.DAL\Airport.DAL.csproj" />
   </ItemGroup>
 
 </Project>

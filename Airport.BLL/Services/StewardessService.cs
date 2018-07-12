@@ -1,6 +1,7 @@
 ﻿namespace Airport.BLL.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
@@ -10,49 +11,62 @@
 
     using AutoMapper;
 
-    public class StewardessService : BaseService, IStewardessService
+    public class StewardessService : BaseService<StewardessDto, StewardessRequest, int>, IStewardessService
     {
         public StewardessService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
         }
 
-        public IEnumerable<StewardessDto> GetAllStewardesses()
+        public override IEnumerable<StewardessDto> GetAllEntity()
         {
-            var s = _uow.StewardessRepository.GetRange();
-            //                      source            destination
-            var dtos = _mapper.Map<List<Stewardess>, List<StewardessDto>>(s);
+            var s = uow.StewardessRepository.GetRange();
+            //                              source destination
+            var dtos = mapper.Map<List<Stewardess>, List<StewardessDto>>(s);
 
             return dtos;
         }
 
-        public StewardessDto GetStewardessById(int id)
+        public override StewardessDto GetEntityById(int id)
         {
-            var entity = _uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
 
             return MapEntity(entity);
         }
 
-        public StewardessDto CreateStewardess(StewardessRequest request)
+        public override StewardessDto CreateEntity(StewardessRequest request)
         {
-            var entity = _mapper.Map<StewardessRequest, Stewardess>(request);
+            var entity = mapper.Map<StewardessRequest, Stewardess>(request);
 
-            entity = _uow.StewardessRepository.Create(entity);
+            entity = uow.StewardessRepository.Create(entity);
 
             return MapEntity(entity);
         }
 
-        public StewardessDto UpdateStewardessById(StewardessRequest request, int id)
+        public override StewardessDto UpdateEntityById(StewardessRequest request, int id)
         {
-            var entity = Stewardess.FromRequest(request, id);
+            var entity = new Stewardess(request, id);
 
-            var updated = _uow.StewardessRepository.Update(entity);
+            var updated = uow.StewardessRepository.Update(entity);
 
             return MapEntity(updated);
         }
 
-        public bool DeleteStewardessById(int id)
+        public override bool DeleteEntityById(int id)
         {
-            return _uow.StewardessRepository.Delete(id);
+            var e = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
+            var res = uow.StewardessRepository.Delete(e);
+            if (!res)
+            {
+                return false;
+            }
+
+            var crewsToEdit = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.Stewardesses.Contains(e));
+            foreach (var c in crewsToEdit)
+            {
+                c.Stewardesses.Remove(e);
+            }
+
+            return true;
         }
 
         private StewardessDto MapEntity(Stewardess entity)
@@ -62,7 +76,7 @@
                 return null;
             }
             //                      source     destination
-            var dto = _mapper.Map<Stewardess, StewardessDto>(entity);
+            var dto = mapper.Map<Stewardess, StewardessDto>(entity);
 
             return dto;
         }

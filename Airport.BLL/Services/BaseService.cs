@@ -9,13 +9,13 @@
 
     public abstract class BaseService<TDto, TRequest, TKey> : IService<TDto, TRequest, TKey>
     {
-        protected readonly IUnitOfWork _uow;
-        protected readonly IMapper _mapper;
+        protected readonly IUnitOfWork uow;
+        protected readonly IMapper mapper;
 
         protected BaseService(IUnitOfWork uow, IMapper mapper)
         {
-            _uow = uow;
-            _mapper = mapper;
+            this.uow = uow;
+            this.mapper = mapper;
         }
 
         public abstract IEnumerable<TDto> GetAllEntity();

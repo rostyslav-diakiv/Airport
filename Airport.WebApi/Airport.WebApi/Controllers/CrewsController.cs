@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.WebApi.Controllers
 {
-    using System;
     using System.Linq;
 
     using Airport.BLL.Interfaces;
@@ -13,96 +12,97 @@ namespace Airport.WebApi.Controllers
 
     using AutoMapper;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CrewsController : ControllerBase
+    public class CrewsController : AbstractController<ICrewService, CrewDto, CrewRequest, int>
     {
-        private readonly IMapper _mapper;
-        private readonly ICrewService _service;
-
-        public CrewsController(IMapper mapper, ICrewService service)
+        public CrewsController(IMapper mapper, ICrewService service) : base(mapper, service)
         {
-            _mapper = mapper;
-            _service = service;
         }
+        //private readonly IMapper mapper;
+        //private readonly ICrewService service;
 
-        // GET: api/Crews
-        [HttpGet]
-        public ActionResult<IEnumerable<CrewDto>> Get()
-        {
-            var dtos = _service.GetAllCrews();
-            if (!dtos.Any())
-            {
-                return NoContent();
-            }
+        //public CrewsController(IMapper mapper, ICrewService service)
+        //{
+        //    mapper = mapper;
+        //    service = service;
+        //}
 
-            return Ok(dtos);
-        }
+        //// GET: api/Crews
+        //[HttpGet]
+        //public ActionResult<IEnumerable<CrewDto>> Get()
+        //{
+        //    var dtos = service.GetAllCrews();
+        //    if (!dtos.Any())
+        //    {
+        //        return NoContent();
+        //    }
 
-        // GET: api/Crews/5
-        [HttpGet("{id}", Name = "GetCrew")]
-        public ActionResult<CrewDto> Get(int id)
-        {
-            var dto = _service.GetCrewById(id);
-            if (dto == null)
-            {
-                return NotFound();
-            }
+        //    return Ok(dtos);
+        //}
 
-            return Ok(dto);
-        }
+        //// GET: api/Crews/5
+        //[HttpGet("{id}", Name = "GetCrew")]
+        //public ActionResult<CrewDto> Get(int id)
+        //{
+        //    var dto = service.GetCrewById(id);
+        //    if (dto == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // POST: api/Crews
-        [HttpPost]
-        public ActionResult<CrewDto> Create([FromBody] CrewRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    return Ok(dto);
+        //}
 
-            var dto = _service.CreateCrew(request);
-            if (dto == null)
-            {
-                return StatusCode(500);
-            }
+        //// POST: api/Crews
+        //[HttpPost]
+        //public ActionResult<CrewDto> Create([FromBody] CrewRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            return CreatedAtRoute("GetCrew", new { id = dto.Id }, dto);
-            //var host = HttpContext.Request.Host;
-            //var path = HttpContext.Request.Path;
-            //var scheme = HttpContext.Request.Scheme;
-            //return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"), dto);
-        }
+        //    var dto = service.CreateCrew(request);
+        //    if (dto == null)
+        //    {
+        //        return StatusCode(500);
+        //    }
 
-        // PUT: api/Crews/5
-        [HttpPut("{id}")]
-        public ActionResult<CrewDto> Update([FromRoute] int id, [FromBody] CrewRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    return CreatedAtRoute("GetCrew", new { id = dto.Id }, dto);
+        //    //var host = HttpContext.Request.Host;
+        //    //var path = HttpContext.Request.Path;
+        //    //var scheme = HttpContext.Request.Scheme;
+        //    //return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"), dto);
+        //}
 
-            var dto = _service.UpdateCrewById(request, id);
-            if (dto == null)
-            {
-                return NotFound();
-            }
+        //// PUT: api/Crews/5
+        //[HttpPut("{id}")]
+        //public ActionResult<CrewDto> Update([FromRoute] int id, [FromBody] CrewRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            return NoContent();
-        }
+        //    var dto = service.UpdateCrewById(request, id);
+        //    if (dto == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // DELETE: api/Crews/5
-        [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int id)
-        {
-            var res = _service.DeleteCrewById(id);
-            if (!res)
-            {
-                return NotFound();
-            }
+        //    return NoContent();
+        //}
 
-            return NoContent();
-        }
+        //// DELETE: api/Crews/5
+        //[HttpDelete("{id}")]
+        //public ActionResult<bool> Delete(int id)
+        //{
+        //    var res = service.DeleteCrewById(id);
+        //    if (!res)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return NoContent();
+        //}
     }
 }

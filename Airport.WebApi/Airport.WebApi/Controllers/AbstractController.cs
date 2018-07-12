@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.WebApi.Controllers
 {
+    using Airport.BLL.Interfaces;
     using Airport.Common.Interfaces.Entities;
-
-    using AirportEf.BLL.Interfaces;
-
+    
     using AutoMapper;
 
     using Microsoft.EntityFrameworkCore.Internal;
@@ -17,19 +15,20 @@ namespace Airport.WebApi.Controllers
     [ApiController]
     public abstract class AbstractController<TService, TDto, TRequest, TKey> : ControllerBase where TService : IService<TDto, TRequest, TKey> where TDto : IEntity<TKey>
     {
-        protected readonly IMapper _mapper;
-        protected readonly TService _service;
+        protected readonly IMapper mapper;
+        protected readonly TService service;
 
         protected AbstractController(IMapper mapper, TService service)
         {
-            _mapper = mapper;
-            _service = service;
+            this.mapper = mapper;
+            this.service = service;
         }
-        
+
+        // GET: api/EntityName
         [HttpGet]
-        public ActionResult<IEnumerable<TDto>> Get()
+        public virtual ActionResult<IEnumerable<TDto>> Get()
         {
-            var dtos = _service.GetAllEntity();
+            var dtos = service.GetAllEntity();
             if (!dtos.Any())
             {
                 return NoContent();
@@ -37,11 +36,12 @@ namespace Airport.WebApi.Controllers
 
             return Ok(dtos);
         }
-        
-        [HttpGet("{id}", Name = "GetEntity")]
-        public ActionResult<TDto> Get(TKey id)
+
+        // GET: api/EntityName/5
+        [HttpGet("{id}")]
+        public virtual ActionResult<TDto> GetById(TKey id)
         {
-            var dto = _service.GetEntityById(id);
+            var dto = service.GetEntityById(id);
             if (dto == null)
             {
                 return NotFound();
@@ -49,34 +49,35 @@ namespace Airport.WebApi.Controllers
 
             return Ok(dto);
         }
-        
+
+        // POST: api/EntityName
         [HttpPost]
-        public ActionResult<TDto> Create([FromBody] TRequest request)
+        public virtual ActionResult<TDto> Create([FromBody] TRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = _service.CreateEntity(request);
+            var dto = service.CreateEntity(request);
             if (dto == null)
             {
                 return StatusCode(500);
             }
 
-            return CreatedAtRoute("GetEntity", new { id = dto.Id }, dto);
+            return CreatedAtAction("GetById", new { id = dto.Id }, dto);
         }
 
-        // PUT: api/Crews/5
+        // PUT: api/EntityName/5
         [HttpPut("{id}")]
-        public ActionResult<TDto> Update([FromRoute] TKey id, [FromBody] TRequest request)
+        public virtual ActionResult<TDto> Update([FromRoute] TKey id, [FromBody] TRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = _service.UpdateEntityById(request, id);
+            var dto = service.UpdateEntityById(request, id);
             if (dto == null)
             {
                 return NotFound();
@@ -84,11 +85,12 @@ namespace Airport.WebApi.Controllers
 
             return NoContent();
         }
-        
+
+        // DELETE: api/EntityName/5
         [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(TKey id)
+        public virtual ActionResult<bool> Delete(TKey id)
         {
-            var res = _service.DeleteEntityById(id);
+            var res = service.DeleteEntityById(id);
             if (!res)
             {
                 return NotFound();

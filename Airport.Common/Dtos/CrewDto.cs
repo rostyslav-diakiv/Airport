@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public class CrewDto
+    using Airport.Common.Interfaces.Entities;
+
+    public class CrewDto : IEntity<int>
     {
         public CrewDto() { }
 

@@ -25,21 +25,22 @@ namespace Airport.BLL.Mapper
             CreateMap<PilotRequest, Pilot>().ForMember(d => d.FirstName, o => o.MapFrom(s => s.Name));
 
             CreateMap<Crew, Crew>();
-            CreateMap<Crew, CrewDto>().ForMember(
-                d => d.Pilot,
-                o => o.MapFrom(s => new PilotDto { Id = s.Pilot.Id,
-                                                   DateOfBirth = s.Pilot.DateOfBirth,
-                                                   Name = s.Pilot.FirstName,
-                                                   Experience = s.Pilot.Experience,
-                                                   FamilyName = s.Pilot.FamilyName
-                                                     }))
-                .ForMember(d => d.Stewardesses, o => o.MapFrom(s => s.Stewardesses.Select(st => new StewardessDto()
-                                                                                                    {
-                                                                                                        Id = st.Id,
-                                                                                                        Name = st.FirstName,
-                                                                                                        FamilyName = st.FamilyName,
-                                                                                                        DateOfBirth = st.DateOfBirth
-                                                                                                    })));
+            CreateMap<Crew, CrewDto>()
+                .ForMember(d => d.Pilot, o => o.MapFrom(s => new PilotDto
+                {
+                    Id = s.Pilot.Id,
+                    DateOfBirth = s.Pilot.DateOfBirth,
+                    Name = s.Pilot.FirstName,
+                    FamilyName = s.Pilot.FamilyName,
+                    Experience = s.Pilot.Experience,
+                }))
+                .ForMember(d => d.Stewardesses, o => o.MapFrom(s => s.Stewardesses.Select(st => new StewardessDto
+                {
+                    Id = st.Id,
+                    Name = st.FirstName,
+                    FamilyName = st.FamilyName,
+                    DateOfBirth = st.DateOfBirth
+                })));
         }
     }
 }

@@ -11,16 +11,12 @@
         public override int Id { get; set; }
 
         public Stewardess() { }
-
-        public static Stewardess FromRequest(StewardessRequest request, int id)
+        public Stewardess(StewardessRequest request, int id)
         {
-            return new Stewardess()
-                       {
-                           Id = id,
-                           FirstName = request.Name,
-                           FamilyName = request.FamilyName,
-                           DateOfBirth = request.DateOfBirth
-                       };
+            Id = id;
+            FirstName = request.Name;
+            FamilyName = request.FamilyName;
+            DateOfBirth = request.DateOfBirth;
         }
 
         public override int GetGeneratedId()

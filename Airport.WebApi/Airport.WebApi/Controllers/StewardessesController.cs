@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-
-using Microsoft.AspNetCore.Mvc;
-
-namespace Airport.WebApi.Controllers
+﻿namespace Airport.WebApi.Controllers
 {
-    using System;
+    using System.Collections.Generic;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
@@ -12,97 +8,104 @@ namespace Airport.WebApi.Controllers
 
     using AutoMapper;
 
-    using Microsoft.EntityFrameworkCore.Internal;
+    using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StewardessesController : ControllerBase
+    public class StewardessesController : AbstractController<IStewardessService, StewardessDto, StewardessRequest, int>
     {
-        private readonly IMapper _mapper;
-        private readonly IStewardessService _service;
-
-        public StewardessesController(IMapper mapper, IStewardessService service)
+        public StewardessesController(IMapper mapper, IStewardessService service) : base(mapper, service)
         {
-            _mapper = mapper;
-            _service = service;
         }
 
-        // GET: api/Stewardesses
-        [HttpGet]
-        public ActionResult<IEnumerable<StewardessDto>> Get()
+        public override ActionResult<IEnumerable<StewardessDto>> Get()
         {
-            var dtos = _service.GetAllStewardesses();
-            if (!dtos.Any())
-            {
-                return NoContent();
-            }
-
-            return Ok(dtos);
+            var a = 0;
+            return base.Get();
         }
+        //private readonly IMapper mapper;
+        //private readonly IStewardessService service;
 
-        // GET: api/Stewardesses/5
-        [HttpGet("{id}", Name = "GetStewardess")]
-        public ActionResult<StewardessDto> Get(int id)
-        {
-            var dto = _service.GetStewardessById(id);
-            if (dto == null)
-            {
-                return NotFound();
-            }
+        //public StewardessesController(IMapper mapper, IStewardessService service)
+        //{
+        //    mapper = mapper;
+        //    service = service;
+        //}
 
-            return Ok(dto);
-        }
+        //// GET: api/Stewardesses
+        //[HttpGet]
+        //public ActionResult<IEnumerable<StewardessDto>> Get()
+        //{
+        //    var dtos = service.GetAllStewardesses();
+        //    if (!dtos.Any())
+        //    {
+        //        return NoContent();
+        //    }
 
-        // POST: api/Stewardesses
-        [HttpPost]
-        public ActionResult<StewardessDto> Post([FromBody] StewardessRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    return Ok(dtos);
+        //}
 
-            var dto = _service.CreateStewardess(request);
-            if (dto == null)
-            {
-                return StatusCode(500);
-            }
+        //// GET: api/Stewardesses/5
+        //[HttpGet("{id}", Name = "GetStewardess")]
+        //public ActionResult<StewardessDto> Get(int id)
+        //{
+        //    var dto = service.GetStewardessById(id);
+        //    if (dto == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var host = HttpContext.Request.Host;
-            var path = HttpContext.Request.Path;
-            var scheme = HttpContext.Request.Scheme;
-            return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"),  dto);
-        }
+        //    return Ok(dto);
+        //}
 
-        // PUT: api/Stewardesses/5
-        [HttpPut("{id}")]
-        public ActionResult<StewardessDto> Put([FromRoute] int id, [FromBody] StewardessRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// POST: api/Stewardesses
+        //[HttpPost]
+        //public ActionResult<StewardessDto> Post([FromBody] StewardessRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var dto = _service.UpdateStewardessById(request, id);
-            if (dto == null)
-            {
-                return StatusCode(500);
-            }
+        //    var dto = service.CreateStewardess(request);
+        //    if (dto == null)
+        //    {
+        //        return StatusCode(500);
+        //    }
 
-            return Ok(dto);
-        }
+        //    var host = HttpContext.Request.Host;
+        //    var path = HttpContext.Request.Path;
+        //    var scheme = HttpContext.Request.Scheme;
+        //    return Created(new Uri($"{scheme}://{host.Value}{path.Value}/{dto.Id}"),  dto);
+        //}
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int id)
-        {
-            var res = _service.DeleteStewardessById(id);
-            if (res)
-            {
-                return NoContent();
-            }
+        //// PUT: api/Stewardesses/5
+        //[HttpPut("{id}")]
+        //public ActionResult<StewardessDto> Put([FromRoute] int id, [FromBody] StewardessRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            return NotFound();
-        }
+        //    var dto = service.UpdateStewardessById(request, id);
+        //    if (dto == null)
+        //    {
+        //        return StatusCode(500);
+        //    }
+
+        //    return Ok(dto);
+        //}
+
+        //// DELETE: api/ApiWithActions/5
+        //[HttpDelete("{id}")]
+        //public ActionResult<bool> Delete(int id)
+        //{
+        //    var res = service.DeleteStewardessById(id);
+        //    if (res)
+        //    {
+        //        return NoContent();
+        //    }
+
+        //    return NotFound();
+        //}
     }
 }

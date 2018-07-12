@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Airport.DAL.Repositories
 {
+    using System.Linq;
+
     using Airport.DAL.Entities;
     using Airport.DAL.Interfaces.Repositories;
 
@@ -108,9 +110,17 @@ namespace Airport.DAL.Repositories
             {
                 Pilot = p1,
                 PilotId = p1.Id,
-                Stewardesses = new List<Stewardess>() { st1, st2 }
+                Stewardesses = new List<Stewardess> { st1, st2 } 
             };
             c1.Id = c1.GetGeneratedId();
+
+            // var arr = new Stewardess[2];
+            // Stewardesses.CopyTo(0, arr, 0, 2);
+            // Stewardesses.GetRange(0, 2) 
+            // Stewardesses.FindAll(s => s.Id == 1 || s.Id == 2)
+            // Stewardesses.Skip(1).Take(3).ToList();
+            // Stewardesses.CopyTo()
+            // Stewardesses.Where(s => s.Id == 1)
 
             var c2 = new Crew()
             {
