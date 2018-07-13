@@ -85,13 +85,12 @@
                 }
             }
 
-            if (flight.Tickets != null)
+            if (flight.Tickets == null) return;
+
+            foreach (var d in flight.Tickets)
             {
-                foreach (var d in flight.Tickets)
-                {
-                    d.Flight = null;
-                    d.FlightId = null;
-                }
+                d.Flight = null;
+                d.FlightId = null;
             }
         }
     }

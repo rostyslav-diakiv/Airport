@@ -58,7 +58,9 @@
             {
                 return false;
             }
-            
+
+            if (entity.Crews == null) return true;
+
             foreach (var c in entity.Crews)
             {
                 c.Stewardesses.Remove(entity);

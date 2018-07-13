@@ -62,7 +62,9 @@
                 return false;
             }
 
-            return entity.Flight.Tickets.Remove(entity);
+            entity.Flight?.Tickets?.Remove(entity);
+
+            return true;
         }
 
         public Ticket InstantiateTicket(TicketRequest request, int id = 0)

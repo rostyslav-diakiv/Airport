@@ -75,17 +75,14 @@
             }
 
             e.PlaneType?.Planes?.Remove(e);
-            if (e.Departures == null)
-            {
-                return true;
-            }
+            if (e.Departures == null) return true;
 
             foreach (var d in e.Departures)
             {
                 d.Plane = null;
                 d.PlaneId = 0;
             }
-            
+
             return true;
         }
     }

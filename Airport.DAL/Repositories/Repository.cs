@@ -40,7 +40,7 @@
         }
 
         public virtual List<TEntity> GetRange(int index = 1,
-                                      int count = 3,
+                                      int count = 10,
                                       Func<TEntity, bool> filter = null,
                                       Func<IEnumerable<TEntity>, IOrderedEnumerable<TEntity>> orderBy = null)
         {
@@ -61,7 +61,7 @@
             }
 
             if (index == 0) index = 1;
-            if (count == 0) count = 3;
+            if (count == 0) count = 10;
 
             return resEntities.Skip((index - 1) * count).Take(count).ToList();
         }

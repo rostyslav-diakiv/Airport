@@ -1,12 +1,9 @@
 ﻿namespace Airport.BLL.Services
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
-    using Airport.Common.Enums;
     using Airport.Common.Requests;
     using Airport.DAL.Entities;
     using Airport.DAL.Interfaces;
@@ -69,7 +66,9 @@
             {
                 return false;
             }
-            
+
+            if (e.Crews == null) return true;
+
             foreach (var c in e.Crews)
             {
                 c.Pilot = null;

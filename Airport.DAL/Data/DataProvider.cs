@@ -23,7 +23,7 @@ namespace Airport.DAL.Data
 
         public List<Departure> Departures { get; set; }
 
-
+        // Complex seed in ctor of Singleton
         public DataProvider()
         {
             #region Crew

@@ -74,19 +74,17 @@
 
             if (crew.Stewardesses != null)
             {
-                foreach (var s in crew?.Stewardesses)
+                foreach (var s in crew.Stewardesses)
                 {
                     s.Crews.Remove(crew);
                 }
             }
 
-            if (crew.Departures != null)
+            if (crew.Departures == null) return;
+            foreach (var d in crew.Departures)
             {
-                foreach (var d in crew.Departures)
-                {
-                    d.Crew = null;
-                    d.CrewId = 0;
-                }
+                d.Crew = null;
+                d.CrewId = 0;
             }
         }
 
