@@ -24,6 +24,15 @@ namespace Airport.BLL.Mapper
             CreateMap<Pilot, PilotDto>().ForMember(d => d.Name, o => o.MapFrom(s => s.FirstName));
             CreateMap<PilotRequest, Pilot>().ForMember(d => d.FirstName, o => o.MapFrom(s => s.Name));
 
+            CreateMap<PlaneType, PlaneType>().ForMember(d => d.Planes, o => o.Ignore()); // Don't Map Planes because in new obj the are empty!!!
+            CreateMap<PlaneType, PlaneTypeDto>()
+                .ForMember(d => d.MaximalCarryingCapacityKg, o => o.MapFrom(s => s.MaxCarryingCapacityKg))
+                .ForMember(d => d.MaximalNumberOfPlaces, o => o.MapFrom(s => s.MaxNumberOfPlaces));
+
+            CreateMap<PlaneTypeRequest, PlaneType>()
+                .ForMember(d => d.MaxCarryingCapacityKg, o => o.MapFrom(s => s.MaximalCarryingCapacityKg))
+                .ForMember(d => d.MaxNumberOfPlaces, o => o.MapFrom(s => s.MaximalNumberOfPlaces));
+
             CreateMap<Crew, Crew>();
             CreateMap<Crew, CrewDto>()
                 .ForMember(d => d.Pilot, o => o.MapFrom(s => new PilotDto

@@ -8,7 +8,7 @@ namespace Airport.DAL.Repositories
 
     public class PlaneTypeRepository : Repository<PlaneType, int>, IPlaneTypeRepository
     {
-        protected PlaneTypeRepository(List<PlaneType> entities, IMapper mapper) : base(entities, mapper)
+        public PlaneTypeRepository(List<PlaneType> entities, IMapper mapper) : base(entities, mapper)
         {
         }
     }

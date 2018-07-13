@@ -11,7 +11,8 @@
         private IStewardessRepository _stewardessRepository;
         private ICrewRepository _crewRepository;
         private IPilotRepository _pilotRepository;
-
+        private IPlaneTypeRepository _planeTypeRepository;
+        private IPlaneRepository _planeRepository;
 
         private readonly IDataProvider _provider;
         private readonly IMapper _mapper;
@@ -58,6 +59,32 @@
                 }
 
                 return _crewRepository;
+            }
+        }
+
+        public IPlaneTypeRepository PlaneTypeRepository
+        {
+            get
+            {
+                if (_planeTypeRepository == null)
+                {
+                    _planeTypeRepository = new PlaneTypeRepository(_provider.PlaneTypes, _mapper);
+                }
+
+                return _planeTypeRepository;
+            }
+        }
+
+        public IPlaneRepository PlaneRepository
+        {
+            get
+            {
+                if (_planeRepository == null)
+                {
+                    _planeRepository = new PlaneRepository(_provider.Planes, _mapper);
+                }
+
+                return _planeRepository;
             }
         }
 

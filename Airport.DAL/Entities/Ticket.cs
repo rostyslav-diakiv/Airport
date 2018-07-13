@@ -11,9 +11,11 @@
         public decimal Price { get; set; }
 
         [Column("FlightNumber")]
-        public Guid FlightId { get; set; }
+        public string FlightId { get; set; }
 
         public Flight Flight { get; set; }
+
+        public Ticket() { }
 
         private static int nextId;
 

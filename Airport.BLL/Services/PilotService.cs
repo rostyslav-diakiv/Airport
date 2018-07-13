@@ -47,26 +47,26 @@
 
             var updated = uow.PilotRepository.Update(entity);
 
-            // Updates automatically in Crews
-            //var crewsToUpdate = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.PilotId == id);
-            //foreach (var c in crewsToUpdate)
-            //{
-            //    c.Pilot = mapper.Map<Pilot>(updated);
-            //}
-
             return MapEntity(updated);
         }
 
         public override bool DeleteEntityById(int id)
         {
-            var crewsToUpdate = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.PilotId == id);
-            //foreach (var c in crewsToUpdate)
-            //{
-            //    c.Pilot = null;
-            //    c.PilotId = 0;
-            //}
+            var e = uow.PilotRepository.GetFirstOrDefault(s => s.Id == id);
+            var res = uow.PilotRepository.Delete(e);
+            if (!res)
+            {
+                return false;
+            }
 
-            return uow.PilotRepository.Delete(id);
+            var crewsToUpdate = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.PilotId == id);
+            foreach (var c in crewsToUpdate)
+            {
+                c.Pilot = null;
+                c.PilotId = 0;
+            }
+
+            return true;
         }
 
         private PilotDto MapEntity(Pilot entity)

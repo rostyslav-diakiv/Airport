@@ -11,7 +11,7 @@
         public DateTime DepartureTime { get; set; }
 
         [Column("FlightNumber")]
-        public Guid FlightId { get; set; }
+        public string FlightId { get; set; }
 
         public Flight Flight { get; set; }
 
@@ -22,6 +22,8 @@
         public int PlaneId { get; set; }
 
         public Plane Plane { get; set; }
+
+        public Departure() { }
 
         private static int nextId;
 

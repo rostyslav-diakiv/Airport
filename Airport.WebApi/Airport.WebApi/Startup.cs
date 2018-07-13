@@ -48,6 +48,8 @@ namespace Airport.WebApi
             services.AddTransient<IStewardessService, StewardessService>();
             services.AddTransient<IPilotService, PilotService>();
             services.AddTransient<ICrewService, CrewService>();
+            services.AddTransient<IPlaneTypeService, PlaneTypeService>();
+
 
             services.AddAutoMapper(cfg => cfg.AddProfile(typeof(MappingProfile))); // Scoped Lifetime!
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/

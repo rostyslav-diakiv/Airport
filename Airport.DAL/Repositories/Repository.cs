@@ -102,7 +102,7 @@
 
         public virtual bool Delete(TKey id)
         {
-            var entityToDelete = _entities.SingleOrDefault(e => e.Id.Equals(id)); // GetFirstOrDefault(e => e.Id.Equals(id));
+            var entityToDelete = _entities.SingleOrDefault(e => e.Id.Equals(id));
             if (entityToDelete == null)
             {
                 return false;

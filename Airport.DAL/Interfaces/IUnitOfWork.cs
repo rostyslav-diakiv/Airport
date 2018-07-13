@@ -5,8 +5,13 @@
     public interface IUnitOfWork
     {
         IStewardessRepository StewardessRepository { get; }
+
         IPilotRepository PilotRepository { get; }
 
         ICrewRepository CrewRepository { get; }
+
+        IPlaneTypeRepository PlaneTypeRepository { get; }
+
+        IPlaneRepository PlaneRepository { get; }
     }
 }

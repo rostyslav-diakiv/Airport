@@ -72,6 +72,9 @@
 
         private Crew InstantiateCrew(CrewRequest request, int id = 0)
         {
+            // Remove identical Ids from collection
+            request.StewardessesIds = request.StewardessesIds.Distinct().ToList();
+
             var sts = uow.StewardessRepository.GetRange(
                 count: request.StewardessesIds.Count(),
                 filter: s => request.StewardessesIds.Contains(s.Id));
@@ -81,9 +84,17 @@
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
             }
 
+            var pilot = uow.PilotRepository.GetFirstOrDefault(p => p.Id == request.PilotId);
+            if (pilot == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
+            }
+
             var entity = new Crew()
             {
                 Id = id,
+                Pilot = pilot,
+                PilotId = pilot.Id,
                 Stewardesses = sts
             };
 

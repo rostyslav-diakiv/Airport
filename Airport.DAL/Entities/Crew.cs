@@ -13,6 +13,10 @@
 
         public ICollection<Stewardess> Stewardesses { get; set; }
 
+        public ICollection<Departure> Departures { get; set; }
+
+        public Crew() { }
+
         private static int nextId;
 
         public override int GetGeneratedId()

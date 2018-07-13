@@ -3,11 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
-    public class Flight : Entity<Guid>
+    public class Flight : Entity<string>
     {
         [Column("Number")]
-        public override Guid Id { get; set; }
+        public override string Id { get; set; }
 
         public string DeparturePoint { get; set; }
 
@@ -19,9 +20,16 @@
 
         public ICollection<Ticket> Tickets { get; set; }
 
-        public override Guid GetGeneratedId()
+        public ICollection<Departure> Departures { get; set; }
+
+        public Flight() { }
+
+        private static Random random = new Random();
+        public override string GetGeneratedId()
         {
-            return Guid.NewGuid();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 7) // Length of number = 7
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

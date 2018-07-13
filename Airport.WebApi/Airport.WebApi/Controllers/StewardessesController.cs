@@ -15,12 +15,6 @@
         public StewardessesController(IMapper mapper, IStewardessService service) : base(mapper, service)
         {
         }
-
-        public override ActionResult<IEnumerable<StewardessDto>> Get()
-        {
-            var a = 0;
-            return base.Get();
-        }
         //private readonly IMapper mapper;
         //private readonly IStewardessService service;
 
