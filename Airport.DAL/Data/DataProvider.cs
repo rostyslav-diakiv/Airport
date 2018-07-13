@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Airport.DAL.Repositories
+namespace Airport.DAL.Data
 {
-    using System.Linq;
-
     using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces.Repositories;
 
     public class DataProvider : IDataProvider
     {
@@ -78,6 +75,7 @@ namespace Airport.DAL.Repositories
                 FirstName = "Serg",
                 FamilyName = "Karas",
                 DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(800, 00, 00),
                 Crews = new List<Crew>()
             };
             p1.Id = p1.GetGeneratedId();
@@ -88,6 +86,7 @@ namespace Airport.DAL.Repositories
                 FirstName = "Ostap",
                 FamilyName = "Bober",
                 DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(3600, 00, 00),
                 Crews = new List<Crew>()
             };
             var p3 = new Pilot()
@@ -96,6 +95,7 @@ namespace Airport.DAL.Repositories
                 FirstName = "Sanya",
                 FamilyName = "Morkva",
                 DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(5000, 00, 00),
                 Crews = new List<Crew>()
             };
             var p4 = new Pilot()
@@ -104,6 +104,7 @@ namespace Airport.DAL.Repositories
                 FirstName = "John",
                 FamilyName = "Opler",
                 DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(1500, 00, 00),
                 Crews = new List<Crew>()
             };
             var p5 = new Pilot() // TODO: unused 
@@ -112,6 +113,7 @@ namespace Airport.DAL.Repositories
                 FirstName = "Michael",
                 FamilyName = "Stoor",
                 DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(2000, 00, 00),
                 Crews = new List<Crew>()
             };
             Pilots = new List<Pilot>() { p1, p2, p3, p4, p5 };
@@ -120,7 +122,8 @@ namespace Airport.DAL.Repositories
             {
                 Pilot = p1,
                 PilotId = p1.Id,
-                Stewardesses = new List<Stewardess> { st1, st2 }
+                Stewardesses = new List<Stewardess> { st1, st2 },
+                Departures = new List<Departure>()
             };
             c1.Id = c1.GetGeneratedId();
 
@@ -137,28 +140,32 @@ namespace Airport.DAL.Repositories
                 Id = c1.GetGeneratedId(),
                 Pilot = p1,
                 PilotId = p1.Id,
-                Stewardesses = new List<Stewardess>() { st1, st4 }
+                Stewardesses = new List<Stewardess>() { st1, st4 },
+                Departures = new List<Departure>()
             };
             var c3 = new Crew()
             {
                 Id = c1.GetGeneratedId(),
                 Pilot = p3,
                 PilotId = p3.Id,
-                Stewardesses = new List<Stewardess>() { st2, st3, st4 }
+                Stewardesses = new List<Stewardess>() { st2, st3, st4 },
+                Departures = new List<Departure>()
             };
             var c4 = new Crew()
             {
                 Id = c1.GetGeneratedId(),
                 Pilot = p2,
                 PilotId = p2.Id,
-                Stewardesses = new List<Stewardess>() { st5 }
+                Stewardesses = new List<Stewardess>() { st5 },
+                Departures = new List<Departure>()
             };
             var c5 = new Crew()
             {
                 Id = c1.GetGeneratedId(),
                 Pilot = p4,
                 PilotId = p4.Id,
-                Stewardesses = new List<Stewardess>() { st3, st1, st2 }
+                Stewardesses = new List<Stewardess>() { st3, st1, st2 },
+                Departures = new List<Departure>()
             };
             Crews = new List<Crew>() { c1, c2, c3, c4, c5 };
 
@@ -220,6 +227,7 @@ namespace Airport.DAL.Repositories
 
             var pl1 = new Plane()
             {
+                Name = "Bogatyr!",
                 PlaneType = pt5,
                 PlaneTypeId = pt5.Id,
                 CreationDate = new DateTime(1999, 09, 12),
@@ -230,6 +238,7 @@ namespace Airport.DAL.Repositories
 
             var pl2 = new Plane()
             {
+                Name = "Serpantyn",
                 Id = pl1.GetGeneratedId(),
                 PlaneType = pt1,
                 PlaneTypeId = pt1.Id,
@@ -239,6 +248,7 @@ namespace Airport.DAL.Repositories
             };
             var pl3 = new Plane()
             {
+                Name = "Geffry Lucker",
                 Id = pl1.GetGeneratedId(),
                 PlaneType = pt2,
                 PlaneTypeId = pt2.Id,
@@ -248,6 +258,7 @@ namespace Airport.DAL.Repositories
             };
             var pl4 = new Plane()
             {
+                Name = "Sweet Life",
                 Id = pl1.GetGeneratedId(),
                 PlaneType = pt3,
                 PlaneTypeId = pt3.Id,
@@ -257,6 +268,7 @@ namespace Airport.DAL.Repositories
             };
             var pl5 = new Plane()
             {
+                Name = "Kassandra",
                 Id = pl1.GetGeneratedId(),
                 PlaneType = pt1,
                 PlaneTypeId = pt1.Id,

@@ -9,26 +9,8 @@
     
     using Swashbuckle.AspNetCore.Swagger;
 
-    /// <summary>
-    /// The swagger configuration.
-    /// </summary>
     public static class SwaggerConfiguration
     {
-        /// <summary>
-        /// Configures the swagger.
-        /// </summary>
-        /// <param name="services">
-        /// The service collection.
-        /// </param>
-        /// <param name="configs">
-        /// The configs.
-        /// </param>
-        /// <param name="microserviceName">
-        /// The microservice Name.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IServiceCollection"/>.
-        /// </returns>
         public static IServiceCollection ConfigureSwagger(this IServiceCollection services, IConfiguration configs)
         {
             services.AddSwaggerGen(options =>
@@ -65,18 +47,6 @@
             return services;
         }
 
-        /// <summary>
-        /// The use configured swagger.
-        /// </summary>
-        /// <param name="app">
-        /// The app.
-        /// </param>
-        /// <param name="microserviceName">
-        /// The microservice name.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IApplicationBuilder"/>.
-        /// </returns>
         public static IApplicationBuilder UseConfiguredSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();

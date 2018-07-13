@@ -1,6 +1,5 @@
 ﻿namespace Airport.BLL.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -14,7 +13,7 @@
 
     using AutoMapper;
 
-    public class CrewService : BaseService<CrewDto, CrewRequest, int>, ICrewService
+    public class CrewService : BaseService<Crew, CrewDto, CrewRequest, int>, ICrewService
     {
         public CrewService(IUnitOfWork uow, IMapper mapper)
             : base(uow, mapper)
@@ -56,18 +55,32 @@
 
         public override bool DeleteEntityById(int id)
         {
-            return uow.CrewRepository.Delete(id);
-        }
-
-        private CrewDto MapEntity(Crew entity)
-        {
-            if (entity == null)
+            var e = uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
+            var res = uow.CrewRepository.Delete(e);
+            if (!res)
             {
-                return null;
+                return false;
             }
 
-            var dto = mapper.Map<Crew, CrewDto>(entity);
-            return dto;
+            ClearDependencies(e);
+
+            return true;
+        }
+
+        // Remove Crew from Linked Entities
+        private void ClearDependencies(Crew crew)
+        {
+            crew.Pilot.Crews.Remove(crew);
+            foreach (var s in crew.Stewardesses)
+            {
+                s.Crews.Remove(crew);
+            }
+
+            foreach (var d in crew.Departures)
+            {
+                d.Crew = null;
+                d.CrewId = 0;
+            }
         }
 
         private Crew InstantiateCrew(CrewRequest request, int id = 0)
@@ -97,6 +110,13 @@
                 PilotId = pilot.Id,
                 Stewardesses = sts
             };
+
+            // Add Crew to Linked Entities
+            pilot.Crews.Add(entity);
+            foreach (var s in sts)
+            {
+                s.Crews.Add(entity);
+            }
 
             return entity;
         }

@@ -1,7 +1,6 @@
 ﻿namespace Airport.BLL.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
@@ -11,7 +10,7 @@
 
     using AutoMapper;
 
-    public class StewardessService : BaseService<StewardessDto, StewardessRequest, int>, IStewardessService
+    public class StewardessService : BaseService<Stewardess, StewardessDto, StewardessRequest, int>, IStewardessService
     {
         public StewardessService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
@@ -19,9 +18,9 @@
 
         public override IEnumerable<StewardessDto> GetAllEntity()
         {
-            var s = uow.StewardessRepository.GetRange();
-            //                              source destination
-            var dtos = mapper.Map<List<Stewardess>, List<StewardessDto>>(s);
+            var stewardesses = uow.StewardessRepository.GetRange();
+
+            var dtos = mapper.Map<List<Stewardess>, List<StewardessDto>>(stewardesses);
 
             return dtos;
         }
@@ -53,32 +52,19 @@
 
         public override bool DeleteEntityById(int id)
         {
-            var e = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.StewardessRepository.Delete(e);
+            var entity = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
+            var res = uow.StewardessRepository.Delete(entity);
             if (!res)
             {
                 return false;
             }
-
-            var crewsToEdit = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.Stewardesses.Contains(e));
-            foreach (var c in crewsToEdit)
+            
+            foreach (var c in entity.Crews)
             {
-                c.Stewardesses.Remove(e);
+                c.Stewardesses.Remove(entity);
             }
 
             return true;
-        }
-
-        private StewardessDto MapEntity(Stewardess entity)
-        {
-            if (entity == null)
-            {
-                return null;
-            }
-            //                      source     destination
-            var dto = mapper.Map<Stewardess, StewardessDto>(entity);
-
-            return dto;
         }
     }
 }

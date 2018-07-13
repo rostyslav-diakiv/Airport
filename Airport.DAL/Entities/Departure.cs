@@ -4,6 +4,8 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Threading;
 
+    using Airport.Common.Requests;
+
     public class Departure : Entity<int>
     {
         public override int Id { get; set; }
@@ -26,6 +28,18 @@
         public Departure() { }
 
         private static int nextId;
+
+        public Departure(DepartureRequest request, Flight flight, Crew crew, Plane plane, int id)
+        {
+            Id = id;
+            DepartureTime = request.DepartureTime;
+            FlightId = flight.Id;
+            Flight = flight;
+            CrewId = crew.Id;
+            Crew = crew;
+            PlaneId = plane.Id;
+            Plane = plane;
+        }
 
         public override int GetGeneratedId()
         {

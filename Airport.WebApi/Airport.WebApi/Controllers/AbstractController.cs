@@ -6,7 +6,8 @@ namespace Airport.WebApi.Controllers
 {
     using Airport.BLL.Interfaces;
     using Airport.Common.Interfaces.Entities;
-    
+    using Airport.Common.Requests;
+
     using AutoMapper;
 
     using Microsoft.EntityFrameworkCore.Internal;
@@ -26,9 +27,9 @@ namespace Airport.WebApi.Controllers
 
         // GET: api/EntityName
         [HttpGet]
-        public virtual ActionResult<IEnumerable<TDto>> Get()
+        public virtual ActionResult<IEnumerable<TDto>> Get([FromQuery] Filter filter)
         {
-            var dtos = service.GetAllEntity();
+            var dtos = service.GetAllEntity(filter);
             if (!dtos.Any())
             {
                 return NoContent();

@@ -1,4 +1,4 @@
-﻿namespace Airport.DAL.Interfaces.Repositories
+﻿namespace Airport.DAL.Data
 {
     using System.Collections.Generic;
 

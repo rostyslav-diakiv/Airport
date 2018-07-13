@@ -5,6 +5,8 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
+    using Airport.Common.Requests;
+
     public class Flight : Entity<string>
     {
         [Column("Number")]
@@ -24,7 +26,17 @@
 
         public Flight() { }
 
+        public Flight(FlightRequest request, string number)
+        {
+            Id = number;
+            DeparturePoint = request.PointOfDeparture;
+            DepartureTime = request.DepartureTime;
+            Destination = request.Destination;
+            DestinationArrivalTime = request.DestinationArrivalTime;
+        }
+
         private static Random random = new Random();
+
         public override string GetGeneratedId()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

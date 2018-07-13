@@ -12,8 +12,8 @@
 
     public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>, IIdGeneratable<TKey>
     {
-        private readonly List<TEntity> _entities;
-        private readonly IMapper _mapper;
+        protected readonly List<TEntity> _entities;
+        protected readonly IMapper _mapper;
 
         protected Repository(List<TEntity> entities, IMapper mapper)
         {

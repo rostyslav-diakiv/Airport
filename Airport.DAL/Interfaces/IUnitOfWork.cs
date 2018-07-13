@@ -13,5 +13,11 @@
         IPlaneTypeRepository PlaneTypeRepository { get; }
 
         IPlaneRepository PlaneRepository { get; }
+
+        IFlightRepository FlightRepository { get; }
+
+        ITicketRepository TicketRepository { get; }
+
+        IDepartureRepository DepartureRepository { get; }
     }
 }

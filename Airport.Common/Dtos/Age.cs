@@ -62,19 +62,12 @@
             }
             else
             {
-                throw new ArgumentException("Birthday date must be earlier than current date");
+                Years = 0;
+                Months = 0;
+                Days = 0;
             }
 
             return this;
         }
     }
-
-    /**
-     * Usage example:
-     * ==============
-     * DateTime bday = new DateTime(1987, 11, 27);
-     * DateTime cday = DateTime.Today;
-     * Age age = new Age(bday, cday);
-     * Console.WriteLine("It's been {0} years, {1} months, and {2} days since your birthday", age.Year, age.Month, age.Day);
-     */
 }

@@ -25,7 +25,7 @@ namespace Airport.Common.Requests
 
         public int PageSize
         {
-            get => pageSize == 0 ? 3 : pageSize;
+            get => pageSize == 0 ? 5 : pageSize;
             set => pageSize = value <= 5 ? value : 5;
         }
 

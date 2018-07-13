@@ -10,7 +10,7 @@
 
     using AutoMapper;
 
-    public class PlaneTypeService : BaseService<PlaneTypeDto, PlaneTypeRequest, int>, IPlaneTypeService
+    public class PlaneTypeService : BaseService<PlaneType, PlaneTypeDto, PlaneTypeRequest, int>, IPlaneTypeService
     {
         public PlaneTypeService(IUnitOfWork uow, IMapper mapper)
             : base(uow, mapper)
@@ -59,27 +59,14 @@
             {
                 return false;
             }
-
-            var planesToEdit = uow.PlaneRepository.GetRange(count: int.MaxValue, filter: c => c.PlaneTypeId == id);
-            foreach (var c in planesToEdit)
+            
+            foreach (var c in e.Planes)
             {
                 c.PlaneType = null;
                 c.PlaneTypeId = 0;
             }
 
             return true;
-        }
-
-        private PlaneTypeDto MapEntity(PlaneType entity)
-        {
-            if (entity == null)
-            {
-                return null;
-            }
-
-            var dto = mapper.Map<PlaneType, PlaneTypeDto>(entity);
-
-            return dto;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Airport.DAL
 {
+    using Airport.DAL.Data;
     using Airport.DAL.Interfaces;
     using Airport.DAL.Interfaces.Repositories;
     using Airport.DAL.Repositories;
@@ -13,6 +14,9 @@
         private IPilotRepository _pilotRepository;
         private IPlaneTypeRepository _planeTypeRepository;
         private IPlaneRepository _planeRepository;
+        private IFlightRepository _flightRepository;
+        private ITicketRepository _ticketRepository;
+        private IDepartureRepository _departureRepository;
 
         private readonly IDataProvider _provider;
         private readonly IMapper _mapper;
@@ -85,6 +89,45 @@
                 }
 
                 return _planeRepository;
+            }
+        }
+
+        public IFlightRepository FlightRepository
+        {
+            get
+            {
+                if (_flightRepository == null)
+                {
+                    _flightRepository = new FlightRepository(_provider.Flights, _mapper);
+                }
+
+                return _flightRepository;
+            }
+        }
+
+        public ITicketRepository TicketRepository
+        {
+            get
+            {
+                if (_ticketRepository == null)
+                {
+                    _ticketRepository = new TicketRepository(_provider.Tickets, _mapper);
+                }
+
+                return _ticketRepository;
+            }
+        }
+
+        public IDepartureRepository DepartureRepository
+        {
+            get
+            {
+                if (_departureRepository == null)
+                {
+                    _departureRepository = new DepartureRepository(_provider.Departures, _mapper);
+                }
+
+                return _departureRepository;
             }
         }
 

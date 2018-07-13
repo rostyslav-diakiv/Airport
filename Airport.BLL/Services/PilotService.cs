@@ -1,16 +1,19 @@
 ﻿namespace Airport.BLL.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Airport.BLL.Interfaces;
     using Airport.Common.Dtos;
+    using Airport.Common.Enums;
     using Airport.Common.Requests;
     using Airport.DAL.Entities;
     using Airport.DAL.Interfaces;
 
     using AutoMapper;
 
-    public class PilotService : BaseService<PilotDto, PilotRequest, int>, IPilotService
+    public class PilotService : BaseService<Pilot, PilotDto, PilotRequest, int>, IPilotService
     {
         public PilotService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
@@ -23,6 +26,17 @@
             var dtos = mapper.Map<List<Pilot>, List<PilotDto>>(entities);
 
             return dtos;
+        }
+
+        public override IEnumerable<PilotDto> GetAllEntity(Filter filter)
+        {
+            //var orderByFunc = Order(filter.OrderBy);
+            //var filterExpression = GetFilterExpression(filter.SearchString);
+            //var profiles = await _uow.ProfileRepository.GetRangeAsync(filter.Page,
+            //                   filter.PageSize,
+            //                   x => filterExpression(x),
+            //                   orderByFunc).ConfigureAwait(false);
+            return base.GetAllEntity(filter);
         }
 
         public override PilotDto GetEntityById(int id)
@@ -58,27 +72,14 @@
             {
                 return false;
             }
-
-            var crewsToUpdate = uow.CrewRepository.GetRange(count: int.MaxValue, filter: c => c.PilotId == id);
-            foreach (var c in crewsToUpdate)
+            
+            foreach (var c in e.Crews)
             {
                 c.Pilot = null;
                 c.PilotId = 0;
             }
 
             return true;
-        }
-
-        private PilotDto MapEntity(Pilot entity)
-        {
-            if (entity == null)
-            {
-                return null;
-            }
-
-            var dto = mapper.Map<Pilot, PilotDto>(entity);
-
-            return dto;
         }
     }
 }
