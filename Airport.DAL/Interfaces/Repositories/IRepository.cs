@@ -22,7 +22,7 @@ namespace Airport.DAL.Interfaces.Repositories
                                   Func<IEnumerable<TEntity>, IOrderedEnumerable<TEntity>> orderBy = null);
 
         List<TEntity> GetRange(int index = 1,
-                               int count = 3,
+                               int count = 10,
                                Func<TEntity, bool> filter = null,
                                Func<IEnumerable<TEntity>, IOrderedEnumerable<TEntity>> orderBy = null);
     }
