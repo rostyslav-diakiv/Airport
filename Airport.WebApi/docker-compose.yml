@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  airport.webapi:
+    image: ${DOCKER_REGISTRY}airportwebapi
+    build:
+      context: .
+      dockerfile: Airport.WebApi\Dockerfile
