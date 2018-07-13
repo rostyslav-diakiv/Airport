@@ -5,7 +5,9 @@
     using Airport.Common.Interfaces.Entities;
     using Airport.Common.Requests;
 
-    public interface IService<TDto, TRequest, TKey> where TDto : IEntity<TKey>
+    public interface IService<out TEntity, TDto, TRequest, TKey> 
+                        where TDto : IEntity<TKey>
+                        where TEntity : IEntity<TKey>
     {
         IEnumerable<TDto> GetAllEntity();
 
@@ -15,7 +17,7 @@
 
         TDto CreateEntity(TRequest request);
 
-        TDto UpdateEntityById(TRequest request, TKey id);
+        TEntity UpdateEntityById(TRequest request, TKey id);
 
         bool DeleteEntityById(TKey id);
     }

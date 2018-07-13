@@ -6,7 +6,6 @@ namespace Airport.WebApi.Controllers
 {
     using Airport.BLL.Interfaces;
     using Airport.Common.Interfaces.Entities;
-    using Airport.Common.Requests;
 
     using AutoMapper;
 
@@ -14,7 +13,9 @@ namespace Airport.WebApi.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public abstract class AbstractController<TService, TDto, TRequest, TKey> : ControllerBase where TService : IService<TDto, TRequest, TKey> where TDto : IEntity<TKey>
+    public abstract class AbstractController<TService, TDto, TRequest, TKey> : ControllerBase 
+                                where TService : IService<IEntity<TKey>, TDto, TRequest, TKey> 
+                                where TDto : IEntity<TKey>
     {
         protected readonly IMapper mapper;
         protected readonly TService service;
@@ -27,9 +28,9 @@ namespace Airport.WebApi.Controllers
 
         // GET: api/EntityName
         [HttpGet]
-        public virtual ActionResult<IEnumerable<TDto>> Get([FromQuery] Filter filter)
+        public virtual ActionResult<IEnumerable<TDto>> Get()
         {
-            var dtos = service.GetAllEntity(filter);
+            var dtos = service.GetAllEntity();
             if (!dtos.Any())
             {
                 return NoContent();

@@ -41,13 +41,13 @@
             return MapEntity(entity);
         }
 
-        public override StewardessDto UpdateEntityById(StewardessRequest request, int id)
+        public override Stewardess UpdateEntityById(StewardessRequest request, int id)
         {
             var entity = new Stewardess(request, id);
 
             var updated = uow.StewardessRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)

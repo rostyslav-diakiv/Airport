@@ -23,7 +23,8 @@ namespace Airport.DAL.Data
 
         public List<Departure> Departures { get; set; }
 
-        public DataProvider() // Need to execute before instantiating (SingleTon) - Like DB
+
+        public DataProvider()
         {
             #region Crew
 
@@ -75,7 +76,7 @@ namespace Airport.DAL.Data
                 FirstName = "Serg",
                 FamilyName = "Karas",
                 DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(800, 00, 00),
+                Experience = new TimeSpan(800, 00, 00, 00),
                 Crews = new List<Crew>()
             };
             p1.Id = p1.GetGeneratedId();
@@ -86,7 +87,7 @@ namespace Airport.DAL.Data
                 FirstName = "Ostap",
                 FamilyName = "Bober",
                 DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(3600, 00, 00),
+                Experience = new TimeSpan(3600, 00, 00, 00),
                 Crews = new List<Crew>()
             };
             var p3 = new Pilot()
@@ -95,7 +96,7 @@ namespace Airport.DAL.Data
                 FirstName = "Sanya",
                 FamilyName = "Morkva",
                 DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(5000, 00, 00),
+                Experience = new TimeSpan(5000, 00, 00, 00),
                 Crews = new List<Crew>()
             };
             var p4 = new Pilot()
@@ -104,7 +105,7 @@ namespace Airport.DAL.Data
                 FirstName = "John",
                 FamilyName = "Opler",
                 DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(1500, 00, 00),
+                Experience = new TimeSpan(1500, 00, 00, 00),
                 Crews = new List<Crew>()
             };
             var p5 = new Pilot() // TODO: unused 
@@ -113,7 +114,7 @@ namespace Airport.DAL.Data
                 FirstName = "Michael",
                 FamilyName = "Stoor",
                 DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(2000, 00, 00),
+                Experience = new TimeSpan(2000, 00, 00, 00),
                 Crews = new List<Crew>()
             };
             Pilots = new List<Pilot>() { p1, p2, p3, p4, p5 };
@@ -126,14 +127,6 @@ namespace Airport.DAL.Data
                 Departures = new List<Departure>()
             };
             c1.Id = c1.GetGeneratedId();
-
-            // var arr = new Stewardess[2];
-            // Stewardesses.CopyTo(0, arr, 0, 2);
-            // Stewardesses.GetRange(0, 2) 
-            // Stewardesses.FindAll(s => s.Id == 1 || s.Id == 2)
-            // Stewardesses.Skip(1).Take(3).ToList();
-            // Stewardesses.CopyTo()
-            // Stewardesses.Where(s => s.Id == 1)
 
             var c2 = new Crew()
             {
@@ -231,7 +224,7 @@ namespace Airport.DAL.Data
                 PlaneType = pt5,
                 PlaneTypeId = pt5.Id,
                 CreationDate = new DateTime(1999, 09, 12),
-                LifeTime = new TimeSpan(10950, 00, 00),
+                LifeTime = new TimeSpan(10950, 00, 00, 00),
                 Departures = new List<Departure>()
             };
             pl1.Id = pl1.GetGeneratedId();
@@ -243,7 +236,7 @@ namespace Airport.DAL.Data
                 PlaneType = pt1,
                 PlaneTypeId = pt1.Id,
                 CreationDate = new DateTime(1989, 2, 2),
-                LifeTime = new TimeSpan(8950, 00, 00),
+                LifeTime = new TimeSpan(8950, 00, 00, 00),
                 Departures = new List<Departure>()
             };
             var pl3 = new Plane()
@@ -253,7 +246,7 @@ namespace Airport.DAL.Data
                 PlaneType = pt2,
                 PlaneTypeId = pt2.Id,
                 CreationDate = new DateTime(2001, 11, 12),
-                LifeTime = new TimeSpan(11950, 00, 00),
+                LifeTime = new TimeSpan(11950, 00, 00, 00),
                 Departures = new List<Departure>()
             };
             var pl4 = new Plane()
@@ -263,7 +256,7 @@ namespace Airport.DAL.Data
                 PlaneType = pt3,
                 PlaneTypeId = pt3.Id,
                 CreationDate = new DateTime(1990, 09, 12),
-                LifeTime = new TimeSpan(12950, 00, 00),
+                LifeTime = new TimeSpan(12950, 00, 00, 00),
                 Departures = new List<Departure>()
             };
             var pl5 = new Plane()
@@ -273,7 +266,7 @@ namespace Airport.DAL.Data
                 PlaneType = pt1,
                 PlaneTypeId = pt1.Id,
                 CreationDate = new DateTime(1998, 09, 12),
-                LifeTime = new TimeSpan(7550, 00, 00),
+                LifeTime = new TimeSpan(7550, 00, 00, 00),
                 Departures = new List<Departure>()
             };
             Planes = new List<Plane>() { pl1, pl2, pl3, pl4, pl5 };

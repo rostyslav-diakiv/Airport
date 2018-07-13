@@ -13,7 +13,7 @@
 
     using AutoMapper;
 
-    public abstract class BaseService<TEntity, TDto, TRequest, TKey> : IService<TDto, TRequest, TKey> where TDto : IEntity<TKey> 
+    public abstract class BaseService<TEntity, TDto, TRequest, TKey> : IService<TEntity, TDto, TRequest, TKey> where TDto : IEntity<TKey> 
                                                                                                       where TEntity : Entity<TKey>
     {
         protected readonly IUnitOfWork uow;
@@ -36,7 +36,7 @@
 
         public abstract TDto CreateEntity(TRequest request);
 
-        public abstract TDto UpdateEntityById(TRequest request, TKey id);
+        public abstract TEntity UpdateEntityById(TRequest request, TKey id);
 
         public abstract bool DeleteEntityById(TKey id);
 

@@ -30,12 +30,9 @@
 
         public override IEnumerable<PilotDto> GetAllEntity(Filter filter)
         {
-            //var orderByFunc = Order(filter.OrderBy);
-            //var filterExpression = GetFilterExpression(filter.SearchString);
-            //var profiles = await _uow.ProfileRepository.GetRangeAsync(filter.Page,
-            //                   filter.PageSize,
-            //                   x => filterExpression(x),
-            //                   orderByFunc).ConfigureAwait(false);
+
+            // TODO
+
             return base.GetAllEntity(filter);
         }
 
@@ -55,13 +52,13 @@
             return MapEntity(entity);
         }
 
-        public override PilotDto UpdateEntityById(PilotRequest request, int id)
+        public override Pilot UpdateEntityById(PilotRequest request, int id)
         {
             var entity = new Pilot(request, id);
 
             var updated = uow.PilotRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)

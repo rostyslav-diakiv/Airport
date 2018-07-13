@@ -12,12 +12,13 @@ namespace Airport.WebApi
     using Airport.DAL;
     using Airport.DAL.Data;
     using Airport.DAL.Interfaces;
-    using Airport.DAL.Interfaces.Repositories;
-    using Airport.DAL.Repositories;
     using Airport.WebApi.Extensions;
     using Airport.WebApi.Utils;
+    using Airport.WebApi.Validators;
 
     using AutoMapper;
+
+    using FluentValidation.AspNetCore;
 
     public class Startup
     {
@@ -65,7 +66,8 @@ namespace Airport.WebApi
                 }); // Scoped Lifetime!
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
 
-            services.AddMvc()
+            services.AddMvc(opt => opt.Filters.Add(typeof(ValidatorActionFilter)))
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(MvcSetup.JsonSetupAction);
         }

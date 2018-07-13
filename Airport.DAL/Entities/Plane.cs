@@ -27,7 +27,7 @@ namespace Airport.DAL.Entities
 
         private static int nextId;
 
-        public Plane(PlaneRequest request, PlaneType planeType, int id)
+        public Plane(PlaneRequest request, PlaneType planeType, int id = 0)
         {
             Id = id;
             CreationDate = request.CreationDate;

@@ -2,8 +2,9 @@
 {
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
+    using Airport.DAL.Entities;
 
-    public interface IPilotService : IService<PilotDto, PilotRequest, int>
+    public interface IPilotService : IService<Pilot, PilotDto, PilotRequest, int>
     {
     }
 }

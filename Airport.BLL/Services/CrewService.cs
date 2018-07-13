@@ -44,13 +44,13 @@
             return MapEntity(entity);
         }
 
-        public override CrewDto UpdateEntityById(CrewRequest request, int id)
+        public override Crew UpdateEntityById(CrewRequest request, int id)
         {
             var entity = InstantiateCrew(request, id);
 
             var updated = uow.CrewRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)
@@ -70,16 +70,23 @@
         // Remove Crew from Linked Entities
         private void ClearDependencies(Crew crew)
         {
-            crew.Pilot.Crews.Remove(crew);
-            foreach (var s in crew.Stewardesses)
+            crew.Pilot?.Crews?.Remove(crew);
+
+            if (crew.Stewardesses != null)
             {
-                s.Crews.Remove(crew);
+                foreach (var s in crew?.Stewardesses)
+                {
+                    s.Crews.Remove(crew);
+                }
             }
 
-            foreach (var d in crew.Departures)
+            if (crew.Departures != null)
             {
-                d.Crew = null;
-                d.CrewId = 0;
+                foreach (var d in crew.Departures)
+                {
+                    d.Crew = null;
+                    d.CrewId = 0;
+                }
             }
         }
 

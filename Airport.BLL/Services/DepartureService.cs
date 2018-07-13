@@ -44,13 +44,13 @@
             return MapEntity(entity);
         }
 
-        public override DepartureDto UpdateEntityById(DepartureRequest request, int id)
+        public override Departure UpdateEntityById(DepartureRequest request, int id)
         {
             var entity = InstantiateDeparture(request, id);
 
             var updated = uow.DepartureRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)
@@ -62,9 +62,9 @@
                 return false;
             }
 
-            e.Flight.Departures.Remove(e);
-            e.Crew.Departures.Remove(e);
-            e.Plane.Departures.Remove(e);
+            e.Flight?.Departures?.Remove(e);
+            e.Crew?.Departures?.Remove(e);
+            e.Plane?.Departures?.Remove(e);
 
             return true;
         }

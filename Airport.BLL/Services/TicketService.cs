@@ -44,13 +44,13 @@
             return MapEntity(entity);
         }
 
-        public override TicketDto UpdateEntityById(TicketRequest request, int id)
+        public override Ticket UpdateEntityById(TicketRequest request, int id)
         {
-            var entity = InstantiateTicket(request);
+            var entity = InstantiateTicket(request, id);
 
             var updated = uow.TicketRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)

@@ -50,13 +50,13 @@
             return MapEntity(entity);
         }
 
-        public override FlightDto UpdateEntityById(FlightRequest request, string id)
+        public override Flight UpdateEntityById(FlightRequest request, string id)
         {
             var entity = new Flight(request, id);
 
             var updated = uow.FlightRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(string id)
@@ -76,15 +76,22 @@
         // Remove Crew from Linked Entities
         private void ClearDependencies(Flight flight)
         {
-            foreach (var d in flight.Departures)
+            if (flight.Departures != null)
             {
-                d.Flight = null;
-                d.FlightId = null;
+                foreach (var d in flight.Departures)
+                {
+                    d.Flight = null;
+                    d.FlightId = null;
+                }
             }
-            foreach (var d in flight.Tickets)
+
+            if (flight.Tickets != null)
             {
-                d.Flight = null;
-                d.FlightId = null;
+                foreach (var d in flight.Tickets)
+                {
+                    d.Flight = null;
+                    d.FlightId = null;
+                }
             }
         }
     }

@@ -42,13 +42,13 @@
             return MapEntity(entity);
         }
 
-        public override PlaneTypeDto UpdateEntityById(PlaneTypeRequest request, int id)
+        public override PlaneType UpdateEntityById(PlaneTypeRequest request, int id)
         {
             var entity = new PlaneType(request, id);
 
             var updated = uow.PlaneTypeRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)

@@ -37,14 +37,20 @@
 
         public override PlaneDto CreateEntity(PlaneRequest request)
         {
-            var entity = mapper.Map<PlaneRequest, Plane>(request);
+            var planeType = uow.PlaneTypeRepository.GetFirstOrDefault(t => t.Id == request.PlaneTypeId);
+            if (planeType == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
+            }
+
+            var entity = new Plane(request, planeType);
 
             entity = uow.PlaneRepository.Create(entity);
 
             return MapEntity(entity);
         }
 
-        public override PlaneDto UpdateEntityById(PlaneRequest request, int id)
+        public override Plane UpdateEntityById(PlaneRequest request, int id)
         {
             var planeType = uow.PlaneTypeRepository.GetFirstOrDefault(pt => pt.Id == request.PlaneTypeId);
             if (planeType == null)
@@ -56,7 +62,7 @@
 
             var updated = uow.PlaneRepository.Update(entity);
 
-            return MapEntity(updated);
+            return updated;
         }
 
         public override bool DeleteEntityById(int id)
@@ -68,7 +74,12 @@
                 return false;
             }
 
-            e.PlaneType.Planes.Remove(e);
+            e.PlaneType?.Planes?.Remove(e);
+            if (e.Departures == null)
+            {
+                return true;
+            }
+
             foreach (var d in e.Departures)
             {
                 d.Plane = null;
