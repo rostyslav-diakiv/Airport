@@ -6,9 +6,9 @@
 
     using AutoMapper;
 
-    public class PlaneTypeRepository : Repository<PlaneType, int>, IPlaneTypeRepository
+    public class DepartureRepository : Repository<Departure, int>, IDepartureRepository
     {
-        public PlaneTypeRepository(AirportDbContext context, IMapper mapper) 
+        public DepartureRepository(AirportDbContext context, IMapper mapper)
             : base(context, mapper)
         {
         }

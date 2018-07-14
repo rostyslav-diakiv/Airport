@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.BLL", "..\Airport.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.DAL", "..\Airport.DAL\Airport.DAL.csproj", "{2B16B907-3579-47B1-BEBE-9568ED9A4187}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportEf.DAL", "..\AirportEf.DAL\AirportEf.DAL.csproj", "{570C2FF2-826F-4D2C-B84A-5420A0C9D4C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportEf.BLL", "..\AirportEf.BLL\AirportEf.BLL.csproj", "{CAA76AEF-C163-4EFD-AE23-A49FFCE51357}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{2B16B907-3579-47B1-BEBE-9568ED9A4187}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B16B907-3579-47B1-BEBE-9568ED9A4187}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B16B907-3579-47B1-BEBE-9568ED9A4187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{570C2FF2-826F-4D2C-B84A-5420A0C9D4C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570C2FF2-826F-4D2C-B84A-5420A0C9D4C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570C2FF2-826F-4D2C-B84A-5420A0C9D4C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570C2FF2-826F-4D2C-B84A-5420A0C9D4C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA76AEF-C163-4EFD-AE23-A49FFCE51357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA76AEF-C163-4EFD-AE23-A49FFCE51357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA76AEF-C163-4EFD-AE23-A49FFCE51357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA76AEF-C163-4EFD-AE23-A49FFCE51357}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

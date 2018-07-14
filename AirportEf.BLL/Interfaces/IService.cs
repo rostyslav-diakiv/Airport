@@ -1,17 +1,25 @@
 ﻿namespace AirportEf.BLL.Interfaces
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public interface IService<TDto, TRequest, TKey>
+    using Airport.Common.Interfaces.Entities;
+    using Airport.Common.Requests;
+
+    public interface IService<TDto, TRequest, TKey> 
+                        where TDto : IEntity<TKey>
+                        //where TEntity : IEntity<TKey>
     {
-        IEnumerable<TDto> GetAllEntity();
+        Task<IEnumerable<TDto>> GetAllEntitiesAsync();
 
-        TDto GetEntityById(TKey id);
+        Task<IEnumerable<TDto>> GetAllEntitiesAsync(Filter filter);
 
-        TDto CreateEntity(TRequest request);
+        Task<TDto> GetEntityByIdAsync(TKey id);
 
-        TDto UpdateEntityById(TRequest request, TKey id);
+        Task<TDto> CreateEntityAsync(TRequest request);
 
-        bool DeleteEntityById(TKey id);
+        Task<bool> UpdateEntityByIdAsync(TRequest request, TKey id); // TODO
+
+        Task<bool> DeleteEntityByIdAsync(TKey id);
     }
 }

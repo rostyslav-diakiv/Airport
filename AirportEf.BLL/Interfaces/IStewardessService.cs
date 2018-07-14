@@ -3,7 +3,9 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
 
-    public interface IStewardessService : IService<StewardessDto, StewardessRequest, int>
+    using AirportEf.DAL.Entities;
+
+    public interface IStewardessService : IService<Stewardess, StewardessDto, StewardessRequest, int>
     {
     }
 }

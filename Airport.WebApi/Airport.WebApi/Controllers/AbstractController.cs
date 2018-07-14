@@ -4,17 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.WebApi.Controllers
 {
-    using Airport.BLL.Interfaces;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using Airport.Common.Interfaces.Entities;
 
-    using AutoMapper;
+    using AirportEf.BLL.Interfaces;
 
-    using Microsoft.EntityFrameworkCore.Internal;
+    using AutoMapper;
 
     [Route("api/[controller]")]
     [ApiController]
     public abstract class AbstractController<TService, TDto, TRequest, TKey> : ControllerBase 
-                                where TService : IService<IEntity<TKey>, TDto, TRequest, TKey> 
+                                where TService : IService<TDto, TRequest, TKey> 
                                 where TDto : IEntity<TKey>
     {
         protected readonly IMapper mapper;
@@ -28,9 +30,9 @@ namespace Airport.WebApi.Controllers
 
         // GET: api/EntityName
         [HttpGet]
-        public virtual ActionResult<IEnumerable<TDto>> Get()
+        public virtual async Task<ActionResult<IEnumerable<TDto>>> Get()
         {
-            var dtos = service.GetAllEntity();
+            var dtos = await service.GetAllEntitiesAsync();
             if (!dtos.Any())
             {
                 return NoContent();
@@ -41,9 +43,9 @@ namespace Airport.WebApi.Controllers
 
         // GET: api/EntityName/5
         [HttpGet("{id}")]
-        public virtual ActionResult<TDto> GetById(TKey id)
+        public virtual async Task<ActionResult<TDto>> GetById(TKey id)
         {
-            var dto = service.GetEntityById(id);
+            var dto = await service.GetEntityByIdAsync(id);
             if (dto == null)
             {
                 return NotFound();
@@ -54,14 +56,14 @@ namespace Airport.WebApi.Controllers
 
         // POST: api/EntityName
         [HttpPost]
-        public virtual ActionResult<TDto> Create([FromBody] TRequest request)
+        public virtual async Task<ActionResult<TDto>> Create([FromBody] TRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = service.CreateEntity(request);
+            var dto = await service.CreateEntityAsync(request);
             if (dto == null)
             {
                 return StatusCode(500);
@@ -72,27 +74,27 @@ namespace Airport.WebApi.Controllers
 
         // PUT: api/EntityName/5
         [HttpPut("{id}")]
-        public virtual ActionResult<TDto> Update([FromRoute] TKey id, [FromBody] TRequest request)
+        public virtual async Task<ActionResult<TDto>> Update([FromRoute] TKey id, [FromBody] TRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dto = service.UpdateEntityById(request, id);
-            if (dto == null)
-            {
-                return NotFound();
-            }
+            await service.UpdateEntityByIdAsync(request, id);
+            //if (dto == null)
+            //{
+            //    return NotFound();
+            //}
 
             return NoContent();
         }
 
         // DELETE: api/EntityName/5
         [HttpDelete("{id}")]
-        public virtual ActionResult<bool> Delete(TKey id)
+        public virtual async Task<ActionResult<bool>> Delete(TKey id)
         {
-            var res = service.DeleteEntityById(id);
+            var res = await service.DeleteEntityByIdAsync(id);
             if (!res)
             {
                 return NotFound();

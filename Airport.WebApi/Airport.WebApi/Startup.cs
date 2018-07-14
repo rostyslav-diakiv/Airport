@@ -6,19 +6,22 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Airport.WebApi
 {
-    using Airport.BLL.Interfaces;
-    using Airport.BLL.Mapper;
-    using Airport.BLL.Services;
-    using Airport.DAL;
-    using Airport.DAL.Data;
-    using Airport.DAL.Interfaces;
     using Airport.WebApi.Extensions;
     using Airport.WebApi.Utils;
     using Airport.WebApi.Validators;
 
+    using AirportEf.BLL.Interfaces;
+    using AirportEf.BLL.Mapper;
+    using AirportEf.BLL.Services;
+    using AirportEf.DAL;
+    using AirportEf.DAL.Data;
+    using AirportEf.DAL.Interfaces;
+
     using AutoMapper;
 
     using FluentValidation.AspNetCore;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -36,21 +39,21 @@ namespace Airport.WebApi
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddSingleton<IDataProvider, DataProvider>();
+            // services.AddSingleton<IDataProvider, DataProvider>();
 
-            //services.AddDbContext<AirportDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
+            services.AddDbContext<AirportDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
 
 
-            services.AddTransient<ICrewService, CrewService>();
-            services.AddTransient<IDepartureService, DepartureService>();
-            services.AddTransient<IFlightService, FlightService>();
+            //services.AddTransient<ICrewService, CrewService>();
+            //services.AddTransient<IDepartureService, DepartureService>();
+            //services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<IPilotService, PilotService>();
-            services.AddTransient<IPlaneService, PlaneService>();
-            services.AddTransient<IPlaneTypeService, PlaneTypeService>();
-            services.AddTransient<IStewardessService, StewardessService>();
-            services.AddTransient<ITicketService, TicketService>();
+            //services.AddTransient<IPlaneService, PlaneService>();
+            //services.AddTransient<IPlaneTypeService, PlaneTypeService>();
+            //services.AddTransient<IStewardessService, StewardessService>();
+            //services.AddTransient<ITicketService, TicketService>();
 
 
             services.AddAutoMapper(cfg =>

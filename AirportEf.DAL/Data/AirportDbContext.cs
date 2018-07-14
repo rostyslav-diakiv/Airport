@@ -4,35 +4,38 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    /// <summary>
-    /// Social Database context
-    /// </summary>
     /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public class AirportDbContext : DbContext
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AirportDbContext" /> class.
-        /// </summary>
-        /// <param name="options">The db configuration options.</param>
         public AirportDbContext(DbContextOptions<AirportDbContext> options) : base(options)
         {
         }
 
-        /// <summary>
-        /// Override this method to further configure the model that was discovered by convention from the entity types
-        /// exposed in <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1" /> properties on your derived context. The resulting model may be cached
-        /// and re-used for subsequent instances of your derived context.
-        /// </summary>
-        /// <param name="modelBuilder">The builder being used to construct the model for this context. Databases (and other extensions) typically
-        /// define extension methods on this object that allow you to configure aspects of the model that are specific
-        /// to a given database.</param>
-        /// <remarks>
-        /// If a model is explicitly set on the options for this context (via <see cref="M:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.UseModel(Microsoft.EntityFrameworkCore.Metadata.IModel)" />)
-        /// then this method will not be run.
-        /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Plane>().HasOne(p => p.PlaneType);
+            modelBuilder.Entity<PlaneType>()
+                .HasMany(pt => pt.Planes)
+                .WithOne(p => p.PlaneType)
+                .OnDelete(DeleteBehavior.ClientSetNull); // TODO: Set null to PlaneType on Plane when PlaneType Deleted
+
+            modelBuilder.Entity<CrewStewardess>()
+                .HasKey(bc => new { bc.CrewId, bc.StewardessId });
+
+            modelBuilder.Entity<CrewStewardess>()
+                .HasOne(bc => bc.Crew)
+                .WithMany(b => b.CrewStewardess)
+                .HasForeignKey(bc => bc.CrewId);
+
+            modelBuilder.Entity<CrewStewardess>()
+                .HasOne(bc => bc.Stewardess)
+                .WithMany(c => c.CrewStewardess)
+                .HasForeignKey(bc => bc.StewardessId);
+
+            modelBuilder.Entity<Crew>()
+                .HasOne(pt => pt.Pilot)
+                .WithMany(p => p.Crews)
+                .OnDelete(DeleteBehavior.ClientSetNull); // TODO: Set null to PlaneType on Plane when PlaneType Deleted
+
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<Member>()
             //    .HasOne(m => (Team)m.Team)
@@ -41,6 +44,19 @@
         }
 
         public DbSet<Plane> Planes { get; set; }
+
         public DbSet<PlaneType> PlaneTypes { get; set; }
+
+        public DbSet<Stewardess> Stewardesses { get; set; }
+
+        public DbSet<Pilot> Pilots { get; set; }
+
+        public DbSet<Crew> Crews { get; set; }
+
+        public DbSet<Departure> Departures { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<Flight> Flights { get; set; }
     }
 }

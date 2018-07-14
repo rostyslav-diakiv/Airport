@@ -5,7 +5,7 @@
 
     using AirportEf.DAL.Entities;
 
-    public interface ICrewService : IService<Crew, CrewDto, CrewRequest, int>
+    public interface IPlaneTypeService : IService<PlaneType, PlaneTypeDto, PlaneTypeRequest, int>
     {
     }
 }

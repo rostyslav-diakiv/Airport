@@ -18,6 +18,11 @@
         private IStewardessRepository _stewardessRepository;
         private ICrewRepository _crewRepository;
         private IPilotRepository _pilotRepository;
+        private IPlaneTypeRepository _planeTypeRepository;
+        private IPlaneRepository _planeRepository;
+        private IFlightRepository _flightRepository;
+        private ITicketRepository _ticketRepository;
+        private IDepartureRepository _departureRepository;
 
         private readonly AirportDbContext _context;
         private readonly IMapper _mapper;
@@ -66,6 +71,72 @@
                 return _crewRepository;
             }
         }
+
+        public IPlaneTypeRepository PlaneTypeRepository
+        {
+            get
+            {
+                if (_planeTypeRepository == null)
+                {
+                    _planeTypeRepository = new PlaneTypeRepository(_context, _mapper);
+                }
+
+                return _planeTypeRepository;
+            }
+        }
+
+        public IPlaneRepository PlaneRepository
+        {
+            get
+            {
+                if (_planeRepository == null)
+                {
+                    _planeRepository = new PlaneRepository(_context, _mapper);
+                }
+
+                return _planeRepository;
+            }
+        }
+
+        public IFlightRepository FlightRepository
+        {
+            get
+            {
+                if (_flightRepository == null)
+                {
+                    _flightRepository = new FlightRepository(_context, _mapper);
+                }
+
+                return _flightRepository;
+            }
+        }
+
+        public ITicketRepository TicketRepository
+        {
+            get
+            {
+                if (_ticketRepository == null)
+                {
+                    _ticketRepository = new TicketRepository(_context, _mapper);
+                }
+
+                return _ticketRepository;
+            }
+        }
+
+        public IDepartureRepository DepartureRepository
+        {
+            get
+            {
+                if (_departureRepository == null)
+                {
+                    _departureRepository = new DepartureRepository(_context, _mapper);
+                }
+
+                return _departureRepository;
+            }
+        }
+
 
         public async Task<bool> SaveAsync()
         {

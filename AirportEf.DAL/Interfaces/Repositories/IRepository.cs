@@ -29,7 +29,7 @@
                                              bool disableTracking = true);
 
         Task<List<TEntity>> GetRangeAsync(int index = 1,
-                                          int count = 3,
+                                          int count = 10,
                                           Expression<Func<TEntity, bool>> filter = null,
                                           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
                                           Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,

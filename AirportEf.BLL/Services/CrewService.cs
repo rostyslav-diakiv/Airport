@@ -1,9 +1,9 @@
 ﻿namespace AirportEf.BLL.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
 
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
@@ -15,85 +15,117 @@
 
     using AutoMapper;
 
-    public class CrewService : BaseService<CrewDto, CrewRequest, int>, ICrewService
+    public class CrewService : BaseService<Crew, CrewDto, CrewRequest, int>, ICrewService
     {
-        public CrewService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
+        public CrewService(IUnitOfWork uow, IMapper mapper)
+            : base(uow, mapper)
         {
         }
 
         public override IEnumerable<CrewDto> GetAllEntity()
         {
-            throw new NotImplementedException();
-            //var entity = _uow.CrewRepository.GetRange();
-            //var dtos = mapper.Map<List<Crew>, List<CrewDto>>(entity);
+            var entity = uow.CrewRepository.GetRange();
+            var dtos = mapper.Map<List<Crew>, List<CrewDto>>(entity);
 
-            //return dtos;
+            return dtos;
         }
 
         public override CrewDto GetEntityById(int id)
         {
-            throw new NotImplementedException();
-            //var entity = _uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
 
-            //return MapEntity(entity);
+            return MapEntity(entity);
         }
 
-        public override CrewDto CreateEntity(CrewRequest request)
+        public override Task<CrewDto> CreateEntityAsync(CrewRequest request)
         {
-            throw new NotImplementedException();
-            //var entity = InstantiateCrew(request);
+            var entity = InstantiateCrew(request);
 
-            //entity = _uow.CrewRepository.Create(entity);
+            entity = uow.CrewRepository.Create(entity);
 
-            //return MapEntity(entity);
+            return MapEntity(entity);
         }
 
-        public override CrewDto UpdateEntityById(CrewRequest request, int id)
+        public override Task<Crew> UpdateEntityByIdAsync(CrewRequest request, int id)
         {
-            throw new NotImplementedException();
-            //var entity = InstantiateCrew(request, id);
+            var entity = InstantiateCrew(request, id);
 
-            //var updated = _uow.CrewRepository.Update(entity);
+            var updated = uow.CrewRepository.Update(entity);
 
-            //return MapEntity(updated);
+            return updated;
         }
 
-        public override bool DeleteEntityById(int id)
+        public override Task<bool> DeleteEntityByIdAsync(int id)
         {
-            throw new NotImplementedException();
-            //return _uow.CrewRepository.Delete(id);
-        }
-
-        private CrewDto MapEntity(Crew entity)
-        {
-            if (entity == null)
+            var e = uow.CrewRepository.GetFirstOrDefault(s => s.Id == id);
+            var res = uow.CrewRepository.Delete(e);
+            if (!res)
             {
-                return null;
+                return false;
             }
 
-            var dto = _mapper.Map<Crew, CrewDto>(entity);
-            return dto;
+            ClearDependencies(e);
+
+            return true;
+        }
+
+        // Remove Crew from Linked Entities
+        private void ClearDependencies(Crew crew)
+        {
+            crew.Pilot?.Crews?.Remove(crew);
+
+            if (crew.Stewardesses != null)
+            {
+                foreach (var s in crew.Stewardesses)
+                {
+                    s.Crews.Remove(crew);
+                }
+            }
+
+            if (crew.Departures == null) return;
+            foreach (var d in crew.Departures)
+            {
+                d.Crew = null;
+                d.CrewId = 0;
+            }
         }
 
         private Crew InstantiateCrew(CrewRequest request, int id = 0)
         {
-            throw new NotImplementedException();
-            //var sts = _uow.StewardessRepository.GetRange(
-            //    count: request.StewardessesIds.Count(),
-            //    filter: s => request.StewardessesIds.Contains(s.Id));
+            // Remove identical Ids from collection
+            request.StewardessesIds = request.StewardessesIds.Distinct().ToList();
 
-            //if (sts.Count < request.StewardessesIds.Count())
-            //{
-            //    throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
-            //}
+            var sts = uow.StewardessRepository.GetRange(
+                count: request.StewardessesIds.Count(),
+                filter: s => request.StewardessesIds.Contains(s.Id));
 
-            //var entity = new Crew()
-            //                 {
-            //                     Id = id,
-            //                     Stewardesses = sts
-            //                 };
+            if (sts.Count < request.StewardessesIds.Count())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
+            }
 
-            //return entity;
+            var pilot = uow.PilotRepository.GetFirstOrDefault(p => p.Id == request.PilotId);
+            if (pilot == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
+            }
+
+            var entity = new Crew()
+            {
+                Id = id,
+                Pilot = pilot,
+                PilotId = pilot.Id,
+                Stewardesses = sts
+            };
+
+            // Add Crew to Linked Entities
+            pilot.Crews.Add(entity);
+            foreach (var s in sts)
+            {
+                s.Crews.Add(entity);
+            }
+
+            return entity;
         }
     }
 }
