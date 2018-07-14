@@ -34,8 +34,9 @@
 
         public override async Task<TicketDto> GetEntityByIdAsync(int id)
         {
-            var entity = await uow.TicketRepository.GetFirstOrDefaultAsync(s => s.Id == id, 
-                                                                           include: ticket => ticket.Include(t => t.Flight));
+            var entity = await uow.TicketRepository.GetFirstOrDefaultAsync(
+                                        s => s.Id == id, 
+                                        include: ticket => ticket.Include(t => t.Flight));
 
             return MapEntity(entity);
         }
@@ -68,7 +69,7 @@
         {
             await uow.TicketRepository.DeleteAsync(id);
 
-            var result = await uow.SaveAsync().ConfigureAwait(false);
+            var result = await uow.SaveAsync();
 
             return result;
         }

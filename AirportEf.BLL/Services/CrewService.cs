@@ -86,14 +86,14 @@
             var sts = await uow.StewardessRepository.GetRangeAsync(
                           count: request.StewardessesIds.Count(),
                           filter: s => request.StewardessesIds.Contains(s.Id),
-                          disableTracking: false).ConfigureAwait(false);
+                          disableTracking: false);
 
             if (sts.Count < request.StewardessesIds.Count())
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
             }
 
-            var pilotEx = await uow.PilotRepository.ExistAsync(p => p.Id == request.PilotId).ConfigureAwait(false);
+            var pilotEx = await uow.PilotRepository.ExistAsync(p => p.Id == request.PilotId);
             if (!pilotEx)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");

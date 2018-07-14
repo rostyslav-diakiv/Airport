@@ -61,16 +61,10 @@
 
         public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            await uow.PlaneTypeRepository.DeleteAsync(id); // TODO: Null PlaneTypeId in Planes
+            await uow.PlaneTypeRepository.DeleteAsync(id);
             var result = await uow.SaveAsync();
 
             return result;
-
-            //foreach (var c in e.Planes)
-            //{
-            //    c.PlaneType = null;
-            //    c.PlaneTypeId = 0;
-            //}
         }
     }
 }

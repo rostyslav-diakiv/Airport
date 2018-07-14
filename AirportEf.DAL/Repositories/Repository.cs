@@ -44,7 +44,7 @@
 
 		public async Task<TEntity> CreateAsync(TEntity entity)
 		{
-			await DbSet.AddAsync(entity).ConfigureAwait(false);
+			await DbSet.AddAsync(entity);
 
 			return entity;
 		}
@@ -90,7 +90,7 @@
 			if (index == 0) index = 1;
 			if (count == 0) count = 10;
 
-			return await query.Skip((index - 1) * count).Take(count).ToListAsync().ConfigureAwait(false);
+			return await query.Skip((index - 1) * count).Take(count).ToListAsync();
 		}
 
 		/// <summary>
@@ -137,15 +137,15 @@
 
 			if (orderBy != null)
 			{
-				return await orderBy(query).FirstOrDefaultAsync().ConfigureAwait(false);
+				return await orderBy(query).FirstOrDefaultAsync();
 			}
 
-			return await query.FirstOrDefaultAsync().ConfigureAwait(false);
+			return await query.FirstOrDefaultAsync();
 		}
 
 		public async Task<TEntity> UpdateAsync(TEntity entity)
 		{
-			var findEntity = await DbSet.FindAsync(entity.Id).ConfigureAwait(false);
+			var findEntity = await DbSet.FindAsync(entity.Id);
 
 			if (findEntity == null)
 			{
@@ -165,7 +165,7 @@
 				query = include(query);
 			}
 
-			var findEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(entity.Id)).ConfigureAwait(false);
+			var findEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(entity.Id));
 			if (findEntity == null)
 			{
 				throw new HttpStatusCodeException(HttpStatusCode.NotFound, $"Entity {entity.GetType().Name} with id: {entity.Id} not found");
@@ -187,7 +187,7 @@
 
 		public async Task DeleteAsync(TKey id)
 		{
-			var entityToDelete = await DbSet.FindAsync(id).ConfigureAwait(false);
+			var entityToDelete = await DbSet.FindAsync(id);
 			if (entityToDelete == null)
 			{
 				throw new HttpStatusCodeException(HttpStatusCode.NotFound, $"Entity with id: {id} not found when trying to update entity. Entity was no Deleted.");
@@ -206,7 +206,7 @@
 				query = include(query);
 			}
 
-			var findEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id)).ConfigureAwait(false);
+			var findEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
 			if (findEntity == null)
 			{
 				throw new HttpStatusCodeException(HttpStatusCode.NotFound, $"Entity with id: {id} not found when trying to update entity. Entity was no Deleted.");
@@ -228,7 +228,10 @@
 		public async Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate = null,
 										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
 		{
-			var entitiesToDelete = await GetRangeAsync(count: int.MaxValue, filter: predicate, include: include, disableTracking: false).ConfigureAwait(false);
+			var entitiesToDelete = await GetRangeAsync(count: int.MaxValue, 
+			                                           filter: predicate, 
+			                                           include: include, 
+			                                           disableTracking: false);
 
 			DbSet.RemoveRange(entitiesToDelete);
 		}

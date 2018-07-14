@@ -59,6 +59,12 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(FlightRequest request, string id)
         {
+            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.Number);
+            if (exists)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.Number} already exists");
+            }
+
             var entity = new Flight(request, id);
 
             var updated = await uow.FlightRepository.UpdateAsync(entity);
@@ -71,7 +77,7 @@
         {
             await uow.FlightRepository.DeleteAsync(id); 
 
-            var result = await uow.SaveAsync().ConfigureAwait(false);
+            var result = await uow.SaveAsync();
 
             return result;
         }

@@ -34,22 +34,16 @@
 
         public override async Task<PlaneDto> GetEntityByIdAsync(int id)
         {
-            var entity = await uow.PlaneRepository.GetFirstOrDefaultAsync(s => s.Id == id, 
-                                                                          include: plane => plane.Include(p => p.PlaneType));
+            var entity = await uow.PlaneRepository.GetFirstOrDefaultAsync(
+                                        s => s.Id == id, 
+                                        include: plane => plane.Include(p => p.PlaneType));
 
             return MapEntity(entity);
         }
 
         public override async Task<PlaneDto> CreateEntityAsync(PlaneRequest request)
         {
-            var planeType = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(t => t.Id == request.PlaneTypeId,
-                                                                                 disableTracking: false);
-            if (planeType == null)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
-            }
-
-            var entity = new Plane(request, planeType);
+            var entity = await InstantiatePlaneAsync(request);
 
             entity = await uow.PlaneRepository.CreateAsync(entity);
             var result = await uow.SaveAsync();
@@ -63,16 +57,9 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(PlaneRequest request, int id)
         {
-            var planeType = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(pt => pt.Id == request.PlaneTypeId,
-                                                                                 disableTracking: false);
-            if (planeType == null)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with id {request.PlaneTypeId} not found");
-            }
-
-            var entity = new Plane(request, planeType, id);
-
-            var updated = await uow.PlaneRepository.UpdateAsync(entity); // TODO: maybe add include PlaneType
+            var entity = await InstantiatePlaneAsync(request, id);
+            
+            var updated = await uow.PlaneRepository.UpdateAsync(entity);
             var result = await uow.SaveAsync();
 
             return result;
@@ -80,20 +67,24 @@
 
         public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            await uow.PlaneRepository.DeleteAsync(id); // TODO: Set Departure.Plane = null
+            await uow.PlaneRepository.DeleteAsync(id); 
 
-            //e.PlaneType?.Planes?.Remove(e);
-            //if (e.Departures == null) return true;
-
-            //foreach (var d in e.Departures)
-            //{
-            //    d.Plane = null;
-            //    d.PlaneId = 0;
-            //}
-
-            var result = await uow.SaveAsync().ConfigureAwait(false);
+            var result = await uow.SaveAsync();
 
             return result;
+        }
+
+        public async Task<Plane> InstantiatePlaneAsync(PlaneRequest request, int id = 0)
+        {
+            var planeTypeEx = await uow.PlaneTypeRepository.ExistAsync(t => t.Id == request.PlaneTypeId);
+            if (!planeTypeEx)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
+            }
+
+            var entity = new Plane(request);
+
+            return entity;
         }
     }
 }

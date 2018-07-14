@@ -41,13 +41,22 @@
 
         public Plane() { }
 
-        public Plane(PlaneRequest request, PlaneType planeType, int id = 0)
+        public Plane(PlaneRequest request, int id = 0)
         {
             Id = id;
             Name = request.Name;
             CreationDate = request.CreationDate;
             LifeTime = request.LifeTime;
             PlaneTypeId = request.PlaneTypeId;
+        }
+
+        public Plane(PlaneRequest request, PlaneType planeType, int id = 0)
+        {
+            Id = id;
+            Name = request.Name;
+            CreationDate = request.CreationDate;
+            LifeTime = request.LifeTime;
+            PlaneTypeId = planeType.Id;
             PlaneType = planeType;
         }
     }

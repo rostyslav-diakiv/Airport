@@ -37,14 +37,11 @@ namespace Airport.WebApi
         {
             services.ConfigureSwagger(Configuration);
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // services.AddSingleton<IDataProvider, DataProvider>();
-
             services.AddDbContext<AirportDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddTransient<ICrewService, CrewService>();
             services.AddTransient<IDepartureService, DepartureService>();

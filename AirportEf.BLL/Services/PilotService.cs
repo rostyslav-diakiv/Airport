@@ -12,8 +12,6 @@
 
     using AutoMapper;
 
-    using Microsoft.EntityFrameworkCore;
-
     public class PilotService : BaseService<Pilot, PilotDto, PilotRequest, int>, IPilotService
     {
         public PilotService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
@@ -22,7 +20,7 @@
 
         public override async Task<IEnumerable<PilotDto>> GetAllEntitiesAsync()
         {
-            var entities = await uow.PilotRepository.GetRangeAsync().ConfigureAwait(false);
+            var entities = await uow.PilotRepository.GetRangeAsync();
 
             var dtos = mapper.Map<List<Pilot>, List<PilotDto>>(entities);
 
@@ -34,16 +32,12 @@
 
             // TODO
 
-            return await base.GetAllEntitiesAsync(filter).ConfigureAwait(false);
+            return await base.GetAllEntitiesAsync(filter);
         }
 
         public override async Task<PilotDto> GetEntityByIdAsync(int id)
         {
-            var entity = await uow.PilotRepository.GetFirstOrDefaultAsync(
-                             s => s.Id == id, 
-                             include: pilots => pilots.Include(p => p.Crews)
-                                                        .ThenInclude(c => c.CrewStewardess)
-                                                          .ThenInclude(cs => cs.Stewardess)).ConfigureAwait(false);
+            var entity = await uow.PilotRepository.GetFirstOrDefaultAsync(s => s.Id == id);
 
             return MapEntity(entity);
         }
@@ -54,7 +48,10 @@
 
             entity = await uow.PilotRepository.CreateAsync(entity);
             var result = await uow.SaveAsync();
-            if (!result) return null;
+            if (!result)
+            {
+                return null;
+            }
 
             return MapEntity(entity);
         }

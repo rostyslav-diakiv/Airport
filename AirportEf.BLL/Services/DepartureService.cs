@@ -27,7 +27,7 @@
         {
             var departures = await uow.DepartureRepository.GetRangeAsync(include: dep => dep.Include(d => d.Crew)
                                                                                             .Include(d => d.Flight)
-                                                                                            .Include(d => d.Plane)).ConfigureAwait(false);
+                                                                                            .Include(d => d.Plane));
 
             var dtos = mapper.Map<List<Departure>, List<DepartureDto>>(departures);
 
@@ -39,7 +39,7 @@
             var entity = await uow.DepartureRepository.GetFirstOrDefaultAsync(s => s.Id == id, 
                                                                         include: dep => dep.Include(d => d.Crew)
                                                                                            .Include(d => d.Flight)
-                                                                                           .Include(d => d.Plane)).ConfigureAwait(false);
+                                                                                           .Include(d => d.Plane));
 
             return MapEntity(entity);
         }
@@ -72,7 +72,7 @@
         {
             await uow.DepartureRepository.DeleteAsync(id);
 
-            var result = await uow.SaveAsync().ConfigureAwait(false);
+            var result = await uow.SaveAsync();
 
             return result;
         }
