@@ -13,10 +13,43 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PlaneType>()
-                .HasMany(pt => pt.Planes)
-                .WithOne(p => p.PlaneType)
-                .OnDelete(DeleteBehavior.ClientSetNull); // TODO: Set null to PlaneType on Plane when PlaneType Deleted
+            modelBuilder.Entity<Plane>()
+                .HasOne(pt => pt.PlaneType)
+                .WithMany(p => p.Planes)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to PlaneTypeId on Plane when PlaneType Deleted
+
+            // =======================================================================================
+
+            modelBuilder.Entity<Crew>()
+                .HasOne(pt => pt.Pilot)
+                .WithMany(p => p.Crews)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to PilotId on Crew when Pilot Deleted
+
+            // =======================================================================================
+
+            modelBuilder.Entity<Departure>()
+                .HasOne(pt => pt.Plane)
+                .WithMany(p => p.Departures)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to PlaneId on Departure when Plane Deleted
+
+            modelBuilder.Entity<Departure>()
+                .HasOne(pt => pt.Crew)
+                .WithMany(p => p.Departures)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to CrewId on Departure when Crew Deleted
+
+            modelBuilder.Entity<Departure>()
+                .HasOne(pt => pt.Flight)
+                .WithMany(p => p.Departures)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to FlightNumber on Departure when Flight Deleted
+
+            // =======================================================================================
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(pt => pt.Flight)
+                .WithMany(p => p.Tickets)
+                .OnDelete(DeleteBehavior.SetNull); // TODO: Set null to FlightNumber on Ticket when Flight Deleted
+
+            // =======================================================================================
 
             modelBuilder.Entity<CrewStewardess>()
                 .HasKey(bc => new { bc.CrewId, bc.StewardessId });
@@ -31,32 +64,23 @@
                 .WithMany(c => c.CrewStewardess)
                 .HasForeignKey(bc => bc.StewardessId);
 
-            modelBuilder.Entity<Crew>()
-                .HasOne(pt => pt.Pilot)
-                .WithMany(p => p.Crews)
-                .OnDelete(DeleteBehavior.ClientSetNull); // TODO: Set null to PlaneType on Plane when PlaneType Deleted
-
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Member>()
-            //    .HasOne(m => (Team)m.Team)
-            //    .WithMany(t => (ICollection<Member>)t.Members)
-            //    .OnDelete(DeleteBehavior.Cascade);
         }
 
-        public DbSet<Plane> Planes { get; set; }
+        public DbSet<Plane> Planes { get; set; } // +
 
-        public DbSet<PlaneType> PlaneTypes { get; set; }
+        public DbSet<PlaneType> PlaneTypes { get; set; } // +
 
-        public DbSet<Stewardess> Stewardesses { get; set; }
+        public DbSet<Stewardess> Stewardesses { get; set; } // +
 
-        public DbSet<Pilot> Pilots { get; set; }
+        public DbSet<Pilot> Pilots { get; set; } // +
 
-        public DbSet<Crew> Crews { get; set; }
+        public DbSet<Crew> Crews { get; set; } // +
 
-        public DbSet<Departure> Departures { get; set; }
+        public DbSet<Departure> Departures { get; set; } // +
 
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; } // +
 
-        public DbSet<Flight> Flights { get; set; }
+        public DbSet<Flight> Flights { get; set; } // +
     }
 }

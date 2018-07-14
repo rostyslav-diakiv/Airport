@@ -15,16 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\CrewsController.cs" />
-    <Compile Remove="Controllers\DeparturesController.cs" />
-    <Compile Remove="Controllers\FlightsController.cs" />
-    <Compile Remove="Controllers\PlanesController.cs" />
-    <Compile Remove="Controllers\PlaneTypesController.cs" />
-    <Compile Remove="Controllers\StewardessesController.cs" />
-    <Compile Remove="Controllers\TicketsController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -3,9 +3,7 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
 
-    using AirportEf.DAL.Entities;
-
-    public interface ITicketService : IService<Ticket, TicketDto, TicketRequest, int>
+    public interface ITicketService : IService<TicketDto, TicketRequest, int>
     {
     }
 }

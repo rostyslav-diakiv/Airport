@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirportEf.DAL.Data.Migrations
 {
     [DbContext(typeof(AirportDbContext))]
-    [Migration("20180714133518_Init2")]
-    partial class Init2
+    [Migration("20180714154555_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,7 @@ namespace AirportEf.DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("PilotId")
-                        .IsRequired();
+                    b.Property<int?>("PilotId");
 
                     b.HasKey("Id");
 
@@ -56,18 +55,15 @@ namespace AirportEf.DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CrewId")
-                        .IsRequired();
+                    b.Property<int?>("CrewId");
 
                     b.Property<DateTime>("DepartureTime");
 
                     b.Property<string>("FlightId")
-                        .IsRequired()
                         .HasColumnName("FlightNumber")
                         .HasMaxLength(10);
 
-                    b.Property<int?>("PlaneId")
-                        .IsRequired();
+                    b.Property<int?>("PlaneId");
 
                     b.HasKey("Id");
 
@@ -195,7 +191,6 @@ namespace AirportEf.DAL.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FlightId")
-                        .IsRequired()
                         .HasColumnName("FlightNumber")
                         .HasMaxLength(10);
 
@@ -212,7 +207,8 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     b.HasOne("AirportEf.DAL.Entities.Pilot", "Pilot")
                         .WithMany("Crews")
-                        .HasForeignKey("PilotId");
+                        .HasForeignKey("PilotId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("AirportEf.DAL.Entities.CrewStewardess", b =>
@@ -232,18 +228,15 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     b.HasOne("AirportEf.DAL.Entities.Crew", "Crew")
                         .WithMany("Departures")
-                        .HasForeignKey("CrewId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CrewId");
 
                     b.HasOne("AirportEf.DAL.Entities.Flight", "Flight")
                         .WithMany("Departures")
-                        .HasForeignKey("FlightId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FlightId");
 
                     b.HasOne("AirportEf.DAL.Entities.Plane", "Plane")
                         .WithMany("Departures")
-                        .HasForeignKey("PlaneId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PlaneId");
                 });
 
             modelBuilder.Entity("AirportEf.DAL.Entities.Plane", b =>
@@ -257,8 +250,7 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     b.HasOne("AirportEf.DAL.Entities.Flight", "Flight")
                         .WithMany("Tickets")
-                        .HasForeignKey("FlightId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FlightId");
                 });
 #pragma warning restore 612, 618
         }

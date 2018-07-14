@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AirportEf.DAL.Data.Migrations
 {
-    public partial class Init2 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -76,7 +76,7 @@ namespace AirportEf.DAL.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Price = table.Column<decimal>(nullable: false),
-                    FlightNumber = table.Column<string>(maxLength: 10, nullable: false)
+                    FlightNumber = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,7 +86,7 @@ namespace AirportEf.DAL.Data.Migrations
                         column: x => x.FlightNumber,
                         principalTable: "Flights",
                         principalColumn: "Number",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,7 +95,7 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PilotId = table.Column<int>(nullable: false)
+                    PilotId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,7 @@ namespace AirportEf.DAL.Data.Migrations
                         column: x => x.PilotId,
                         principalTable: "Pilots",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,9 +161,9 @@ namespace AirportEf.DAL.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DepartureTime = table.Column<DateTime>(nullable: false),
-                    FlightNumber = table.Column<string>(maxLength: 10, nullable: false),
-                    CrewId = table.Column<int>(nullable: false),
-                    PlaneId = table.Column<int>(nullable: false)
+                    FlightNumber = table.Column<string>(maxLength: 10, nullable: true),
+                    CrewId = table.Column<int>(nullable: true),
+                    PlaneId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -173,19 +173,19 @@ namespace AirportEf.DAL.Data.Migrations
                         column: x => x.CrewId,
                         principalTable: "Crews",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Departures_Flights_FlightNumber",
                         column: x => x.FlightNumber,
                         principalTable: "Flights",
                         principalColumn: "Number",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Departures_Planes_PlaneId",
                         column: x => x.PlaneId,
                         principalTable: "Planes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

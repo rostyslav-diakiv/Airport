@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirportEf.DAL.Data.Migrations
 {
     [DbContext(typeof(AirportDbContext))]
-    [Migration("20180714134208_Init3")]
-    partial class Init3
+    [Migration("20180714174342_LinkedEntities")]
+    partial class LinkedEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,7 +207,8 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     b.HasOne("AirportEf.DAL.Entities.Pilot", "Pilot")
                         .WithMany("Crews")
-                        .HasForeignKey("PilotId");
+                        .HasForeignKey("PilotId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("AirportEf.DAL.Entities.CrewStewardess", b =>
@@ -227,29 +228,34 @@ namespace AirportEf.DAL.Data.Migrations
                 {
                     b.HasOne("AirportEf.DAL.Entities.Crew", "Crew")
                         .WithMany("Departures")
-                        .HasForeignKey("CrewId");
+                        .HasForeignKey("CrewId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("AirportEf.DAL.Entities.Flight", "Flight")
                         .WithMany("Departures")
-                        .HasForeignKey("FlightId");
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("AirportEf.DAL.Entities.Plane", "Plane")
                         .WithMany("Departures")
-                        .HasForeignKey("PlaneId");
+                        .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("AirportEf.DAL.Entities.Plane", b =>
                 {
                     b.HasOne("AirportEf.DAL.Entities.PlaneType", "PlaneType")
                         .WithMany("Planes")
-                        .HasForeignKey("PlaneTypeId");
+                        .HasForeignKey("PlaneTypeId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("AirportEf.DAL.Entities.Ticket", b =>
                 {
                     b.HasOne("AirportEf.DAL.Entities.Flight", "Flight")
                         .WithMany("Tickets")
-                        .HasForeignKey("FlightId");
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,7 @@
         [Required]
         [Range(5, 100000)]
         public decimal Price { get; set; }
-
-      //  [Required]
+        
         [Column("FlightNumber")]
         [StringLength(10, MinimumLength = 5)]
         public string FlightId { get; set; }
@@ -22,12 +21,19 @@
 
         public Ticket() { }
 
-        public Ticket(TicketRequest request, Flight flight, int id)
+        public Ticket(TicketRequest request, Flight flight, int id = 0)
         {
             Id = id;
             Price = request.Price;
             FlightId = flight.Id;
             Flight = flight;
+        }
+
+        public Ticket(TicketRequest request, int id = 0)
+        {
+            Id = id;
+            Price = request.Price;
+            FlightId = request.FlightNumber;
         }
     }
 }

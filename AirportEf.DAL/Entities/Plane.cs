@@ -12,8 +12,11 @@
     {
         public override int Id { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
 
+        [Required]
         public DateTime CreationDate { get; set; }
 
         [Obsolete("Property 'LifeTime' should be used instead.")]
@@ -30,7 +33,6 @@
 #pragma warning restore 618
         }
 
-        //[Required]
         public int? PlaneTypeId { get; set; }
 
         public PlaneType PlaneType { get; set; }
@@ -42,6 +44,7 @@
         public Plane(PlaneRequest request, PlaneType planeType, int id = 0)
         {
             Id = id;
+            Name = request.Name;
             CreationDate = request.CreationDate;
             LifeTime = request.LifeTime;
             PlaneTypeId = request.PlaneTypeId;

@@ -1,4 +1,4 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
     using System.Net;
@@ -7,12 +7,14 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
     using Airport.Common.Services;
-    using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces;
 
     using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Entities;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class PlaneService : BaseService<Plane, PlaneDto, PlaneRequest, int>, IPlaneService
     {
@@ -21,25 +23,27 @@
         {
         }
 
-        public override IEnumerable<PlaneDto> GetAllEntity()
+        public override async Task<IEnumerable<PlaneDto>> GetAllEntitiesAsync()
         {
-            var s = uow.PlaneRepository.GetRange();
+            var planes = await uow.PlaneRepository.GetRangeAsync(include: plane => plane.Include(p => p.PlaneType));
 
-            var dtos = mapper.Map<List<Plane>, List<PlaneDto>>(s);
+            var dtos = mapper.Map<List<Plane>, List<PlaneDto>>(planes);
 
             return dtos;
         }
 
-        public override PlaneDto GetEntityById(int id)
+        public override async Task<PlaneDto> GetEntityByIdAsync(int id)
         {
-            var entity = uow.PlaneRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = await uow.PlaneRepository.GetFirstOrDefaultAsync(s => s.Id == id, 
+                                                                          include: plane => plane.Include(p => p.PlaneType));
 
             return MapEntity(entity);
         }
 
-        public override Task<PlaneDto> CreateEntityAsync(PlaneRequest request)
+        public override async Task<PlaneDto> CreateEntityAsync(PlaneRequest request)
         {
-            var planeType = uow.PlaneTypeRepository.GetFirstOrDefault(t => t.Id == request.PlaneTypeId);
+            var planeType = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(t => t.Id == request.PlaneTypeId,
+                                                                                 disableTracking: false);
             if (planeType == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
@@ -47,14 +51,20 @@
 
             var entity = new Plane(request, planeType);
 
-            entity = uow.PlaneRepository.Create(entity);
+            entity = await uow.PlaneRepository.CreateAsync(entity);
+            var result = await uow.SaveAsync();
+            if (!result)
+            {
+                return null;
+            }
 
             return MapEntity(entity);
         }
 
-        public override Plane UpdateEntityById(PlaneRequest request, int id)
+        public override async Task<bool> UpdateEntityByIdAsync(PlaneRequest request, int id)
         {
-            var planeType = uow.PlaneTypeRepository.GetFirstOrDefault(pt => pt.Id == request.PlaneTypeId);
+            var planeType = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(pt => pt.Id == request.PlaneTypeId,
+                                                                                 disableTracking: false);
             if (planeType == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with id {request.PlaneTypeId} not found");
@@ -62,30 +72,28 @@
 
             var entity = new Plane(request, planeType, id);
 
-            var updated = uow.PlaneRepository.Update(entity);
+            var updated = await uow.PlaneRepository.UpdateAsync(entity); // TODO: maybe add include PlaneType
+            var result = await uow.SaveAsync();
 
-            return updated;
+            return result;
         }
 
-        public override Task<bool> DeleteEntityByIdAsync(int id)
+        public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            var e = uow.PlaneRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.PlaneRepository.Delete(e);
-            if (!res)
-            {
-                return false;
-            }
+            await uow.PlaneRepository.DeleteAsync(id); // TODO: Set Departure.Plane = null
 
-            e.PlaneType?.Planes?.Remove(e);
-            if (e.Departures == null) return true;
+            //e.PlaneType?.Planes?.Remove(e);
+            //if (e.Departures == null) return true;
 
-            foreach (var d in e.Departures)
-            {
-                d.Plane = null;
-                d.PlaneId = 0;
-            }
+            //foreach (var d in e.Departures)
+            //{
+            //    d.Plane = null;
+            //    d.PlaneId = 0;
+            //}
 
-            return true;
+            var result = await uow.SaveAsync().ConfigureAwait(false);
+
+            return result;
         }
     }
 }

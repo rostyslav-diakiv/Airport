@@ -5,23 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interfaces\ICrewService.cs" />
-    <Compile Remove="Interfaces\IDepartureService.cs" />
-    <Compile Remove="Interfaces\IFlightService.cs" />
-    <Compile Remove="Interfaces\IPlaneService.cs" />
-    <Compile Remove="Interfaces\IPlaneTypeService.cs" />
-    <Compile Remove="Interfaces\IStewardessService.cs" />
-    <Compile Remove="Interfaces\ITicketService.cs" />
-    <Compile Remove="Services\CrewService.cs" />
-    <Compile Remove="Services\DepartureService.cs" />
-    <Compile Remove="Services\FlightService.cs" />
-    <Compile Remove="Services\PlaneService.cs" />
-    <Compile Remove="Services\PlaneTypeService.cs" />
-    <Compile Remove="Services\StewardessService.cs" />
-    <Compile Remove="Services\TicketService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
   </ItemGroup>
 

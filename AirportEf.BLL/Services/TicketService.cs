@@ -1,4 +1,4 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
     using System.Net;
@@ -7,12 +7,14 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
     using Airport.Common.Services;
-    using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces;
 
     using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Entities;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class TicketService : BaseService<Ticket, TicketDto, TicketRequest, int>, ITicketService
     {
@@ -21,63 +23,65 @@
         {
         }
 
-        public override IEnumerable<TicketDto> GetAllEntity()
+        public override async Task<IEnumerable<TicketDto>> GetAllEntitiesAsync()
         {
-            var tickets = uow.TicketRepository.GetRange();
+            var tickets = await uow.TicketRepository.GetRangeAsync(include: ticket => ticket.Include(t => t.Flight));
 
             var dtos = mapper.Map<List<Ticket>, List<TicketDto>>(tickets);
 
             return dtos;
         }
 
-        public override TicketDto GetEntityById(int id)
+        public override async Task<TicketDto> GetEntityByIdAsync(int id)
         {
-            var entity = uow.TicketRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = await uow.TicketRepository.GetFirstOrDefaultAsync(s => s.Id == id, 
+                                                                           include: ticket => ticket.Include(t => t.Flight));
 
             return MapEntity(entity);
         }
 
-        public override Task<TicketDto> CreateEntityAsync(TicketRequest request)
+        public override async Task<TicketDto> CreateEntityAsync(TicketRequest request)
         {
-            var entity = InstantiateTicket(request);
+            var entity = await InstantiateTicketAsync(request);
 
-            entity = uow.TicketRepository.Create(entity);
-
-            return MapEntity(entity);
-        }
-
-        public override Ticket UpdateEntityById(TicketRequest request, int id)
-        {
-            var entity = InstantiateTicket(request, id);
-
-            var updated = uow.TicketRepository.Update(entity);
-
-            return updated;
-        }
-
-        public override Task<bool> DeleteEntityByIdAsync(int id)
-        {
-            var entity = uow.TicketRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.TicketRepository.Delete(entity);
-            if (!res)
+            entity = await uow.TicketRepository.CreateAsync(entity);
+            var result = await uow.SaveAsync();
+            if (!result)
             {
-                return false;
+                return null;
             }
 
-            entity.Flight?.Tickets?.Remove(entity);
-
-            return true;
+            return MapEntity(entity);
         }
 
-        public Ticket InstantiateTicket(TicketRequest request, int id = 0)
+        public override async Task<bool> UpdateEntityByIdAsync(TicketRequest request, int id)
         {
-            var flight = uow.FlightRepository.GetFirstOrDefault(f => f.Id == request.FlightNumber);
-            if (flight == null)
+            var entity = await InstantiateTicketAsync(request, id);
+
+            var updated = await uow.TicketRepository.UpdateAsync(entity);
+            var result = await uow.SaveAsync();
+
+            return result;
+        }
+
+        public override async Task<bool> DeleteEntityByIdAsync(int id)
+        {
+            await uow.TicketRepository.DeleteAsync(id);
+
+            var result = await uow.SaveAsync().ConfigureAwait(false);
+
+            return result;
+        }
+
+        public async Task<Ticket> InstantiateTicketAsync(TicketRequest request, int id = 0)
+        {
+            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.FlightNumber);
+            if (!exists)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.FlightNumber} doesn't exist");
             }
 
-            return new Ticket(request, flight, id);
+            return new Ticket(request, id);
         }
     }
 }

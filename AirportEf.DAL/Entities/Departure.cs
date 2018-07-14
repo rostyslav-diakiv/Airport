@@ -13,19 +13,16 @@
         [Required]
         public DateTime DepartureTime { get; set; }
 
-        // [Required]
         [StringLength(10, MinimumLength = 5)]
         [Column("FlightNumber")]
         public string FlightId { get; set; }
 
         public Flight Flight { get; set; }
 
-       // [Required]
         public int? CrewId { get; set; }
 
         public Crew Crew { get; set; }
 
-        //[Required]
         public int? PlaneId { get; set; }
 
         public Plane Plane { get; set; }
@@ -42,6 +39,15 @@
             Crew = crew;
             PlaneId = plane.Id;
             Plane = plane;
+        }
+
+        public Departure(DepartureRequest request, int id)
+        {
+            Id = id;
+            DepartureTime = request.DepartureTime;
+            FlightId = request.FlightNumber;
+            CrewId = request.CrewId;
+            PlaneId = request.PlaneId;
         }
     }
 }

@@ -3,9 +3,7 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
 
-    using AirportEf.DAL.Entities;
-
-    public interface IPlaneTypeService : IService<PlaneType, PlaneTypeDto, PlaneTypeRequest, int>
+    public interface IPlaneTypeService : IService<PlaneTypeDto, PlaneTypeRequest, int>
     {
     }
 }

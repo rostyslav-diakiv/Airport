@@ -81,11 +81,11 @@ namespace Airport.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            await service.UpdateEntityByIdAsync(request, id);
-            //if (dto == null)
-            //{
-            //    return NotFound();
-            //}
+            var result = await service.UpdateEntityByIdAsync(request, id);
+            if (!result)
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
@@ -94,8 +94,8 @@ namespace Airport.WebApi.Controllers
         [HttpDelete("{id}")]
         public virtual async Task<ActionResult<bool>> Delete(TKey id)
         {
-            var res = await service.DeleteEntityByIdAsync(id);
-            if (!res)
+            var result = await service.DeleteEntityByIdAsync(id);
+            if (!result)
             {
                 return NotFound();
             }

@@ -1,6 +1,6 @@
 ﻿namespace Airport.WebApi.Controllers
 {
-    using Airport.BLL.Interfaces;
+    using AirportEf.BLL.Interfaces;
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
 

@@ -1,14 +1,14 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
-    using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces;
 
     using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Entities;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
 
@@ -19,56 +19,58 @@
         {
         }
 
-        public override IEnumerable<PlaneTypeDto> GetAllEntity()
+        public override async Task<IEnumerable<PlaneTypeDto>> GetAllEntitiesAsync()
         {
-            var s = uow.PlaneTypeRepository.GetRange();
+            var types = await uow.PlaneTypeRepository.GetRangeAsync();
 
-            var dtos = mapper.Map<List<PlaneType>, List<PlaneTypeDto>>(s);
+            var dtos = mapper.Map<List<PlaneType>, List<PlaneTypeDto>>(types);
 
             return dtos;
         }
 
-        public override PlaneTypeDto GetEntityById(int id)
+        public override async Task<PlaneTypeDto> GetEntityByIdAsync(int id)
         {
-            var entity = uow.PlaneTypeRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(s => s.Id == id);
 
             return MapEntity(entity);
         }
 
-        public override Task<PlaneTypeDto> CreateEntityAsync(PlaneTypeRequest request)
+        public override async Task<PlaneTypeDto> CreateEntityAsync(PlaneTypeRequest request)
         {
             var entity = mapper.Map<PlaneTypeRequest, PlaneType>(request);
 
-            entity = uow.PlaneTypeRepository.Create(entity);
+            entity = await uow.PlaneTypeRepository.CreateAsync(entity);
+            var result = await uow.SaveAsync();
+            if (!result)
+            {
+                return null;
+            }
 
             return MapEntity(entity);
         }
 
-        public override PlaneType UpdateEntityById(PlaneTypeRequest request, int id)
+        public override async Task<bool> UpdateEntityByIdAsync(PlaneTypeRequest request, int id)
         {
             var entity = new PlaneType(request, id);
 
-            var updated = uow.PlaneTypeRepository.Update(entity);
+            var updated = await uow.PlaneTypeRepository.UpdateAsync(entity);
+            var result = await uow.SaveAsync();
 
-            return updated;
+            return result;
         }
 
-        public override Task<bool> DeleteEntityByIdAsync(int id)
+        public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            var e = uow.PlaneTypeRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.PlaneTypeRepository.Delete(e);
-            if (!res)
-            {
-                return false;
-            }
-            
-            foreach (var c in e.Planes)
-            {
-                c.PlaneType = null;
-                c.PlaneTypeId = 0;
-            }
+            await uow.PlaneTypeRepository.DeleteAsync(id); // TODO: Null PlaneTypeId in Planes
+            var result = await uow.SaveAsync();
 
-            return true;
+            return result;
+
+            //foreach (var c in e.Planes)
+            //{
+            //    c.PlaneType = null;
+            //    c.PlaneTypeId = 0;
+            //}
         }
     }
 }

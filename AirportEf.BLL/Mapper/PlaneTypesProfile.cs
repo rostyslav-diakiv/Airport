@@ -19,7 +19,7 @@
                 .ForMember(d => d.MaximalNumberOfPlaces, o => o.MapFrom(s => s.MaxNumberOfPlaces));
 
             CreateMap<PlaneTypeRequest, PlaneType>()
-                .ForMember(d => d.Planes, o => o.NullSubstitute(new List<Plane>())) // Crews won't be null when we create new Pilot
+                .ForMember(d => d.Planes, o => o.NullSubstitute(new List<Plane>())) // Crews won't be null when we create new PlaneType
                 .ForMember(d => d.MaxCarryingCapacityKg, o => o.MapFrom(s => s.MaximalCarryingCapacityKg))
                 .ForMember(d => d.MaxNumberOfPlaces, o => o.MapFrom(s => s.MaximalNumberOfPlaces));
         }

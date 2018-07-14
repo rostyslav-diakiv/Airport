@@ -46,14 +46,14 @@ namespace Airport.WebApi
                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
 
 
-            //services.AddTransient<ICrewService, CrewService>();
-            //services.AddTransient<IDepartureService, DepartureService>();
-            //services.AddTransient<IFlightService, FlightService>();
+            services.AddTransient<ICrewService, CrewService>();
+            services.AddTransient<IDepartureService, DepartureService>();
+            services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<IPilotService, PilotService>();
-            //services.AddTransient<IPlaneService, PlaneService>();
-            //services.AddTransient<IPlaneTypeService, PlaneTypeService>();
-            //services.AddTransient<IStewardessService, StewardessService>();
-            //services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<IPlaneService, PlaneService>();
+            services.AddTransient<IPlaneTypeService, PlaneTypeService>();
+            services.AddTransient<IStewardessService, StewardessService>();
+            services.AddTransient<ITicketService, TicketService>();
 
 
             services.AddAutoMapper(cfg =>

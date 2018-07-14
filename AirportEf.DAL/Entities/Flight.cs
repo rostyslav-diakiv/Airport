@@ -11,6 +11,8 @@
     {
         [Column("Number")]
         [StringLength(10, MinimumLength = 5)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public override string Id { get; set; }
 
         [Required]

@@ -1,14 +1,14 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
-    using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces;
 
     using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Entities;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
 
@@ -18,57 +18,52 @@
         {
         }
 
-        public override IEnumerable<StewardessDto> GetAllEntity()
+        public override async Task<IEnumerable<StewardessDto>> GetAllEntitiesAsync()
         {
-            var stewardesses = uow.StewardessRepository.GetRange();
+            var stewardesses = await uow.StewardessRepository.GetRangeAsync();
 
             var dtos = mapper.Map<List<Stewardess>, List<StewardessDto>>(stewardesses);
 
             return dtos;
         }
 
-        public override StewardessDto GetEntityById(int id)
+        public override async Task<StewardessDto> GetEntityByIdAsync(int id)
         {
-            var entity = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = await uow.StewardessRepository.GetFirstOrDefaultAsync(s => s.Id == id);
 
             return MapEntity(entity);
         }
 
-        public override Task<StewardessDto> CreateEntityAsync(StewardessRequest request)
+        public override async Task<StewardessDto> CreateEntityAsync(StewardessRequest request)
         {
             var entity = mapper.Map<StewardessRequest, Stewardess>(request);
 
-            entity = uow.StewardessRepository.Create(entity);
+            entity = await uow.StewardessRepository.CreateAsync(entity);
+            var result = await uow.SaveAsync();
+            if (!result)
+            {
+                return null;
+            }
 
             return MapEntity(entity);
         }
 
-        public override Stewardess UpdateEntityById(StewardessRequest request, int id)
+        public override async Task<bool> UpdateEntityByIdAsync(StewardessRequest request, int id)
         {
             var entity = new Stewardess(request, id);
 
-            var updated = uow.StewardessRepository.Update(entity);
+            var updated = await uow.StewardessRepository.UpdateAsync(entity);
+            var result = await uow.SaveAsync();
 
-            return updated;
+            return result;
         }
 
-        public override Task<bool> DeleteEntityByIdAsync(int id)
+        public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            var entity = uow.StewardessRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.StewardessRepository.Delete(entity);
-            if (!res)
-            {
-                return false;
-            }
+            await uow.StewardessRepository.DeleteAsync(id);
+            var result = await uow.SaveAsync();
 
-            if (entity.Crews == null) return true;
-
-            foreach (var c in entity.Crews)
-            {
-                c.Stewardesses.Remove(entity);
-            }
-
-            return true;
+            return result;
         }
     }
 }

@@ -71,22 +71,8 @@
 
         public override async Task<bool> DeleteEntityByIdAsync(int id)
         {
-            var e = await uow.PilotRepository.GetFirstOrDefaultAsync(s => s.Id == id, include: pilots => pilots.Include(p => p.Crews));
-            if (e == null)
-            {
-                return false;
-            }
-
-            uow.PilotRepository.Delete(e);
+            await uow.PilotRepository.DeleteAsync(id);
             var result = await uow.SaveAsync();
-
-            //if (e.Crews == null) return true;
-
-            //foreach (var c in e.Crews)
-            //{
-            //    c.Pilot = null;
-            //    c.PilotId = 0;
-            //}
 
             return result;
         }

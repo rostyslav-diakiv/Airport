@@ -3,9 +3,7 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
 
-    using AirportEf.DAL.Entities;
-
-    public interface IFlightService : IService<Flight, FlightDto, FlightRequest, string>
+    public interface IFlightService : IService<FlightDto, FlightRequest, string>
     {
     }
 }

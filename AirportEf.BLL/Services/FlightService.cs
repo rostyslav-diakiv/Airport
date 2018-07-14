@@ -1,4 +1,4 @@
-﻿namespace Airport.BLL.Services
+﻿namespace AirportEf.BLL.Services
 {
     using System.Collections.Generic;
     using System.Net;
@@ -7,10 +7,10 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
     using Airport.Common.Services;
-    using Airport.DAL.Entities;
-    using Airport.DAL.Interfaces;
 
     using AirportEf.BLL.Interfaces;
+    using AirportEf.DAL.Entities;
+    using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
 
@@ -21,25 +21,25 @@
         {
         }
 
-        public override IEnumerable<FlightDto> GetAllEntity()
+        public override async Task<IEnumerable<FlightDto>> GetAllEntitiesAsync()
         {
-            var s = uow.FlightRepository.GetRange();
+            var flights = await uow.FlightRepository.GetRangeAsync();
 
-            var dtos = mapper.Map<List<Flight>, List<FlightDto>>(s);
+            var dtos = mapper.Map<List<Flight>, List<FlightDto>>(flights);
 
             return dtos;
         }
 
-        public override FlightDto GetEntityById(string id)
+        public override async Task<FlightDto> GetEntityByIdAsync(string id)
         {
-            var entity = uow.FlightRepository.GetFirstOrDefault(s => s.Id == id);
+            var entity = await uow.FlightRepository.GetFirstOrDefaultAsync(s => s.Id == id);
 
             return MapEntity(entity);
         }
 
-        public override Task<FlightDto> CreateEntityAsync(FlightRequest request)
+        public override async Task<FlightDto> CreateEntityAsync(FlightRequest request)
         {
-            var exists = uow.FlightRepository.Exist(f => f.Id == request.Number);
+            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.Number);
             if (exists)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.Number} already exists");
@@ -47,53 +47,33 @@
 
             var entity = mapper.Map<FlightRequest, Flight>(request);
 
-            entity = uow.FlightRepository.Create(entity);
+            entity = await uow.FlightRepository.CreateAsync(entity);
+            var result = await uow.SaveAsync();
+            if (!result)
+            {
+                return null;
+            }
 
             return MapEntity(entity);
         }
 
-        public override Flight UpdateEntityById(FlightRequest request, string id)
+        public override async Task<bool> UpdateEntityByIdAsync(FlightRequest request, string id)
         {
             var entity = new Flight(request, id);
 
-            var updated = uow.FlightRepository.Update(entity);
+            var updated = await uow.FlightRepository.UpdateAsync(entity);
+            var result = await uow.SaveAsync();
 
-            return updated;
+            return result;
         }
 
-        public override Task<bool> DeleteEntityByIdAsync(string id)
+        public override async Task<bool> DeleteEntityByIdAsync(string id)
         {
-            var e = uow.FlightRepository.GetFirstOrDefault(s => s.Id == id);
-            var res = uow.FlightRepository.Delete(e);
-            if (!res)
-            {
-                return false;
-            }
+            await uow.FlightRepository.DeleteAsync(id); 
 
-            ClearDependencies(e);
+            var result = await uow.SaveAsync().ConfigureAwait(false);
 
-            return true;
-        }
-
-        // Remove Crew from Linked Entities
-        private void ClearDependencies(Flight flight)
-        {
-            if (flight.Departures != null)
-            {
-                foreach (var d in flight.Departures)
-                {
-                    d.Flight = null;
-                    d.FlightId = null;
-                }
-            }
-
-            if (flight.Tickets == null) return;
-
-            foreach (var d in flight.Tickets)
-            {
-                d.Flight = null;
-                d.FlightId = null;
-            }
+            return result;
         }
     }
 }
