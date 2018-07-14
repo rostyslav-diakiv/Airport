@@ -59,11 +59,12 @@
             return MapEntity(entity);
         }
 
+        // TODO: Test
         public override async Task<bool> UpdateEntityByIdAsync(CrewRequest request, int id)
         {
-            var entity = await InstantiateCrewAsync(request, id);
+            var entity = await InstantiateUpdateCrewAsync(request, id);
 
-            var updated = await uow.CrewRepository.UpdateAsync(entity, include: crews => crews.Include(c => c.CrewStewardess));
+            var updated = await uow.CrewRepository.UpdateAsync(entity, crews => crews.Include(c => c.CrewStewardess));
             var result = await uow.SaveAsync();
 
             return result;
@@ -77,7 +78,7 @@
             return result;
         }
 
-        private async Task<Crew> InstantiateCrewAsync(CrewRequest request, int id = 0)
+        private async Task<Crew> InstantiateCrewAsync(CrewRequest request)
         {
             // Remove identical Ids from collection
             request.StewardessesIds = request.StewardessesIds.Distinct().ToList();
@@ -93,16 +94,17 @@
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
             }
 
-            var pilotEx = await uow.PilotRepository.ExistAsync(p => p.Id == request.PilotId);
-            if (!pilotEx)
+            var pilot = await uow.PilotRepository.GetFirstOrDefaultAsync(p => p.Id == request.PilotId,
+                                                                           disableTracking: false);
+            if (pilot == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
             }
 
             var entity = new Crew()
             {
-                Id = id,
-                PilotId = request.PilotId,
+                Pilot = pilot,
+                PilotId = pilot.Id,
                 Departures = new List<Departure>(),
                 CrewStewardess = new List<CrewStewardess>()
             };
@@ -114,6 +116,43 @@
                     Crew = entity,
                     Stewardess = s
                 });
+            }
+
+            return entity;
+        }
+
+        private async Task<Crew> InstantiateUpdateCrewAsync(CrewRequest request, int id)
+        {
+            // Remove identical Ids from collection
+            request.StewardessesIds = request.StewardessesIds.Distinct().ToList();
+
+            var stsEx = await uow.StewardessRepository.CountAsync(s => request.StewardessesIds.Contains(s.Id));
+            if (stsEx < request.StewardessesIds.Count())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
+            }
+
+            var pilotEx = await uow.PilotRepository.ExistAsync(p => p.Id == request.PilotId);
+            if (!pilotEx)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
+            }
+
+            var entity = new Crew()
+                             {
+                                 Id = id,
+                                 PilotId = request.PilotId,
+                                 Departures = new List<Departure>(),
+                                 CrewStewardess = new List<CrewStewardess>()
+                             };
+
+            foreach (var s in request.StewardessesIds)
+            {
+                entity.CrewStewardess.Add(new CrewStewardess()
+                                              {
+                                                  CrewId = entity.Id,
+                                                  StewardessId = s
+                                              });
             }
 
             return entity;

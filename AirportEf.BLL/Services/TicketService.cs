@@ -43,7 +43,14 @@
 
         public override async Task<TicketDto> CreateEntityAsync(TicketRequest request)
         {
-            var entity = await InstantiateTicketAsync(request);
+            var flight = await uow.FlightRepository.GetFirstOrDefaultAsync(f => f.Id == request.FlightNumber,
+                                                                           disableTracking: false);
+            if (flight == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.FlightNumber} doesn't exist");
+            }
+
+            var entity = new Ticket(request, flight);
 
             entity = await uow.TicketRepository.CreateAsync(entity);
             var result = await uow.SaveAsync();
@@ -57,7 +64,13 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(TicketRequest request, int id)
         {
-            var entity = await InstantiateTicketAsync(request, id);
+            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.FlightNumber);
+            if (!exists)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.FlightNumber} doesn't exist");
+            }
+
+            var entity = new Ticket(request, id);
 
             var updated = await uow.TicketRepository.UpdateAsync(entity);
             var result = await uow.SaveAsync();
@@ -72,17 +85,6 @@
             var result = await uow.SaveAsync();
 
             return result;
-        }
-
-        public async Task<Ticket> InstantiateTicketAsync(TicketRequest request, int id = 0)
-        {
-            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.FlightNumber);
-            if (!exists)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.FlightNumber} doesn't exist");
-            }
-
-            return new Ticket(request, id);
         }
     }
 }

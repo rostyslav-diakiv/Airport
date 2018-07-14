@@ -60,7 +60,7 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(DepartureRequest request, int id)
         {
-            var entity = await InstantiateDepartureAsync(request, id);
+            var entity = await InstantiateUpdatedDepartureAsync(request, id);
 
             var updated = await uow.DepartureRepository.UpdateAsync(entity);
             var result = await uow.SaveAsync();
@@ -77,7 +77,33 @@
             return result;
         }
 
-        public async Task<Departure> InstantiateDepartureAsync(DepartureRequest request, int id = 0)
+        public async Task<Departure> InstantiateDepartureAsync(DepartureRequest request)
+        {
+            var flight = await uow.FlightRepository.GetFirstOrDefaultAsync(f => f.Id == request.FlightNumber,
+                                                                           disableTracking: false);
+            if (flight == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.FlightNumber} doesn't exist");
+            }
+
+            var crew = await uow.CrewRepository.GetFirstOrDefaultAsync(c => c.Id == request.CrewId,
+                                                                       disableTracking: false);
+            if (crew == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Crew with id: {request.CrewId} doesn't exist");
+            }
+
+            var plane = await uow.PlaneRepository.GetFirstOrDefaultAsync(f => f.Id == request.PlaneId,
+                                                                         disableTracking: false);
+            if (plane == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane with id: {request.PlaneId} doesn't exist");
+            }
+
+            return new Departure(request, flight, crew, plane);
+        }
+
+        public async Task<Departure> InstantiateUpdatedDepartureAsync(DepartureRequest request, int id)
         {
             var flightEx = await uow.FlightRepository.ExistAsync(f => f.Id == request.FlightNumber);
             if (!flightEx)

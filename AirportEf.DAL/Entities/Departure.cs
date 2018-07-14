@@ -29,7 +29,7 @@
 
         public Departure() { }
 
-        public Departure(DepartureRequest request, Flight flight, Crew crew, Plane plane, int id)
+        public Departure(DepartureRequest request, Flight flight, Crew crew, Plane plane, int id = 0)
         {
             Id = id;
             DepartureTime = request.DepartureTime;

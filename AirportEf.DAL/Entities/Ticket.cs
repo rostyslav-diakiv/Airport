@@ -29,7 +29,7 @@
             Flight = flight;
         }
 
-        public Ticket(TicketRequest request, int id = 0)
+        public Ticket(TicketRequest request, int id)
         {
             Id = id;
             Price = request.Price;

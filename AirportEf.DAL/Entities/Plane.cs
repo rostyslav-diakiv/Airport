@@ -41,7 +41,7 @@
 
         public Plane() { }
 
-        public Plane(PlaneRequest request, int id = 0)
+        public Plane(PlaneRequest request, int id)
         {
             Id = id;
             Name = request.Name;

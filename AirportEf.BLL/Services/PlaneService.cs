@@ -57,7 +57,7 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(PlaneRequest request, int id)
         {
-            var entity = await InstantiatePlaneAsync(request, id);
+            var entity = await InstantiateUpdatedPlaneAsync(request, id);
             
             var updated = await uow.PlaneRepository.UpdateAsync(entity);
             var result = await uow.SaveAsync();
@@ -74,7 +74,21 @@
             return result;
         }
 
-        public async Task<Plane> InstantiatePlaneAsync(PlaneRequest request, int id = 0)
+        public async Task<Plane> InstantiatePlaneAsync(PlaneRequest request)
+        {
+            var planeType = await uow.PlaneTypeRepository.GetFirstOrDefaultAsync(t => t.Id == request.PlaneTypeId, 
+                                                                                   disableTracking: false);
+            if (planeType == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
+            }
+
+            var entity = new Plane(request, planeType);
+
+            return entity;
+        }
+
+        public async Task<Plane> InstantiateUpdatedPlaneAsync(PlaneRequest request, int id)
         {
             var planeTypeEx = await uow.PlaneTypeRepository.ExistAsync(t => t.Id == request.PlaneTypeId);
             if (!planeTypeEx)
@@ -82,7 +96,7 @@
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Plane Type with Id: {request.PlaneTypeId} doesn't exist");
             }
 
-            var entity = new Plane(request);
+            var entity = new Plane(request, id);
 
             return entity;
         }
