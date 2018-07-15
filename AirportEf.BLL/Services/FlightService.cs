@@ -59,10 +59,10 @@
 
         public override async Task<bool> UpdateEntityByIdAsync(FlightRequest request, string id)
         {
-            var exists = await uow.FlightRepository.ExistAsync(f => f.Id == request.Number);
-            if (exists)
+            if (request.Number != id)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Flight with number: {request.Number} already exists");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, 
+                    "Flight number in the route doesn't match number in the model! Please input equals numbers");
             }
 
             var entity = new Flight(request, id);
