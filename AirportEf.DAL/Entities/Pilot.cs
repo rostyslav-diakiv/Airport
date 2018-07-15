@@ -5,7 +5,6 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Airport.Common.Interfaces.Entities;
     using Airport.Common.Requests;
 
     public sealed class Pilot : Human<int>

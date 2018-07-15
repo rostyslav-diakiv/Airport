@@ -11,20 +11,16 @@ namespace Airport.WebApi.Controllers
 
     using AirportEf.BLL.Interfaces;
 
-    using AutoMapper;
-
     [Route("api/[controller]")]
     [ApiController]
     public abstract class AbstractController<TService, TDto, TRequest, TKey> : ControllerBase 
                                 where TService : IService<TDto, TRequest, TKey> 
                                 where TDto : IEntity<TKey>
     {
-        protected readonly IMapper mapper;
         protected readonly TService service;
 
-        protected AbstractController(IMapper mapper, TService service)
+        protected AbstractController(TService service)
         {
-            this.mapper = mapper;
             this.service = service;
         }
 

@@ -7,8 +7,7 @@
 
     public class FlightsController : AbstractController<IFlightService, FlightDto, FlightRequest, string>
     {
-        public FlightsController(IMapper mapper, IFlightService service)
-            : base(mapper, service)
+        public FlightsController(IFlightService service) : base(service)
         {
         }
     }
