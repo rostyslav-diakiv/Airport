@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.1" />
-    <PackageReference Include="FluentValidation" Version="7.6.104" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.6.104" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />

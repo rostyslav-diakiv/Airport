@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Airport.WebApi
 {
+    using Airport.Common.Validators;
     using Airport.WebApi.Extensions;
     using Airport.WebApi.Utils;
-    using Airport.WebApi.Validators;
 
     using AirportEf.BLL.Interfaces;
     using AirportEf.BLL.Mapper;
@@ -22,6 +22,7 @@ namespace Airport.WebApi
     using FluentValidation.AspNetCore;
 
     using Microsoft.EntityFrameworkCore;
+    
 
     public class Startup
     {
@@ -66,8 +67,13 @@ namespace Airport.WebApi
                 }); // Scoped Lifetime!
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
 
-            services.AddMvc(opt => opt.Filters.Add(typeof(ValidatorActionFilter)))
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
+            services.AddMvc() // opt => opt.Filters.Add(typeof(ValidatorActionFilter))
+                .AddFluentValidation(fv =>
+                    {
+                        fv.ImplicitlyValidateChildProperties = true;
+                      //  fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                        fv.RegisterValidatorsFromAssemblyContaining<CrewValidator>();
+                    })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(MvcSetup.JsonSetupAction);
         }

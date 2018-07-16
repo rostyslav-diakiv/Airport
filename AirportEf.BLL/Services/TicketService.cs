@@ -7,12 +7,15 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
     using Airport.Common.Services;
+    using Airport.Common.Validators;
 
     using AirportEf.BLL.Interfaces;
     using AirportEf.DAL.Entities;
     using AirportEf.DAL.Interfaces;
 
     using AutoMapper;
+
+    using FluentValidation;
 
     using Microsoft.EntityFrameworkCore;
 
