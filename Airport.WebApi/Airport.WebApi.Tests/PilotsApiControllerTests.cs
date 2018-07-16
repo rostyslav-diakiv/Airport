@@ -17,6 +17,7 @@
 
     using Xunit;
 
+    // The same Tests applicable for each of 8 Controllers in API, so I tested 1 because logic is the same
     public class PilotsApiControllerTests
     {
         private Mock<IPilotService> _pilotServiceMock;
@@ -57,7 +58,6 @@
 
             // Assert
             var noContentResult = Assert.IsType<NoContentResult>(result.Result);
-            Assert.True(noContentResult.StatusCode == 204);
         }
 
         #endregion
@@ -155,12 +155,109 @@
             Assert.Equal(new SerializableError(controller.ModelState), badRequestObjectResult.Value);
         }
 
+        [Fact] // +
+        public async Task CreatePilot_ReturnsBadRequestObjectResult_WhenModelIsValidButWasNotCreated()
+        {
+            // Arrange
+            var pilotRequest = new PilotRequest()
+                                   {
+                                       Name = "Sanya", 
+                                       FamilyName = "Morkva",
+                                       DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
+                                       Experience = new TimeSpan(5000, 00, 00, 00),
+                                   };
+            _pilotServiceMock.Setup(repo => repo.CreateEntityAsync(pilotRequest))
+                                                         .Returns(Task.FromResult<PilotDto>(null))
+                                                         .Verifiable();
+
+            // Act
+            var result = await controller.Create(pilotRequest);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<StatusCodeResult>(result.Result);
+            Assert.True(statusCodeResult.StatusCode == 500);
+        }
+
+        #endregion
+
+        #region Update
+
+        [Fact] // +
+        public async Task UpdatePilot_ReturnsNoContent_WhenModelStateIsValidAndValidatedAtBLL()
+        {
+            // Arrange
+            var mockId = 2;
+            var pilotRequest = new PilotRequest()
+            {
+                Name = "Updated",
+                FamilyName = "Morkva",
+                DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
+                Experience = new TimeSpan(5000, 00, 00, 00),
+            };
+            _pilotServiceMock.Setup(repo => repo.UpdateEntityByIdAsync(pilotRequest, mockId))
+                                                        .Returns(Task.FromResult(true))
+                                                        .Verifiable();
+
+            // Act
+            var result = await controller.Update(mockId, pilotRequest);
+
+            // Assert
+            var contentResult = Assert.IsType<NoContentResult>(result.Result);
+            _pilotServiceMock.Verify();
+        }
+
+        [Fact] // +
+        public async Task UpdatePilot_ReturnsNoContent_WhenModelStateIsInValid()
+        {
+            // Arrange
+            var mockId = 2;
+            var pilotRequest = new PilotRequest()
+            {
+                Name = "Updated",
+                FamilyName = "Morkva",
+                DateOfBirth = new DateTime(2003, 12, 22, 17, 30, 0), // Doesn't check validity anyway =)
+                Experience = new TimeSpan(5000, 00, 00, 00),
+            };
+            controller.ModelState.AddModelError("DateOfBirth", "Please specify a valid Date Of Birth");
+
+            // Act
+            var result = await controller.Update(mockId, pilotRequest);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<SerializableError>(badRequestObjectResult.Value);
+            Assert.Equal(new SerializableError(controller.ModelState), badRequestObjectResult.Value);
+        }
+
+        [Fact] // +
+        public async Task UpdatePilotTest_ReturnsStatusCode500_WhenPilotExistsButWasNotUpdated()
+        {
+            // Arrange
+            var mockId = 2;
+            var pilotRequest = new PilotRequest()
+                                   {
+                                       Name = "Sanya", 
+                                       FamilyName = "Morkva",
+                                       DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
+                                       Experience = new TimeSpan(5000, 00, 00, 00),
+                                   };
+            _pilotServiceMock.Setup(repo => repo.UpdateEntityByIdAsync(pilotRequest, mockId))
+                                                        .Returns(Task.FromResult(false));
+
+            // Act
+            var result = await controller.Update(mockId, pilotRequest);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<StatusCodeResult>(result.Result);
+            Assert.True(statusCodeResult.StatusCode == 500);
+        }
+
         #endregion
 
         #region Delete
 
         [Fact]
-        public async Task DeleteArticleTest_ReturnsNotFound_WhenArticleDoesNorExists()
+        public async Task DeletePilotTest_ReturnsStatusCode500_WhenPilotExistsButWasNotDeleted()
         {
             // Arrange
             var mockId = 203;
@@ -173,11 +270,12 @@
             var result = await controller.Delete(mockId);
 
             // Assert
-            var viewResult = Assert.IsType<NotFoundResult>(result.Result);
+            var statusCodeResult = Assert.IsType<StatusCodeResult>(result.Result);
+            Assert.True(statusCodeResult.StatusCode == 500);
         }
 
         [Fact]
-        public async Task DeleteArticleTest_ReturnsSuccessCode_AfterRemovingArticleFromRepository()
+        public async Task DeletePilotTest_ReturnsNoContent_WhenPilotExists()
         {
             // Arrange
             var mockId = 2;

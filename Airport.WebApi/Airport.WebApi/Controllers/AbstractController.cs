@@ -80,7 +80,7 @@ namespace Airport.WebApi.Controllers
             var result = await service.UpdateEntityByIdAsync(request, id);
             if (!result)
             {
-                return NotFound();
+                return StatusCode(500);
             }
 
             return NoContent();
@@ -93,7 +93,7 @@ namespace Airport.WebApi.Controllers
             var result = await service.DeleteEntityByIdAsync(id);
             if (!result)
             {
-                return NotFound();
+                return StatusCode(500);
             }
 
             return NoContent();
