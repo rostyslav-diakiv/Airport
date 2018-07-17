@@ -7,19 +7,24 @@ HomeTask #6. BSA 2018. .Net stream
 
 Used Test Frameworks: xUnit.Net, Moq
 
-Для валидации моделей входящих запросов я использовал Fluent Validation
+Для валидации моделей входящих запросов я использовал Fluent Validation.
 Все тесты валидации находяться в проекте Airport.Common.Tests
 
-Для маппинга использовалась библиотека AutoMapper
+Для маппинга использовалась библиотека AutoMapper.
 Все тесты такие как проверка конфигурации маппера, примеры, 
 тестовые маппинги находяться в проекте: Airport.BLL.Tests, папка: Mapper.Tests.
+
+Интеграционные тесты с БД находяться в проекте Airport.BLL.Tests, папка Intergation.
+
+Юнит тесты сервисов и использованием моков и тестовых данных находяться в проекте Airport.BLL.Tests, папка Unit.
 
 Тесты ApiController находяться в проекте Airport.WebApi.Tests, папка UnitTests.
 Проверяеться логика тела методов контроллера.
 
 Функциональные тесты, которые будут вызывають API и проверяют результат (т.е. имитируют реальные запросы от пользователей) находяться в проекте Airport.WebApi.Tests, папка IntergationTests.
 Для имитации тестового окружения используеться Microsoft.AspNetCore.TestHost TestServer.
-Для того чтобы выбрать какую Базу данны тестировать (InMemoryDatabase или тестовую на SqlServer) можно роскомментировать\закомментировать конфигурацию в методе ConfigureDatabase()
-P.S. не забудьте поменять connection string
+Для того чтобы выбрать какую Базу данны тестировать (InMemoryDatabase или тестовую на SqlServer) можно роскомментировать\закомментировать конфигурацию в методе ConfigureDatabase().
+P.S. не забудьте поменять connection string.
+
 
 Тесты раннились использованием Test Explorer от Visual Studio и JetBrains Resharper - результаты одинаковые.
