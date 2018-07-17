@@ -264,7 +264,7 @@
              _pilotServiceMock.Setup(repo => repo.DeleteEntityByIdAsync(mockId)).Returns(Task.FromResult(false));
 
             // _pilotServiceMock.Setup(repo => repo.DeleteEntityByIdAsync(mockId)).Throws(new HttpStatusCodeException(HttpStatusCode.NotFound));
-            // TODO: Can't test becouse error catches in Middleware, not controller
+            // TODO: Can't test because error catches in Middleware, not controller
 
             // Act
             var result = await controller.Delete(mockId);

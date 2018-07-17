@@ -91,14 +91,14 @@
 
             if (sts.Count < request.StewardessesIds.Count())
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such ids not found");
             }
 
             var pilot = await uow.PilotRepository.GetFirstOrDefaultAsync(p => p.Id == request.PilotId,
                                                                            disableTracking: false);
             if (pilot == null)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Pilot with id: {request.PilotId} not found");
             }
 
             var entity = new Crew()
@@ -129,13 +129,13 @@
             var stsEx = await uow.StewardessRepository.CountAsync(s => request.StewardessesIds.Contains(s.Id));
             if (stsEx < request.StewardessesIds.Count())
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such id not found");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "One or more Stewardesses with such ids not found");
             }
 
             var pilotEx = await uow.PilotRepository.ExistAsync(p => p.Id == request.PilotId);
             if (!pilotEx)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Pilot with such id not found");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, $"Pilot with id: {request.PilotId} not found");
             }
 
             var entity = new Crew()

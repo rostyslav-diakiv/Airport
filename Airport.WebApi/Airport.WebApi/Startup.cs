@@ -34,13 +34,12 @@ namespace Airport.WebApi
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureSwagger(Configuration);
 
-            services.AddDbContext<AirportDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AirportEf.DAL")));
+            // Add framework services.
+            ConfigureDatabase(services, Configuration);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -52,7 +51,6 @@ namespace Airport.WebApi
             services.AddTransient<IPlaneTypeService, PlaneTypeService>();
             services.AddTransient<IStewardessService, StewardessService>();
             services.AddTransient<ITicketService, TicketService>();
-
 
             services.AddAutoMapper(cfg =>
                 {
@@ -78,8 +76,16 @@ namespace Airport.WebApi
                 .AddJsonOptions(MvcSetup.JsonSetupAction);
         }
 
+        public virtual void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
+        {
+            // UseInMemoryDatabase() 
+            services.AddDbContext<AirportDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(configuration["MigrationsAssembly"])));
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

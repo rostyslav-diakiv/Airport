@@ -8,14 +8,31 @@
     using FluentValidation.TestHelper;
 
     using Xunit;
-
+    
     public class Class1 : IDisposable
     {
         private TicketValidator validator;
 
         public Class1() // Calls constructor for every test in class
         {
+            // Setup and Seed Database
             validator = new TicketValidator();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: Dispose database/ reset
+                validator = null;
+            }
+        }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         [Fact]
@@ -62,21 +79,6 @@
         bool IsOdd(int value)
         {
             return value % 2 == 1;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                validator = null;
-            }
-        }
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }
