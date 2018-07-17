@@ -152,7 +152,7 @@
 				throw new HttpStatusCodeException(HttpStatusCode.NotFound, $"Entity {entity.GetType().Name} with id: {entity.Id} not found");
 			}
 
-			return Mapper.Map(entity, findEntity);
+			return mapper.Map(entity, findEntity);
 		}
 
 		public async Task<TEntity> UpdateAsync(TEntity entity,
@@ -171,7 +171,7 @@
 				throw new HttpStatusCodeException(HttpStatusCode.NotFound, $"Entity {entity.GetType().Name} with id: {entity.Id} not found");
 			}
 
-			return Mapper.Map(entity, findEntity);
+			return mapper.Map(entity, findEntity);
 		}
 
 		public TEntity Update(TEntity entity)

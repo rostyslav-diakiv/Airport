@@ -3,22 +3,22 @@
     using System;
     using System.Collections.Generic;
 
-    using AirportEf.BLL.Mapper;
     using AirportEf.DAL.Entities;
     using AutoMapper;
     using Xunit;
 
-    public class StewardessesProfileTests
+    public class StewardessesProfileTests : IClassFixture<StewardessesMapperFixture>
     {
-        [Fact]
-        public void PilotMappings_ConfigurationIsValid()
+        private readonly StewardessesMapperFixture _fixture;
+
+        public StewardessesProfileTests(StewardessesMapperFixture fixture)
         {
-            //Arrange
-            Mapper.Reset();
-            Mapper.Initialize(cfg => { cfg.AddProfile<StewardessProfile>(); });
+            _fixture = fixture;
+        }
 
-            //Act
-
+        [Fact]
+        public void StewardessesMappings_ConfigurationIsValid()
+        {
             //Assert
             Mapper.AssertConfigurationIsValid();
         }
@@ -44,8 +44,8 @@
                                         CrewStewardess = new List<CrewStewardess>()
                                     };
 
-            Mapper.Reset();
-            Mapper.Initialize(cfg => { cfg.AddProfile<StewardessProfile>(); }); // TODO: Зробити ClassFixture щоб кожен раз не повторяти ініціалізцію маппера
+            //Mapper.Reset();
+            //Mapper.Initialize(cfg => { cfg.AddProfile<StewardessProfile>(); }); // TODO: Зробити ClassFixture щоб кожен раз не повторяти ініціалізцію маппера
 
             //Act
             Mapper.Map(source, destination);

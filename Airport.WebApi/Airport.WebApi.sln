@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.DAL.Tests", "..\Air
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.WebApi.Tests", "Airport.WebApi.Tests\Airport.WebApi.Tests.csproj", "{13620A49-8ECA-4EF1-B0C1-9DDEFA94D033}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.BLL.Tests", "..\Airport.BLL.Tests\Airport.BLL.Tests.csproj", "{B3830985-1B40-4D27-A181-A20F64D7C180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.BLL.Tests", "..\Airport.BLL.Tests\Airport.BLL.Tests.csproj", "{B3830985-1B40-4D27-A181-A20F64D7C180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.Common.Tests", "..\Airport.Common.Tests\Airport.Common.Tests.csproj", "{02C1D12B-A82E-4717-A1FE-700063402E7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{B3830985-1B40-4D27-A181-A20F64D7C180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3830985-1B40-4D27-A181-A20F64D7C180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3830985-1B40-4D27-A181-A20F64D7C180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C1D12B-A82E-4717-A1FE-700063402E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C1D12B-A82E-4717-A1FE-700063402E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C1D12B-A82E-4717-A1FE-700063402E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C1D12B-A82E-4717-A1FE-700063402E7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{805B8575-1A7E-4042-9DAE-69AF59C465A1} = {32DCCD58-D674-4437-84F7-CFD39AC5922A}
 		{13620A49-8ECA-4EF1-B0C1-9DDEFA94D033} = {32DCCD58-D674-4437-84F7-CFD39AC5922A}
 		{B3830985-1B40-4D27-A181-A20F64D7C180} = {32DCCD58-D674-4437-84F7-CFD39AC5922A}
+		{02C1D12B-A82E-4717-A1FE-700063402E7C} = {32DCCD58-D674-4437-84F7-CFD39AC5922A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8643D40B-4667-4AEC-B28A-58354F53547F}

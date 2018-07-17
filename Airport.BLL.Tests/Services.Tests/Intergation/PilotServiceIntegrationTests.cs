@@ -8,7 +8,6 @@
     using Airport.Common.Requests;
 
     using AirportEf.BLL.Services;
-    using AirportEf.DAL.Entities;
 
     using Xunit;
 

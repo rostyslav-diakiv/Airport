@@ -17,9 +17,8 @@
         public TestFixture()
         {   
             // To avoid hardcoding path to project, see: https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing#integration-testing
-            var integrationTestsPath = PlatformServices.Default.Application.ApplicationBasePath; // integration_tests/bin/Debug/netcoreapp2.0
+            var integrationTestsPath = PlatformServices.Default.Application.ApplicationBasePath;
             var applicationPath = Path.GetFullPath(Path.Combine(integrationTestsPath, "../../../../../Airport.WebApi/Airport.WebApi"));
-            // "E:\\TernopilCourses\\BinaryStudion\\Airport\\Airport.WebApi\\Airport.WebApi"
             Server = new TestServer(WebHost.CreateDefaultBuilder()
                 .UseStartup<TestStartup>()
                 .UseContentRoot(applicationPath)

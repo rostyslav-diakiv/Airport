@@ -27,8 +27,4 @@
     <ProjectReference Include="..\Airport.WebApi\Airport.WebApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 </Project>

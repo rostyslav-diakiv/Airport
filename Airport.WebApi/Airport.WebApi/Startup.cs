@@ -67,6 +67,8 @@ namespace Airport.WebApi
 
         public virtual IServiceCollection InitAutomapper(IServiceCollection services)
         {
+            ServiceCollectionExtensions.UseStaticRegistration = false;
+
             services.AddAutoMapper(cfg =>
                 {
                     cfg.AddProfile<CrewsProfile>();

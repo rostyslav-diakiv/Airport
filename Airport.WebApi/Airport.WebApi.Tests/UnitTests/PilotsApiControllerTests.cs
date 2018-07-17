@@ -1,4 +1,4 @@
-﻿namespace Airport.WebApi.Tests
+﻿namespace Airport.WebApi.Tests.UnitTests
 {
     using System;
     using System.Collections.Generic;
