@@ -3,24 +3,20 @@
     using System;
     using System.Collections.Generic;
 
+    using Airport.BLL.Tests.Services.Tests.TestsSetup;
+
     using AirportEf.DAL.Entities;
-    using AutoMapper;
+
     using Xunit;
 
-    public class StewardessesProfileTests : IClassFixture<StewardessesMapperFixture>
+    [Collection("Common Services Collection")]
+    public class StewardessesProfileTests
     {
-        private readonly StewardessesMapperFixture _fixture;
+        private readonly ServicesFixture _servicesFixture;
 
-        public StewardessesProfileTests(StewardessesMapperFixture fixture)
+        public StewardessesProfileTests(ServicesFixture servicesFixture)
         {
-            _fixture = fixture;
-        }
-
-        [Fact]
-        public void StewardessesMappings_ConfigurationIsValid()
-        {
-            //Assert
-            Mapper.AssertConfigurationIsValid();
+            _servicesFixture = servicesFixture;
         }
 
         [Fact]
@@ -44,11 +40,8 @@
                                         CrewStewardess = new List<CrewStewardess>()
                                     };
 
-            //Mapper.Reset();
-            //Mapper.Initialize(cfg => { cfg.AddProfile<StewardessProfile>(); }); // TODO: Зробити ClassFixture щоб кожен раз не повторяти ініціалізцію маппера
-
             //Act
-            Mapper.Map(source, destination);
+            _servicesFixture.ConfMapper.Map(source, destination);
 
             //Assert
             Assert.Equal(destination.FirstName, source.FirstName);

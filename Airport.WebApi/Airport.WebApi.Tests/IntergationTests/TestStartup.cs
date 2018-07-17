@@ -17,6 +17,9 @@ namespace Airport.WebApi.Tests.IntergationTests
 
     public class TestStartup : Startup
     {
+        private static object _thisLock = new object();
+        private static bool _initialized = false;
+
         public TestStartup(IConfiguration configuration) : base(configuration)
         {
         }
@@ -26,9 +29,6 @@ namespace Airport.WebApi.Tests.IntergationTests
             Mapper.Reset();
             base.ConfigureServices(services);
         }
-
-        private static object _thisLock = new object();
-        private static bool _initialized = false;
 
         //// Centralize automapper initialize
         //public static void Initialize()

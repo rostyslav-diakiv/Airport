@@ -5,39 +5,18 @@ namespace Airport.BLL.Tests.Mapper.Tests
     using Airport.BLL.Tests.Services.Tests.TestsSetup;
     using Airport.Common.Dtos;
 
-    using AirportEf.BLL.Mapper;
     using AirportEf.DAL.Data.DataProvider;
     using AirportEf.DAL.Entities;
 
-    using AutoMapper;
-
     using Xunit;
 
-    public class DeparturesProfileTests : IClassFixture<DeparturesMapperFixture>
+    [Collection("Common Services Collection")]
+    public class DeparturesProfileTests
     {
-        private readonly DeparturesMapperFixture _fixture;
-        public DeparturesProfileTests(DeparturesMapperFixture fixture)
+        private readonly ServicesFixture _servicesFixture;
+        public DeparturesProfileTests(ServicesFixture servicesFixture)
         {
-            _fixture = fixture;
-            ////Arrange
-            //Mapper.Reset();
-            //Mapper.Initialize(
-            //    cfg =>
-            //        {
-            //            cfg.AddProfile<DeparturesProfile>();
-            //            cfg.AddProfile<FlightsProfile>();
-            //        });
-        }
-
-        [Fact]
-        public void DeparturesMappings_ConfigurationIsValid()
-        {
-
-
-            //Act
-
-            //Assert
-            Mapper.AssertConfigurationIsValid();
+            _servicesFixture = servicesFixture;
         }
 
         [Fact]
@@ -49,7 +28,7 @@ namespace Airport.BLL.Tests.Mapper.Tests
             destination.Id = source.Id;
 
             //Act
-            Mapper.Map(source, destination);
+            _servicesFixture.ConfMapper.Map(source, destination);
 
             //Assert
             Assert.Equal(destination.FlightId, source.FlightId);
@@ -66,7 +45,7 @@ namespace Airport.BLL.Tests.Mapper.Tests
             var source = DataProvider.GetDepartures();
 
             //Act
-            var destination = Mapper.Map<List<Departure>, List<DepartureDto>>(source);
+            var destination = _servicesFixture.ConfMapper.Map<List<Departure>, List<DepartureDto>>(source);
 
             //Assert
             Assert.Equal(source.Count, destination.Count);

@@ -3,26 +3,19 @@
     using System;
     using System.Collections.Generic;
 
-    using AirportEf.BLL.Mapper;
-    using AirportEf.DAL.Entities;
+    using Airport.BLL.Tests.Services.Tests.TestsSetup;
 
-    using AutoMapper;
+    using AirportEf.DAL.Entities;
 
     using Xunit;
 
+    [Collection("Common Services Collection")]
     public class PilotsProfileTests
     {
-        [Fact]
-        public void PilotMappings_ConfigurationIsValid()
+        private readonly ServicesFixture _servicesFixture;
+        public PilotsProfileTests(ServicesFixture servicesFixture)
         {
-            //Arrange
-            Mapper.Reset();
-            Mapper.Initialize(cfg => { cfg.AddProfile<PilotsProfile>(); });
-
-            //Act
-
-            //Assert
-            Mapper.AssertConfigurationIsValid();
+            _servicesFixture = servicesFixture;
         }
 
         [Fact]
@@ -48,11 +41,8 @@
                 Crews = new List<Crew>()
             };
 
-            Mapper.Reset();
-            Mapper.Initialize(cfg => { cfg.AddProfile<PilotsProfile>(); });
-
             //Act
-            Mapper.Map(source, destination);
+            _servicesFixture.ConfMapper.Map(source, destination);
 
             //Assert
             Assert.Equal(destination.FirstName, source.FirstName);

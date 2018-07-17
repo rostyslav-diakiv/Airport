@@ -11,7 +11,6 @@
     using Airport.Common.Requests;
     using Airport.Common.Services;
 
-    using AirportEf.BLL.Mapper;
     using AirportEf.BLL.Services;
     using AirportEf.DAL.Data.DataProvider;
     using AirportEf.DAL.Entities;

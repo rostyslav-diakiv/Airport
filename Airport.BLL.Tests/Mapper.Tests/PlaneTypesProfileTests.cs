@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Airport.BLL.Tests.Mapper.Tests
+﻿namespace Airport.BLL.Tests.Mapper.Tests
 {
-    class PlaneTypesProfileTests
+    using Airport.BLL.Tests.Services.Tests.TestsSetup;
+
+    using Xunit;
+
+    [Collection("Common Services Collection")]
+    public class PlaneTypesProfileTests
     {
+        private readonly ServicesFixture _servicesFixture;
+
+        public PlaneTypesProfileTests(ServicesFixture servicesFixture)
+        {
+            _servicesFixture = servicesFixture;
+        }
     }
 }
