@@ -7,16 +7,16 @@
     using System.Net;
     using System.Threading.Tasks;
 
+    using Airport.BLL.Tests.Services.Tests.TestsSetup;
     using Airport.Common.Requests;
     using Airport.Common.Services;
 
     using AirportEf.BLL.Mapper;
     using AirportEf.BLL.Services;
+    using AirportEf.DAL.Data.DataProvider;
     using AirportEf.DAL.Entities;
     using AirportEf.DAL.Interfaces;
     using AirportEf.DAL.Interfaces.Repositories;
-
-    using AutoMapper;
 
     using Microsoft.EntityFrameworkCore.Query;
 
@@ -24,42 +24,42 @@
 
     using Xunit;
 
+    [Collection("Common Services Collection")]
     public class CrewServiceTests
     {
+        private readonly ServicesFixture _servicesFixture;
+        public CrewServiceTests(ServicesFixture servicesFixture)
+        {
+            _servicesFixture = servicesFixture;
+        }
+
         [Fact]
-        public async Task CreateCrew_WithExistingPilotAndStewardesses_ReturnsValidCrewDto3()
+        public async Task CreateCrew_WithExistingPilotAndStewardesses_ReturnsValidCrewDto()
         {
             // Arrange Mock
             var uowMock = new Mock<IUnitOfWork>();
             var crewRepoMock = new Mock<ICrewRepository>();
-            crewRepoMock.Setup(repo => repo.GetRangeAsync(It.IsAny<int>(),
-                                                           It.IsAny<int>(),
-                                                           It.IsAny<Expression<Func<Crew, bool>>>(),
-                                                           It.IsAny<Func<IQueryable<Crew>, IOrderedQueryable<Crew>>>(),
-                                                           It.IsAny<Func<IQueryable<Crew>, IIncludableQueryable<Crew, object>>>(),
-                                                           It.IsAny<bool>()))
-                            .Returns(Task.FromResult(GetTestCrews()));
+            var crewsMock = DataProvider.GetCrews();
+            var setup = crewRepoMock.Setup(
+                repo => repo.GetRangeAsync(
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Crew, bool>>>(),
+                    It.IsAny<Func<IQueryable<Crew>, IOrderedQueryable<Crew>>>(),
+                    It.IsAny<Func<IQueryable<Crew>, IIncludableQueryable<Crew, object>>>(),
+                    It.IsAny<bool>()));
+
+            setup.Returns(Task.FromResult(crewsMock));
+                           // .Returns(Task.FromResult(crewsMock));
 
             uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
 
-            // Arrange Real for testing
-            var configuration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile(new PilotsProfile());
-                    cfg.AddProfile(new StewardessProfile());
-                    cfg.AddProfile(new CrewsProfile());
-                });
-            var mapper = new Mapper(configuration);
-
-            var crewServie = new CrewService(uowMock.Object, mapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
 
             // Act
             var crewDtos = await crewServie.GetAllEntitiesAsync();
 
             // Assert
-            // var createdResult = actionResult as CreatedResult;
-            //Assert.Equal(201, createdResult.StatusCode);
-
             Assert.Equal(5, crewDtos.Count());
         }
 
@@ -67,6 +67,7 @@
         public async Task CreateCrew_WithExistingPilotAndNotExistingStewardesses_ThrowsHttpException()
         {
             // Arrange Mocks
+            var stewardessListMock = DataProvider.GetStewardesses().GetRange(0, 1);
             var uowMock = new Mock<IUnitOfWork>();
             var crewRepoMock = new Mock<ICrewRepository>();
 
@@ -77,22 +78,13 @@
                     It.IsAny<Func<IQueryable<Stewardess>, IOrderedQueryable<Stewardess>>>(),
                     It.IsAny<Func<IQueryable<Stewardess>, IIncludableQueryable<Stewardess, object>>>(),
                     It.IsAny<bool>()))
-                .Returns(Task.FromResult(new List<Stewardess> { new Stewardess() }));
+                .Returns(Task.FromResult(stewardessListMock));
 
             uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
 
-            // Arrange Real for testing
-            var configuration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile(new PilotsProfile());
-                    cfg.AddProfile(new StewardessProfile());
-                    cfg.AddProfile(new CrewsProfile());
-                });
-            var mapper = new Mapper(configuration);
-
-            var crewServie = new CrewService(uowMock.Object, mapper);
-            var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 3, 4 } };
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 3, 4, 2 } };
 
 
             // Act + Assert =)
@@ -106,6 +98,7 @@
         public async Task CreateCrew_WithNotExistingPilotAndExistingStewardesses_ThrowsHttpException()
         {
             // Arrange Mocks
+            var stewardessListMock = DataProvider.GetStewardesses().GetRange(0, 1);
             var uowMock = new Mock<IUnitOfWork>();
             var crewRepoMock = new Mock<ICrewRepository>();
 
@@ -116,7 +109,8 @@
                     It.IsAny<Func<IQueryable<Stewardess>, IOrderedQueryable<Stewardess>>>(),
                     It.IsAny<Func<IQueryable<Stewardess>, IIncludableQueryable<Stewardess, object>>>(),
                     It.IsAny<bool>()))
-                .Returns(Task.FromResult(new List<Stewardess> { new Stewardess { Id = 1 } }));
+                .Returns(Task.FromResult(stewardessListMock));
+
             var pilotRepoMock = new Mock<IPilotRepository>();
             pilotRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(
                     It.IsAny<Expression<Func<Pilot, bool>>>(),
@@ -129,16 +123,8 @@
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            // Arrange Real for testing
-            var configuration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile(new PilotsProfile());
-                    cfg.AddProfile(new StewardessProfile());
-                    cfg.AddProfile(new CrewsProfile());
-                });
-            var mapper = new Mapper(configuration);
             var pilotIdMock = 2;
-            var crewServie = new CrewService(uowMock.Object, mapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
             var crewRequest = new CrewRequest() { PilotId = pilotIdMock, StewardessesIds = new List<int> { 1 } };
 
 
@@ -149,164 +135,53 @@
             Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         }
 
-        // TODO: Add As a fields to reuse
-        // Mock Data
-        private List<Crew> GetTestCrews()
+        [Fact]
+        public async Task CreateCrew_WithExistingPilotAndExistingStewardesses_ReturnsCreatedCrewDto()
         {
-            var st1 = new Stewardess()
-            {
-                Id = 1,
-                FirstName = "Alex",
-                FamilyName = "Mayer",
-                DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
-                CrewStewardess = new List<CrewStewardess>()
-            };
-            var st2 = new Stewardess()
-            {
-                Id = 2,
-                FirstName = "Bobby",
-                FamilyName = "Strand",
-                DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
-                CrewStewardess = new List<CrewStewardess>()
-            };
-            var st3 = new Stewardess()
-            {
-                Id = 3,
-                FirstName = "Celse",
-                FamilyName = "Olead",
-                DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
-                CrewStewardess = new List<CrewStewardess>()
-            };
-            var st4 = new Stewardess()
-            {
-                Id = 4,
-                FirstName = "Shakira",
-                FamilyName = "Pique",
-                DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
-                CrewStewardess = new List<CrewStewardess>()
-            };
-            var st5 = new Stewardess()
-            {
-                Id = 5,
-                FirstName = "Olga",
-                FamilyName = "Petrenko",
-                DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
-                CrewStewardess = new List<CrewStewardess>()
-            };
+            // Arrange Mocks
+            var stewardessListMock = DataProvider.GetStewardesses().GetRange(0, 2);
+            var pilotMock = DataProvider.GetPilots()[0]; // Id = 1
+            var crewMock = DataProvider.GetCrews()[0];
 
-            var p1 = new Pilot()
-            {
-                Id = 1,
-                FirstName = "Serg",
-                FamilyName = "Karas",
-                DateOfBirth = new DateTime(1997, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(800, 00, 00, 00),
-                Crews = new List<Crew>()
-            };
-            var p2 = new Pilot()
-            {
-                Id = 2,
-                FirstName = "Ostap",
-                FamilyName = "Bober",
-                DateOfBirth = new DateTime(1996, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(3600, 00, 00, 00),
-                Crews = new List<Crew>()
-            };
-            var p3 = new Pilot()
-            {
-                Id = 3,
-                FirstName = "Sanya",
-                FamilyName = "Morkva",
-                DateOfBirth = new DateTime(1995, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(5000, 00, 00, 00),
-                Crews = new List<Crew>()
-            };
-            var p4 = new Pilot()
-            {
-                Id = 4,
-                FirstName = "John",
-                FamilyName = "Opler",
-                DateOfBirth = new DateTime(1994, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(1500, 00, 00, 00),
-                Crews = new List<Crew>()
-            };
-            var p5 = new Pilot()
-            {
-                Id = 5,
-                FirstName = "Michael",
-                FamilyName = "Stoor",
-                DateOfBirth = new DateTime(1993, 12, 22, 17, 30, 0),
-                Experience = new TimeSpan(2000, 00, 00, 00),
-                Crews = new List<Crew>()
-            };
+            var crewRepoMock = new Mock<ICrewRepository>();
+            crewRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<Crew>()))
+                .Returns(Task.FromResult(crewMock));
 
-            var c1 = new Crew()
-            {
-                Id = 1,
-                Pilot = p1,
-                PilotId = p1.Id,
-                Departures = new List<Departure>(),
-            };
-            c1.CrewStewardess = new List<CrewStewardess>()
-                                    {
-                                        new CrewStewardess() { Crew = c1, Stewardess = st1 },
-                                        new CrewStewardess() { Crew = c1, Stewardess = st2 }
-                                    };
+            var stewRepoMock = new Mock<IStewardessRepository>();
+            stewRepoMock.Setup(repo => repo.GetRangeAsync(It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Stewardess, bool>>>(),
+                    It.IsAny<Func<IQueryable<Stewardess>, IOrderedQueryable<Stewardess>>>(),
+                    It.IsAny<Func<IQueryable<Stewardess>, IIncludableQueryable<Stewardess, object>>>(),
+                    It.IsAny<bool>()))
+                .Returns(Task.FromResult(stewardessListMock));
 
-            var c2 = new Crew()
-            {
-                Id = 2,
-                Pilot = p2,
-                PilotId = p2.Id,
-                Departures = new List<Departure>()
-            };
-            c2.CrewStewardess = new List<CrewStewardess>()
-                                    {
-                                        new CrewStewardess() { Crew = c2, Stewardess = st2 },
-                                        new CrewStewardess() { Crew = c2, Stewardess = st3 }
-                                    };
+            var pilotRepoMock = new Mock<IPilotRepository>();
+            pilotRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(
+                    It.IsAny<Expression<Func<Pilot, bool>>>(),
+                    It.IsAny<Func<IQueryable<Pilot>, IOrderedQueryable<Pilot>>>(),
+                    It.IsAny<Func<IQueryable<Pilot>, IIncludableQueryable<Pilot, object>>>(),
+                    It.IsAny<bool>()))
+                .Returns(Task.FromResult<Pilot>(pilotMock));
 
-            var c3 = new Crew()
-            {
-                Id = 3,
-                Pilot = p3,
-                PilotId = p3.Id,
-                Departures = new List<Departure>()
-            };
-            c3.CrewStewardess = new List<CrewStewardess>()
-                                    {
-                                        new CrewStewardess() { Crew = c3, Stewardess = st3 },
-                                        new CrewStewardess() { Crew = c3, Stewardess = st4 }
-                                    };
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(repo => repo.SaveAsync()).Returns(Task.FromResult(true));
+            uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
+            uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
+            uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            var c4 = new Crew()
-            {
-                Id = 4,
-                Pilot = p4,
-                PilotId = p4.Id,
-                Departures = new List<Departure>()
-            };
-            c4.CrewStewardess = new List<CrewStewardess>()
-                                    {
-                                        new CrewStewardess() { Crew = c4, Stewardess = st4 },
-                                        new CrewStewardess() { Crew = c4, Stewardess = st5 }
-                                    };
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewRequest = new CrewRequest() { PilotId = pilotMock.Id, StewardessesIds = new List<int> { 1, 2 } };
 
-            var c5 = new Crew()
-            {
-                Id = 5,
-                Pilot = p5,
-                PilotId = p5.Id,
-                Departures = new List<Departure>()
-            };
-            c5.CrewStewardess = new List<CrewStewardess>()
-                                    {
-                                        new CrewStewardess() { Crew = c5, Stewardess = st4 },
-                                        new CrewStewardess() { Crew = c5, Stewardess = st5 }
-                                    };
-            var crews = new List<Crew>() { c1, c2, c3, c4, c5 };
-            // context.Crews.AddRange(crews);
-            return crews;
+            // Act
+            var crewDto = await crewServie.CreateEntityAsync(crewRequest);
+
+            // Assert 
+            Assert.Equal(pilotMock.Id, crewDto.Pilot.Id);
+            Assert.Equal(stewardessListMock.Count, crewDto.Stewardesses.Count());
+           // Assert.Contains(stewardessListMock.Select(s => s.Id), i => i.);
+            // var contains = stewardessListMock.Select(s => s.Id).All(crewDto.Stewardesses.Select(st => st.Id)) //stewardessListMock.All(crewDto.Stewardesses.A)
+            //Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         }
     }
 }

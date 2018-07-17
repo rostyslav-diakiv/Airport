@@ -3,7 +3,7 @@
     using Xunit;
 
     [CollectionDefinition("Common Server Collection")]
-    public class CommonServerCollection : IClassFixture<TestFixture>
+    public class CommonServerCollection : ICollectionFixture<TestFixture>
     {
     }
 }
