@@ -22,19 +22,18 @@
     public class PilotServiceTests
     {
         [Fact]
-        public async Task GetPilotById_2_WhenPilotExists()
+        public async Task GetAllPilots_WhenAll_5_PilotsExist()
         {
             // Arrange Mock
             var uowMock = new Mock<IUnitOfWork>();
             var pilotRepoMock = new Mock<IPilotRepository>();
-            var a = It.IsAny<int>();
-            pilotRepoMock.Setup(repo => repo.GetRangeAsync(a, 
-                                                           It.IsAny<int>(), 
-                                                           It.IsAny<Expression<Func<Pilot, bool>>>(), 
-                                                           It.IsAny<Func<IQueryable<Pilot>, IOrderedQueryable<Pilot>>>(),
-                                                           It.IsAny<Func<IQueryable<Pilot>, IIncludableQueryable<Pilot, object>>>(),
-                                                           It.IsAny<bool>()))
-                            .Returns(Task.FromResult(GetTestPilots()));
+            pilotRepoMock.Setup(repo => repo.GetRangeAsync(It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<Expression<Func<Pilot, bool>>>(),
+                    It.IsAny<Func<IQueryable<Pilot>, IOrderedQueryable<Pilot>>>(),
+                    It.IsAny<Func<IQueryable<Pilot>, IIncludableQueryable<Pilot, object>>>(),
+                    It.IsAny<bool>()))
+                .Returns(Task.FromResult(GetTestPilots()));
 
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
@@ -53,6 +52,37 @@
             //Assert.Equal(201, createdResult.StatusCode);
 
             Assert.Equal(2, pilotDto.Count());
+        }
+
+        [Fact]
+        public async Task GetPilotById_2_WhenPilotExists()
+        {
+            // Arrange Mock
+            var pilotId = 2;
+            var uowMock = new Mock<IUnitOfWork>();
+            var pilotRepoMock = new Mock<IPilotRepository>();
+            pilotRepoMock.Setup(repo => repo.GetRangeAsync(It.IsAny<int>(), 
+                                                           It.IsAny<int>(), 
+                                                           It.IsAny<Expression<Func<Pilot, bool>>>(), 
+                                                           It.IsAny<Func<IQueryable<Pilot>, IOrderedQueryable<Pilot>>>(),
+                                                           It.IsAny<Func<IQueryable<Pilot>, IIncludableQueryable<Pilot, object>>>(),
+                                                           It.IsAny<bool>()))
+                            .Returns(Task.FromResult(GetTestPilots()));
+
+            uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
+
+            // Arrange Real for testing
+            var pilotsProfile = new PilotsProfile();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(pilotsProfile));
+            var mapper = new Mapper(configuration);
+
+            var pilotServie = new PilotService(uowMock.Object, mapper);
+
+            // Act
+            var pilotDto = await pilotServie.GetEntityByIdAsync(pilotId);
+
+            // Assert
+            Assert.Equal(2, pilotDto.Id);
         }
 
         // Mock Data
