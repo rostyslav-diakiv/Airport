@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Airport.Common\Airport.Common.csproj" />
+    <ProjectReference Include="..\Airport.WebApi\Airport.WebApi.Tests\Airport.WebApi.Tests.csproj" />
     <ProjectReference Include="..\AirportEf.BLL\AirportEf.BLL.csproj" />
     <ProjectReference Include="..\AirportEf.DAL\AirportEf.DAL.csproj" />
   </ItemGroup>

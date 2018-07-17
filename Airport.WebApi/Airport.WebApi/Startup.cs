@@ -52,6 +52,21 @@ namespace Airport.WebApi
             services.AddTransient<IStewardessService, StewardessService>();
             services.AddTransient<ITicketService, TicketService>();
 
+            InitAutomapper(services);
+
+            services.AddMvc() // opt => opt.Filters.Add(typeof(ValidatorActionFilter))
+                .AddFluentValidation(fv =>
+                    {
+                        fv.ImplicitlyValidateChildProperties = true;
+                      //  fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                        fv.RegisterValidatorsFromAssemblyContaining<CrewValidator>();
+                    })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(MvcSetup.JsonSetupAction);
+        }
+
+        public virtual IServiceCollection InitAutomapper(IServiceCollection services)
+        {
             services.AddAutoMapper(cfg =>
                 {
                     cfg.AddProfile<CrewsProfile>();
@@ -65,15 +80,7 @@ namespace Airport.WebApi
                 }); // Scoped Lifetime!
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
 
-            services.AddMvc() // opt => opt.Filters.Add(typeof(ValidatorActionFilter))
-                .AddFluentValidation(fv =>
-                    {
-                        fv.ImplicitlyValidateChildProperties = true;
-                      //  fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                        fv.RegisterValidatorsFromAssemblyContaining<CrewValidator>();
-                    })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(MvcSetup.JsonSetupAction);
+            return services;
         }
 
         public virtual void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
