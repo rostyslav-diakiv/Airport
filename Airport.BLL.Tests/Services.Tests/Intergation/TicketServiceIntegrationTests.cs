@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Airport.BLL.Tests.Services.Tests.Intergation
+﻿namespace Airport.BLL.Tests.Services.Tests.Intergation
 {
     using System.Net;
     using System.Threading.Tasks;

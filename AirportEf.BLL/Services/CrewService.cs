@@ -94,7 +94,7 @@
             await Task.Delay(1000);
         }
 
-        public async Task DownloadCrewsAsync()
+        public async Task<bool> DownloadCrewsAsync()
         {
             // Fetch and Join data
             using (var handler = new HttpClientHandler())
@@ -102,15 +102,15 @@
             {
                 var crewsTask = await client.GetAsync("crew");
 
-                if (!crewsTask.IsSuccessStatusCode) return;
+                if (!crewsTask.IsSuccessStatusCode) return false;
 
                 var serializedCrews = await crewsTask.Content.ReadAsStringAsync();
 
-                var crewsDtos = JsonConvert.DeserializeObject<IEnumerable<CrewApiDto>>(serializedCrews).Take(10).ToList();
+                var crewsDtos = JsonConvert.DeserializeObject<List<CrewApiDto>>(serializedCrews);
 
                 var writeTask = WriteCsvFileAsync(crewsDtos); 
                 
-                var crews = mapper.Map<List<CrewApiDto>, List<Crew>>(crewsDtos);
+                var crews = mapper.Map<List<CrewApiDto>, List<Crew>>(crewsDtos.Take(10).ToList());
 
                 foreach (var c in crews)
                 {
@@ -124,6 +124,8 @@
                 var saveTask = uow.SaveAsync();
 
                 await Task.WhenAll(saveTask, writeTask);
+
+                return true;
             }
         }
 
@@ -143,8 +145,8 @@
                                       + " Stewardess Id, Stewardess Crew Id, Stewardess First Name, Stewardess Last Name, Stewardess Birth Date");
                         foreach (var c in crewsDtos)
                         {
-                            var pilotSection = $"{c.Pilot[0].Id },{ c.Pilot[0].CrewId},{ c.Pilot[0].FirstName},{ c.Pilot[0].LastName},{ c.Pilot[0].Exp},{ c.Pilot[0].BirthDate}";
-                            var stewardessSection = $"{c.Stewardess[0].Id},{c.Stewardess[0].CrewId},{c.Stewardess[0].FirstName},{c.Stewardess[0].LastName},{c.Stewardess[0].BirthDate}";
+                            var pilotSection = $"{c.Pilot[0]?.Id },{ c.Pilot[0]?.CrewId},{ c.Pilot[0]?.FirstName},{ c.Pilot[0]?.LastName},{ c.Pilot[0]?.Exp},{ c.Pilot[0]?.BirthDate}";
+                            var stewardessSection = $"{c.Stewardess[0]?.Id},{c.Stewardess[0]?.CrewId},{c.Stewardess[0]?.FirstName},{c.Stewardess[0]?.LastName},{c.Stewardess[0]?.BirthDate}";
                             sb.AppendLine($"{c.Id},{pilotSection},{stewardessSection}");
                             foreach (var s in c.Stewardess.Skip(1))
                             {

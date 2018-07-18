@@ -7,6 +7,6 @@
 
     public interface ICrewService : IService<CrewDto, CrewRequest, int>
     {
-        Task DownloadCrewsAsync();
+        Task<bool> DownloadCrewsAsync();
     }
 }

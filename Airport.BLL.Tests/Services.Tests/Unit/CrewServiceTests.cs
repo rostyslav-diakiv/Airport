@@ -17,6 +17,7 @@
     using AirportEf.DAL.Interfaces;
     using AirportEf.DAL.Interfaces.Repositories;
 
+    using Microsoft.AspNetCore.Hosting.Internal;
     using Microsoft.EntityFrameworkCore.Query;
 
     using Moq;
@@ -55,7 +56,7 @@
 
             uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
 
             // Act
             var crewDtos = await crewServie.GetAllEntitiesAsync();
@@ -84,7 +85,7 @@
             uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 3, 4, 2 } };
 
 
@@ -125,7 +126,7 @@
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
             var pilotIdMock = 2;
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = pilotIdMock, StewardessesIds = new List<int> { 1 } };
 
 
@@ -172,7 +173,7 @@
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = pilotMock.Id, StewardessesIds = new List<int> { 1, 2 } };
 
             // Act
@@ -212,7 +213,7 @@
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 2 } };
 
             // Act
@@ -246,7 +247,7 @@
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 2 } };
 
             // Act + Assert =)
@@ -281,7 +282,7 @@
             uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
 
-            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper, new HostingEnvironment());
             var crewRequest = new CrewRequest() { PilotId = pilotId, StewardessesIds = new List<int> { 1, 2 } };
 
             // Act + Assert =)

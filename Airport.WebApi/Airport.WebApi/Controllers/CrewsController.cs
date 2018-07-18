@@ -1,6 +1,5 @@
 ﻿namespace Airport.WebApi.Controllers
 {
-    using System.Text;
     using System.Threading.Tasks;
 
     using Airport.Common.Dtos;
@@ -18,9 +17,14 @@
 
         // GET: api/Crews/Seed
         [HttpGet("Seed")]
-        public virtual async Task<ActionResult> GetById()
+        public virtual async Task<ActionResult<bool>> GetById()
         {
-            await service.DownloadCrewsAsync();
+            var result = await service.DownloadCrewsAsync();
+
+            if (!result)
+            {
+                return BadRequest("Call Remote API for Crew data was unsuccessful");
+            }
 
             return Ok();
         }
