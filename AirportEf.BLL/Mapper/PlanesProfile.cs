@@ -15,8 +15,10 @@
         {
             CreateMap<Plane, Plane>().ForMember(d => d.Departures, o => o.Ignore()); // Don't Map Crews because in new obj the are empty!!!
 
-            CreateMap<PlaneRequest, Plane>()
-                .ForMember(d => d.Departures, o => o.NullSubstitute(new List<Departure>())); // Crews won't be null when we create new Pilot;
+            //CreateMap<PlaneRequest, Plane>()
+            //    .ForMember(d => d.Id, o => o.UseValue(0))
+            //    .ForMember(d => d.PlaneType, o => o.UseDestinationValue())
+            //    .ForMember(d => d.Departures, o => o.UseValue(new List<Departure>())); // Crews won't be null when we create new Pilot;
 
             CreateMap<Plane, PlaneDto>().ForMember(d => d.PlaneType, o => o.MapFrom(s => s.PlaneType));
             /*

@@ -301,7 +301,7 @@
         {
             var f1 = new Flight()
             {
-                Id = "ARY46B",
+                Id = "AY5B68",
                 DeparturePoint = "USA, Los Angeles",
                 Destination = "Ukraine, Kiev",
                 DepartureTime = new DateTime(2018, 7, 14, 2, 00, 00),
@@ -311,7 +311,7 @@
             };
             var f2 = new Flight()
             {
-                Id = "BARA687",
+                Id = "DV32Q57",
                 DeparturePoint = "Ukraine, Kiev",
                 Destination = "USA, Los Angeles",
                 DepartureTime = new DateTime(2018, 7, 12, 2, 00, 00),
@@ -321,7 +321,7 @@
             };
             var f3 = new Flight()
             {
-                Id = "STAR46",
+                Id = "AOP66T5",
                 DeparturePoint = "USA, New York",
                 Destination = "Ukraine, Lviv",
                 DepartureTime = new DateTime(2018, 7, 17, 1, 0, 0),
@@ -331,7 +331,7 @@
             };
             var f4 = new Flight()
             {
-                Id = "MAYA879",
+                Id = "M09B56U",
                 DeparturePoint = "China, Hong Kong",
                 Destination = "Russia, Moscow",
                 DepartureTime = new DateTime(2018, 12, 22, 12, 30, 00),
@@ -341,7 +341,7 @@
             };
             var f5 = new Flight()
             {
-                Id = "BMW777",
+                Id = "SSM57V2",
                 DeparturePoint = "USA, Ohio",
                 Destination = "Ukraine, Kharkiv",
                 DepartureTime = new DateTime(2018, 8, 11, 12, 00, 00),

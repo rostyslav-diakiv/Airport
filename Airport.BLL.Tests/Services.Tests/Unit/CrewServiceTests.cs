@@ -32,8 +32,10 @@
             _servicesFixture = servicesFixture;
         }
 
+        #region Create Tests
+
         [Fact]
-        public async Task CreateCrew_WithExistingPilotAndStewardesses_ReturnsValidCrewDto()
+        public async Task GetAllCrews_ReturnsListCrewDto()
         {
             // Arrange Mock
             var uowMock = new Mock<IUnitOfWork>();
@@ -49,7 +51,7 @@
                     It.IsAny<bool>()));
 
             setup.Returns(Task.FromResult(crewsMock));
-                           // .Returns(Task.FromResult(crewsMock));
+            // .Returns(Task.FromResult(crewsMock));
 
             uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
 
@@ -134,6 +136,7 @@
             Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         }
 
+        // Successful Create
         [Fact]
         public async Task CreateCrew_WithExistingPilotAndExistingStewardesses_ReturnsCreatedCrewDto()
         {
@@ -178,9 +181,116 @@
             // Assert 
             Assert.Equal(pilotMock.Id, crewDto.Pilot.Id);
             Assert.Equal(stewardessListMock.Count, crewDto.Stewardesses.Count());
-           // Assert.Contains(stewardessListMock.Select(s => s.Id), i => i.);
-            // var contains = stewardessListMock.Select(s => s.Id).All(crewDto.Stewardesses.Select(st => st.Id)) //stewardessListMock.All(crewDto.Stewardesses.A)
-            //Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
         }
+        #endregion
+
+        #region Update tests
+
+        // Successful Update
+        [Fact]
+        public async Task UpdateCrew_WithExistingPilotAndExistingStewardesses_ReturnsTrue()
+        {
+            // Arrange Mocks
+            var crewId = 3;
+            var crewMock = DataProvider.GetCrews()[0];
+
+            var crewRepoMock = new Mock<ICrewRepository>();
+            crewRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<Crew>()))
+                .Returns(Task.FromResult(crewMock));
+
+            var stewRepoMock = new Mock<IStewardessRepository>();
+            stewRepoMock.Setup(repo => repo.CountAsync(It.IsAny<Expression<Func<Stewardess, bool>>>()))
+                .Returns(Task.FromResult(2));
+
+            var pilotRepoMock = new Mock<IPilotRepository>();
+            pilotRepoMock.Setup(repo => repo.ExistAsync(It.IsAny<Expression<Func<Pilot, bool>>>()))
+                .Returns(Task.FromResult(true));
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(repo => repo.SaveAsync()).Returns(Task.FromResult(true));
+            uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
+            uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
+            uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
+
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 2 } };
+
+            // Act
+            var result = await crewServie.UpdateEntityByIdAsync(crewRequest, crewId);
+
+            // Assert 
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task UpdateCrew_WithExistingPilotAndNotExistingStewardesses_ThrowsHttpException()
+        {
+            // Arrange Mocks
+            var crewId = 3;
+            var crewMock = DataProvider.GetCrews()[0];
+
+            var crewRepoMock = new Mock<ICrewRepository>();
+            crewRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<Crew>()))
+                .Returns(Task.FromResult(crewMock));
+
+            var stewRepoMock = new Mock<IStewardessRepository>();
+            stewRepoMock.Setup(repo => repo.CountAsync(It.IsAny<Expression<Func<Stewardess, bool>>>()))
+                .Returns(Task.FromResult(1));
+
+            var pilotRepoMock = new Mock<IPilotRepository>();
+            pilotRepoMock.Setup(repo => repo.ExistAsync(It.IsAny<Expression<Func<Pilot, bool>>>()))
+                .Returns(Task.FromResult(true));
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
+            uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
+            uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
+
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewRequest = new CrewRequest() { PilotId = 2, StewardessesIds = new List<int> { 1, 2 } };
+
+            // Act + Assert =)
+            var ex = await Assert.ThrowsAsync<HttpStatusCodeException>(() => crewServie.UpdateEntityByIdAsync(crewRequest, crewId));
+
+            Assert.Equal("One or more Stewardesses with such ids not found", ex.Message);
+            Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateCrew_WithNotExistingPilotAndExistingStewardesses_ThrowsHttpException()
+        {
+            // Arrange Mocks
+            var crewId = 3;
+            var pilotId = 1245;
+            var crewMock = DataProvider.GetCrews()[0];
+
+            var crewRepoMock = new Mock<ICrewRepository>();
+            crewRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<Crew>()))
+                .Returns(Task.FromResult(crewMock));
+
+            var stewRepoMock = new Mock<IStewardessRepository>();
+            stewRepoMock.Setup(repo => repo.CountAsync(It.IsAny<Expression<Func<Stewardess, bool>>>()))
+                .Returns(Task.FromResult(2));
+
+            var pilotRepoMock = new Mock<IPilotRepository>();
+            pilotRepoMock.Setup(repo => repo.ExistAsync(It.IsAny<Expression<Func<Pilot, bool>>>()))
+                .Returns(Task.FromResult(false));
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(work => work.CrewRepository).Returns(crewRepoMock.Object);
+            uowMock.Setup(work => work.StewardessRepository).Returns(stewRepoMock.Object);
+            uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
+
+            var crewServie = new CrewService(uowMock.Object, _servicesFixture.ConfMapper);
+            var crewRequest = new CrewRequest() { PilotId = pilotId, StewardessesIds = new List<int> { 1, 2 } };
+
+            // Act + Assert =)
+            var ex = await Assert.ThrowsAsync<HttpStatusCodeException>(() => crewServie.UpdateEntityByIdAsync(crewRequest, crewId));
+
+            Assert.Equal($"Pilot with id: {pilotId} not found", ex.Message);
+            Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
+        }
+
+        #endregion
     }
 }
