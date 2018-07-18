@@ -23,6 +23,8 @@
 
         public override async Task<IEnumerable<FlightDto>> GetAllEntitiesAsync()
         {
+            await DelayAsync(5); // Delay request for 5 seconds
+
             var flights = await uow.FlightRepository.GetRangeAsync();
 
             var dtos = mapper.Map<List<Flight>, List<FlightDto>>(flights);
@@ -80,6 +82,23 @@
             var result = await uow.SaveAsync();
 
             return result;
+        }
+
+        private Task DelayAsync(int seconds)
+        {
+            TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
+
+            var timer = new System.Timers.Timer(seconds * 1000) { AutoReset = false };
+
+            timer.Elapsed += delegate
+                {
+                    timer.Dispose();
+                    taskCompletionSource.SetResult(null);
+                };
+
+            timer.Start();
+
+            return taskCompletionSource.Task;
         }
     }
 }

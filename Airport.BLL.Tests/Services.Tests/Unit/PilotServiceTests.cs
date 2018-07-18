@@ -86,17 +86,18 @@
         public async Task GetPilotById_44_WhenPilotNotExists()
         {
             // Arrange Mock
-            var pilotId = 42;
-            var pilot = DataProvider.GetPilots()[1];
+            var pilotId = 44;
             var uowMock = new Mock<IUnitOfWork>();
             var pilotRepoMock = new Mock<IPilotRepository>();
             pilotRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Pilot, bool>>>(),
                     It.IsAny<Func<IQueryable<Pilot>, IOrderedQueryable<Pilot>>>(),
                     It.IsAny<Func<IQueryable<Pilot>, IIncludableQueryable<Pilot, object>>>(),
                     It.IsAny<bool>()))
-                .Returns(Task.FromResult(pilot));
+                .Returns(Task.FromResult<Pilot>(null));
 
             uowMock.Setup(work => work.PilotRepository).Returns(pilotRepoMock.Object);
+
+            // Task
 
             // Arrange Real for testing
             var pilotsProfile = new PilotsProfile();
@@ -109,7 +110,7 @@
             var pilotDto = await pilotServie.GetEntityByIdAsync(pilotId);
 
             // Assert
-            Assert.Equal(2, pilotDto.Id);
+            Assert.Null(pilotDto);
         }
     }
 }

@@ -3,7 +3,6 @@
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
     using AirportEf.BLL.Interfaces;
-    using AutoMapper;
 
     public class FlightsController : AbstractController<IFlightService, FlightDto, FlightRequest, string>
     {
