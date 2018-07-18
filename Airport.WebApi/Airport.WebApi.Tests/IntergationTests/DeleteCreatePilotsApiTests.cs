@@ -10,12 +10,13 @@
 
     using Xunit;
 
-    public class DeletePilotsApiTests : IClassFixture<TestFixture>
+    public class DeleteCreatePilotsApiTests : IClassFixture<TestFixture>
     {
         private TestFixture _fixure;
-        public DeletePilotsApiTests(TestFixture fixture)
+
+        public DeleteCreatePilotsApiTests(TestFixture fixture)
         {
-           _fixure = fixture;
+            _fixure = fixture;
         }
         
         public void Dispose()

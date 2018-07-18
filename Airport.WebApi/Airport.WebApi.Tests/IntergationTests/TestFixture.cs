@@ -12,6 +12,7 @@
     public class TestFixture : IDisposable
     {
         public TestServer Server { get; }
+
         public HttpClient Client { get; }
 
         public TestFixture()
