@@ -24,7 +24,7 @@
         {
             //Arrange
             var source = DataProvider.GetFlights()[0];
-            var destination = DataProvider.GetFlights()[0];
+            var destination = DataProvider.GetFlights()[1];
             destination.Id = source.Id;
 
             //Act

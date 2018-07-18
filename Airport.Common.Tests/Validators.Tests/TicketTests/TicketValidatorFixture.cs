@@ -1,4 +1,4 @@
-﻿namespace Airport.Common.Tests.Validators.Tests
+﻿namespace Airport.Common.Tests.Validators.Tests.TicketTests
 {
     using Airport.Common.Validators;
 
@@ -6,9 +6,8 @@
     {
         public TicketValidator Validator { get; }
 
-        public TicketValidatorFixture() // Calls constructor for every test in class
+        public TicketValidatorFixture() 
         {
-            // Setup and Seed Database
             Validator = new TicketValidator();
         }
     }

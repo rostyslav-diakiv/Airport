@@ -15,6 +15,7 @@
     public class PilotServiceIntegrationTests
     {
         private readonly IntegrationFixture _integrationFixture;
+
         public PilotServiceIntegrationTests(IntegrationFixture integrationFixture)
         {
             _integrationFixture = integrationFixture;
@@ -39,16 +40,14 @@
         [InlineData(4)]
         public async Task GetPilotById_WhenPilotExists_ReturnsPilotDto(int id)
         {
-            // TODO: Database Integration Test
             // Arrange
-            var pilotMockId = 2;
             var pilotServie = new PilotService(_integrationFixture.Uow, _integrationFixture.ConfMapper);
 
             // Act
-            var pilotDto = await pilotServie.GetEntityByIdAsync(pilotMockId);
+            var pilotDto = await pilotServie.GetEntityByIdAsync(id);
 
             // Assert
-            Assert.Equal(pilotMockId, pilotDto.Id);
+            Assert.Equal(id, pilotDto.Id);
         }
 
         [Theory]

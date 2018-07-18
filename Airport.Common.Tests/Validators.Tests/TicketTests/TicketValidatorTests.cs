@@ -1,4 +1,4 @@
-﻿namespace Airport.Common.Tests.Validators.Tests
+﻿namespace Airport.Common.Tests.Validators.Tests.TicketTests
 {
     using Airport.Common.Requests;
 

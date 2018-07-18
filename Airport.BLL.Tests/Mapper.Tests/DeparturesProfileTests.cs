@@ -20,7 +20,7 @@ namespace Airport.BLL.Tests.Mapper.Tests
         }
 
         [Fact]
-        public void Departures_Mapping_Works()
+        public void Departures_Mapping_Entities()
         {
             //Arrange
             var source = DataProvider.GetDepartures()[0];

@@ -31,7 +31,7 @@
             //Act
 
             //Assert
-            Mapper.AssertConfigurationIsValid(); // TODO: Some errors with configs
+            Mapper.AssertConfigurationIsValid(); 
         }
     }
 }
