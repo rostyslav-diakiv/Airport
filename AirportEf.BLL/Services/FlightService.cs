@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
+    using System.Timers;
 
     using Airport.Common.Dtos;
     using Airport.Common.Requests;
@@ -30,6 +31,27 @@
             var dtos = mapper.Map<List<Flight>, List<FlightDto>>(flights);
 
             return dtos;
+        }
+
+        public Task<List<FlightDto>> GetAllEntitiesDelayedAsync(int delayMs)
+        {
+            var taskCompletionSource = new TaskCompletionSource<List<FlightDto>>();
+
+            var timer = new Timer(delayMs) { AutoReset = false };
+
+            timer.Elapsed += async delegate
+                {
+                    timer.Dispose();
+                    var flights = await uow.FlightRepository.GetRangeAsync();
+
+                    var dtos = mapper.Map<List<Flight>, List<FlightDto>>(flights);
+
+                    taskCompletionSource.SetResult(dtos);
+                };
+
+            timer.Start();
+
+            return taskCompletionSource.Task;
         }
 
         public override async Task<FlightDto> GetEntityByIdAsync(string id)
