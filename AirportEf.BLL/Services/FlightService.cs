@@ -24,7 +24,7 @@
 
         public override async Task<IEnumerable<FlightDto>> GetAllEntitiesAsync()
         {
-            await DelayAsync(5); // Delay request for 5 seconds
+            // await DelayAsync(5); // Delay request for 5 seconds
 
             var flights = await uow.FlightRepository.GetRangeAsync();
 

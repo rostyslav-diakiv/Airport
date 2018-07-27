@@ -8,6 +8,7 @@ namespace Airport.WebApi
 {
     using Airport.Common.Validators;
     using Airport.WebApi.Extensions;
+    using Airport.WebApi.Filters;
     using Airport.WebApi.Utils;
 
     using AirportEf.BLL.Interfaces;
@@ -36,6 +37,13 @@ namespace Airport.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                }));
+
             services.ConfigureSwagger(Configuration);
 
             // Add framework services.
@@ -54,7 +62,11 @@ namespace Airport.WebApi
 
             InitAutomapper(services);
 
-            services.AddMvc() // opt => opt.Filters.Add(typeof(ValidatorActionFilter))
+            services.AddMvc(opt =>
+                    {
+                        opt.Filters.Add(typeof(ValidatorActionFilter));
+                        opt.Filters.Add(typeof(AsyncValidationActionFilter));
+                    })
                 .AddFluentValidation(fv =>
                     {
                         fv.ImplicitlyValidateChildProperties = true;
@@ -96,6 +108,7 @@ namespace Airport.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("CorsPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -105,7 +118,7 @@ namespace Airport.WebApi
             {
                 app.UseHsts();
             }
-
+            
             app.UseHttpStatusCodeExceptionMiddleware();
             app.UseConfiguredSwagger();
 

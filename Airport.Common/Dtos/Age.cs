@@ -18,6 +18,14 @@
             Count(Bday, Cday);
         }
 
+        public Age(TimeSpan timeSpan)
+        {
+            Years = (int)(timeSpan.Days / 365.2425);
+            Months = (int)(timeSpan.Days / 30.436875) % 12;
+            Days = (int)(timeSpan.Days % 30.436875);
+            // Days = (int)(timeSpan.Days - (timeSpan.Days / 30.436875));
+        }
+
         public Age Count(DateTime Bday)
         {
             return Count(Bday, DateTime.Today);

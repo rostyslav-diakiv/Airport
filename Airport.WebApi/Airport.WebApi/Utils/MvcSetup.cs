@@ -5,13 +5,14 @@
     using Microsoft.AspNetCore.Mvc;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public static class MvcSetup
     {
         public static Action<MvcJsonOptions> JsonSetupAction = mvcJsonOptions =>
             {
-                mvcJsonOptions.SerializerSettings.ContractResolver =
-                    new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                mvcJsonOptions.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                   // new Newtonsoft.Json.Serialization.DefaultContractResolver();
                 mvcJsonOptions.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 mvcJsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 mvcJsonOptions.SerializerSettings.FloatFormatHandling = FloatFormatHandling.DefaultValue;
