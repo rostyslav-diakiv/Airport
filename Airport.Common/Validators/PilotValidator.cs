@@ -10,10 +10,10 @@
     {
         public PilotValidator()
         {
-            RuleFor(x => x.Experience).Must(BeAValidExperience).WithMessage("Please specify a valid Experience");
-            RuleFor(x => x.DateOfBirth).Must(BeAValidDateOfBirth).WithMessage("Please specify a valid Date Of Birth");
-            RuleFor(x => x.Name).Length(2, 50).WithMessage("Please specify a valid Name");
-            RuleFor(x => x.FamilyName).Length(2, 50).WithMessage("Please specify a valid Family Name");
+            RuleFor(x => x.Experience).NotEmpty().Must(BeAValidExperience).WithMessage("Please specify a valid Experience");
+            RuleFor(x => x.DateOfBirth).NotEmpty().Must(BeAValidDateOfBirth).WithMessage("Please specify a valid Date Of Birth");
+            RuleFor(x => x.Name).NotEmpty().Length(2, 50).WithMessage("Please specify a valid Name");
+            RuleFor(x => x.FamilyName).NotEmpty().Length(2, 50).WithMessage("Please specify a valid Family Name");
         }
 
         private bool BeAValidExperience(TimeSpan time)

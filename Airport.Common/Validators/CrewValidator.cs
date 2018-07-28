@@ -11,7 +11,7 @@
         public CrewValidator()
         {
             RuleFor(x => x.PilotId).NotEmpty().WithMessage("Please specify a Pilot");
-            RuleFor(x => x.StewardessesIds).Must(ints => ints.Any()).WithMessage("Please specify at least 1 Stewardess");
+            RuleFor(x => x.StewardessesIds).NotEmpty().Must(ints => ints.Any()).WithMessage("Please specify at least 1 Stewardess");
         }
     }
 }

@@ -12,13 +12,13 @@
         {
             RuleFor(x => x.CrewId).NotEmpty().WithMessage("Please specify a valid Crew Id");
             RuleFor(x => x.PlaneId).NotEmpty().WithMessage("Please specify a valid Plane Id");
-            RuleFor(x => x.FlightNumber).Must(n => n.Length >= 5 && n.Length <= 10).WithMessage("Please specify a valid Flight Number");
-            RuleFor(x => x.DepartureTime).Must(BeAValidTime).WithMessage("Please specify a valid Departure Time");
+            RuleFor(x => x.FlightNumber).NotEmpty().Must(n => n.Length >= 5 && n.Length <= 10).WithMessage("Please specify a valid Flight Number");
+            RuleFor(x => x.DepartureTime).NotEmpty().Must(BeAValidTime).WithMessage("Please specify a valid Departure Time");
         }
 
         private bool BeAValidTime(DateTime date)
         {
-            if (date < DateTime.UtcNow || date > DateTime.UtcNow.AddYears(2))
+            if (date < DateTime.UtcNow.AddDays(-1) || date > DateTime.UtcNow.AddYears(2))
                 return false;
 
             return true;

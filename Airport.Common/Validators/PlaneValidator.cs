@@ -10,9 +10,9 @@
     {
         public PlaneValidator()
         {
-            RuleFor(x => x.Name).Length(2, 50).WithMessage("Please specify a valid Name");
-            RuleFor(x => x.LifeTime).Must(BeAValidLifeTime).WithMessage("Please specify a valid Life Time");
-            RuleFor(x => x.CreationDate).Must(BeAValidCreationDate).WithMessage("Please specify a valid Creation Date");
+            RuleFor(x => x.Name).NotEmpty().Length(2, 50).WithMessage("Please specify a valid Name");
+            RuleFor(x => x.LifeTime).NotEmpty().Must(BeAValidLifeTime).WithMessage("Please specify a valid Life Time");
+            RuleFor(x => x.CreationDate).NotEmpty().Must(BeAValidCreationDate).WithMessage("Please specify a valid Creation Date");
             RuleFor(x => x.PlaneTypeId).NotEmpty().WithMessage("Please specify a valid Plane Type Id");
         }
 
