@@ -20,6 +20,7 @@ namespace ClientLight.Services
         }
 
         public bool CanGoBack => Frame.CanGoBack;
+
         public void GoBack() => Frame.GoBack();
 
         public bool Navigate(string pageKey, object parameter = null, NavigationTransitionInfo infoOverride = null)

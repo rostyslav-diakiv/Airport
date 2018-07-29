@@ -97,8 +97,6 @@
     </Compile>
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
-    <Compile Include="Design\DesignDataService.cs" />
-    <Compile Include="Enums\PageTokens.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Helpers\FilterProvider.cs" />
     <Compile Include="Helpers\Json.cs" />
@@ -115,19 +113,11 @@
     <Compile Include="Interfaces\Services\IService.cs" />
     <Compile Include="Interfaces\Services\IStewardessesService.cs" />
     <Compile Include="Interfaces\Services\ITicketsService.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\Age.cs" />
-    <Compile Include="Model\Country.cs" />
     <Compile Include="Model\CrewDto.cs" />
-    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\DepartureDto.cs" />
     <Compile Include="Model\FlightDto.cs" />
     <Compile Include="Model\PilotDto.cs" />
-    <Compile Include="Model\DataItem.cs" />
-    <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\PlaneDto.cs" />
     <Compile Include="Model\PlaneTypeDto.cs" />
     <Compile Include="Model\StewardessDto.cs" />
@@ -141,11 +131,7 @@
     <Compile Include="Requests\PlaneTypeRequest.cs" />
     <Compile Include="Requests\StewardessRequest.cs" />
     <Compile Include="Requests\TicketRequest.cs" />
-    <Compile Include="SecondPage.xaml.cs">
-      <DependentUpon>SecondPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\ActivationService.cs" />
-    <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\Data\BaseService.cs" />
     <Compile Include="Services\Data\CrewsService.cs" />
     <Compile Include="Services\Data\DeparturesService.cs" />
@@ -161,43 +147,26 @@
     <Compile Include="Services\ToastNotificationsService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CrewsViewModel.cs" />
-    <Compile Include="ViewModel\CustomerDetailViewModel.cs" />
-    <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\DeparturesViewModel.cs" />
     <Compile Include="ViewModel\FlightsViewModel.cs" />
-    <Compile Include="ViewModel\MyPageViewModel.cs" />
     <Compile Include="ViewModel\PilotDetailViewModel.cs" />
     <Compile Include="ViewModel\PilotsViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PlanesViewModel.cs" />
     <Compile Include="ViewModel\PlaneTypesViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ShellNavigationItem.cs" />
     <Compile Include="ViewModel\ShellViewModel.cs" />
     <Compile Include="ViewModel\StewardessesViewModel.cs" />
-    <Compile Include="ViewModel\TicketDetailViewModel.cs" />
     <Compile Include="ViewModel\TicketsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\CrewsPage.xaml.cs">
       <DependentUpon>CrewsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomerDetailControl.xaml.cs">
-      <DependentUpon>CustomerDetailControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomerDetailPage.xaml.cs">
-      <DependentUpon>CustomerDetailPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomerPage.xaml.cs">
-      <DependentUpon>CustomerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DeparturesPage.xaml.cs">
       <DependentUpon>DeparturesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FlightsPage.xaml.cs">
       <DependentUpon>FlightsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MyPage.xaml.cs">
-      <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PilotDetailPage.xaml.cs">
       <DependentUpon>PilotDetailPage.xaml</DependentUpon>
@@ -236,7 +205,6 @@
     </AppxManifest>
     <PRIResource Include="Strings\en\Resources.resw" />
     <PRIResource Include="Resources.resw" />
-    <None Include="Customers.json" />
     <None Include="Win10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -254,14 +222,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SecondPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\SplitViewSampleStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -270,18 +230,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CustomerDetailControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CustomerDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CustomerPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\DeparturesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,10 +237,6 @@
     <Page Include="Views\FlightsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MyPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PilotDetailPage.xaml">
       <SubType>Designer</SubType>

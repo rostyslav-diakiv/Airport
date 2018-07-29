@@ -6,7 +6,7 @@
 
     using GalaSoft.MvvmLight;
 
-    public class PilotDto : IEntity<int>
+    public class PilotDto : ViewModelBase, IEntity<int>
     {
         public PilotDto() { }
 

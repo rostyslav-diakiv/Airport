@@ -5,7 +5,6 @@ using Microsoft.Practices.ServiceLocation;
 namespace ClientLight.ViewModel
 {
     using ClientLight.Interfaces.Services;
-    using ClientLight.Model;
     using ClientLight.Services;
     using ClientLight.Services.Data;
     using ClientLight.Views;
@@ -31,12 +30,9 @@ namespace ClientLight.ViewModel
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                SimpleIoc.Default.Register<IDataService, Design.DesignDataService>();
             }
             else
             {
-                SimpleIoc.Default.Register<IDataService, DataService>();
-
                 SimpleIoc.Default.Register<ICrewsService, CrewsService>();
                 SimpleIoc.Default.Register<IDeparturesService, DeparturesService>();
                 SimpleIoc.Default.Register<IFlightsService, FlightsService>();
@@ -60,9 +56,7 @@ namespace ClientLight.ViewModel
             Register<PlaneTypesViewModel, PlaneTypesPage>();
             Register<StewardessesViewModel, StewardessesPage>();
             Register<TicketsViewModel, TicketsPage>();
-
-            Register<CustomerViewModel, CustomerPage>();
-            Register<CustomerDetailViewModel, CustomerDetailPage>();
+            
             Register<SettingsViewModel, SettingsPage>();
         }
 
@@ -76,10 +70,6 @@ namespace ClientLight.ViewModel
         public StewardessesViewModel StewardessesViewModel => ServiceLocator.Current.GetInstance<StewardessesViewModel>();
         public TicketsViewModel TicketsViewModel => ServiceLocator.Current.GetInstance<TicketsViewModel>();
 
-
-
-        public CustomerDetailViewModel CustomerDetailViewModel => ServiceLocator.Current.GetInstance<CustomerDetailViewModel>();
-        public CustomerViewModel CustomerViewModel => ServiceLocator.Current.GetInstance<CustomerViewModel>();
         public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
 
 

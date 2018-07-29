@@ -6,9 +6,6 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-
     using ClientLight.Interfaces;
     using ClientLight.Interfaces.Services;
 
@@ -18,17 +15,20 @@
 
     using Microsoft.Practices.ServiceLocation;
 
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     public class BaseViewModel<TDto, TKey> : ViewModelBase where TDto : IEntity<TKey>, new()
     {
-        public ICommand ItemClickCommand { get; private set; }
+        public virtual ICommand ItemClickCommand { get; private set; }
 
-        public ICommand StateChangedCommand { get; private set; }
+        public virtual ICommand StateChangedCommand { get; private set; }
 
-        public ICommand AddEntityCommand { get; }
+        public virtual ICommand AddEntityCommand { get; }
 
-        public ICommand DeleteEntityCommand { get; }
+        public virtual ICommand DeleteEntityCommand { get; }
 
-        public ICommand UpdateEntityCommand { get; }
+        public virtual ICommand UpdateEntityCommand { get; }
 
         public BaseViewModel(IService<TDto, TKey> service)
         {
@@ -40,16 +40,16 @@
             UpdateEntityCommand = new RelayCommand(DoUpdateStewardess);
         }
 
-        public Task LoadDataAsync(VisualState currentState)
+        public virtual Task LoadDataAsync(VisualState currentState)
         {
             return Initialize();
         }
 
-        private void OnStateChanged(VisualStateChangedEventArgs args)
+        protected virtual void OnStateChanged(VisualStateChangedEventArgs args)
         {
         }
 
-        private void OnItemClick(ItemClickEventArgs args)
+        protected virtual void OnItemClick(ItemClickEventArgs args)
         {
             if (args?.ClickedItem is TDto item)
             {
@@ -57,9 +57,9 @@
             }
         }
 
-        private readonly IService<TDto, TKey> _service;
+        protected readonly IService<TDto, TKey> _service;
 
-        private TDto _selected;
+        protected TDto _selected;
 
         private string _title = "Page";
 
@@ -69,7 +69,7 @@
             set => Set(ref _title, value);
         }
 
-        private ObservableCollection<TDto> entities;
+        protected ObservableCollection<TDto> entities;
 
         public ObservableCollection<TDto> Entities
         {
@@ -83,7 +83,7 @@
             set => Set(ref _selected, value);
         }
 
-        private async Task Initialize(TKey selectedId = default(TKey))
+        protected virtual async Task Initialize(TKey selectedId = default(TKey))
         {
             try
             {
@@ -105,7 +105,7 @@
             }
         }
 
-        private async void DoDeleteStewardess()
+        protected virtual async void DoDeleteStewardess()
         {
             if (Selected == null) return;
             var result = await _service.DeleteEntityByIdAsync(Selected.Id);
@@ -119,26 +119,14 @@
             }
         }
 
-        private void DoAddStewardess()
+        protected virtual void DoAddStewardess()
         {
             var e = new TDto();
             Entities.Add(e);
             Selected = e;
-
-            //if (Selected == null) return;
-
-            //var pilot = await _service.CreateEntityAsync(Selected);
-            //if (pilot != null)
-            //{
-            //    await Initialize(pilot.Id);
-            //}
-            //else
-            //{
-            //    await ShowErrorAsync();
-            //}
         }
 
-        private async void DoUpdateStewardess()
+        protected virtual async void DoUpdateStewardess()
         {
             if (Selected == null) return;
 

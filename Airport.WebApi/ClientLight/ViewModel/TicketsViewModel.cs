@@ -1,20 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ClientLight.ViewModel
+﻿namespace ClientLight.ViewModel
 {
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
-
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
 
     public class TicketsViewModel : BaseViewModel<TicketDto, int>
     {
@@ -124,6 +111,7 @@ namespace ClientLight.ViewModel
         public TicketsViewModel(ITicketsService service)
             : base(service)
         {
+            Title = "Tickets Page";
         }
     }
 }

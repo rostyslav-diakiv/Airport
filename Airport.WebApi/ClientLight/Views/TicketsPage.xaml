@@ -75,7 +75,7 @@
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your master content.-->
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,4">
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
-                        Command="{Binding AddTicketCommand}">
+                        Command="{Binding AddEntityCommand}">
                     <Grid>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
@@ -84,7 +84,7 @@
                     </Grid>
                 </Button>
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
-                        Command="{Binding DeleteTicketCommand}">
+                        Command="{Binding DeleteEntityCommand}">
                     <Grid>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
@@ -93,7 +93,7 @@
                     </Grid>
                 </Button>
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
-                        Command="{Binding UpdateTicketCommand}">
+                        Command="{Binding UpdateEntityCommand}">
                     <Grid>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
@@ -105,7 +105,7 @@
             <ListView
                 x:Name="MasterListView"
                 Grid.Row="2"
-                ItemsSource="{Binding Tickets, Mode=TwoWay}"
+                ItemsSource="{Binding Entities, Mode=OneWay}"
                 SelectedItem="{Binding Selected, Mode=TwoWay}"
                 ItemContainerTransitions="{x:Null}"
                 ItemTemplate="{StaticResource MasterListViewItemTemplate}"
@@ -177,10 +177,6 @@
                     </Grid>
                 </ScrollViewer>
             </Grid>
-
-            <!--<views:TicketDetailControl
-                x:Name="DetailControl"
-                MasterMenuItem="{Binding Selected, Mode=OneWay}"/>-->
         </Grid>
 
         <!--  Adaptive triggers  -->

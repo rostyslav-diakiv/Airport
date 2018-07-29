@@ -14,21 +14,15 @@ namespace ClientLight.Services
     using ClientLight.Activation;
     using ClientLight.Helpers;
 
-    //For more information on application activation see https://github.com/Microsoft/WindowsTemplateStudio/blob/master/docs/activation.md
+    using Microsoft.Practices.ServiceLocation;
+    
     internal class ActivationService
     {
         private readonly App _app;
         private readonly UIElement _shell;
         private readonly Type _defaultNavItem;
     
-        private NavigationServiceEx NavigationService
-        {
-            get
-            {
-                return Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-            }
-        }
-        
+        private NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
         public ActivationService(App app, Type defaultNavItem, UIElement shell = null)
         {
@@ -41,14 +35,10 @@ namespace ClientLight.Services
         {
             if (IsInteractive(activationArgs))
             {
-                // Initialize things like registering background task before the app is loaded
                 await InitializeAsync();
                 
-                // Do not repeat app initialization when the Window already has content,
-                // just ensure that the window is active
                 if (Window.Current.Content == null)
                 {
-                    // Create a Frame to act as the navigation context and navigate to the first page
                     Window.Current.Content = _shell;
                     NavigationService.Frame.NavigationFailed += (sender, e) =>
                     {
@@ -77,11 +67,9 @@ namespace ClientLight.Services
                 {
                     await defaultHandler.HandleAsync(activationArgs);
                 }
-
-                // Ensure the current window is active
+                
                 Window.Current.Activate();
-
-                // Tasks after activation
+                
                 await StartupAsync();
             }
         }
@@ -95,7 +83,6 @@ namespace ClientLight.Services
 
         private async Task StartupAsync()
         {
-          //  Singleton<LiveTileService>.Instance.SampleUpdate("");
             ThemeSelectorService.SetRequestedTheme();
             await Task.CompletedTask;
         }
@@ -121,11 +108,9 @@ namespace ClientLight.Services
 
         private void OnAppViewBackButtonRequested(object sender, BackRequestedEventArgs e)
         {
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-                e.Handled = true;
-            }
+            if (!NavigationService.CanGoBack) return;
+            NavigationService.GoBack();
+            e.Handled = true;
         }
     }
 }

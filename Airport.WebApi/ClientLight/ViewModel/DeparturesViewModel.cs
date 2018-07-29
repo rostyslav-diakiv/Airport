@@ -4,8 +4,7 @@
     using ClientLight.Model;
     public class DeparturesViewModel : BaseViewModel<DepartureDto, int>
     {
-        public DeparturesViewModel(IDeparturesService service)
-            : base(service)
+        public DeparturesViewModel(IDeparturesService service) : base(service)
         {
             Title = "Departures Page";
         }

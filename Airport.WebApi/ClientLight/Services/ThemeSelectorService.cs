@@ -14,6 +14,7 @@ namespace ClientLight.Services
         public static event EventHandler<ElementTheme> OnThemeChanged = delegate { };
 
         public static bool IsLightThemeEnabled => Theme == ElementTheme.Light;
+
         public static ElementTheme Theme { get; set; }
 
         public static async Task InitializeAsync()
@@ -33,28 +34,25 @@ namespace ClientLight.Services
             }
         }
 
-        public static async Task SetThemeAsync(ElementTheme theme)
+        public static Task SetThemeAsync(ElementTheme theme)
         {
             Theme = theme;
             SetRequestedTheme();
-            await SaveThemeInSettingsAsync(Theme);
+            return SaveThemeInSettingsAsync(Theme);
         }
 
         public static void SetRequestedTheme()
         {
-            var frameworkElement = Window.Current.Content as FrameworkElement;
-            if (frameworkElement != null)
-            {
-                frameworkElement.RequestedTheme = Theme;
-                OnThemeChanged(null, Theme);
-            }
+            if (!(Window.Current.Content is FrameworkElement frameworkElement)) return;
+            frameworkElement.RequestedTheme = Theme;
+            OnThemeChanged(null, Theme);
         }
 
         private static async Task<ElementTheme> LoadThemeFromSettingsAsync()
         {
             ElementTheme cacheTheme = ElementTheme.Light;
-            string themeName = await ApplicationData.Current.LocalSettings.ReadAsync<string>(SettingsKey);
-            if (String.IsNullOrEmpty(themeName))
+            var themeName = await ApplicationData.Current.LocalSettings.ReadAsync<string>(SettingsKey);
+            if (string.IsNullOrEmpty(themeName))
             {
                 cacheTheme = Application.Current.RequestedTheme == ApplicationTheme.Dark ? ElementTheme.Dark : ElementTheme.Light;
             }
@@ -65,9 +63,9 @@ namespace ClientLight.Services
             return cacheTheme;
         }
 
-        private static async Task SaveThemeInSettingsAsync(ElementTheme theme)
+        private static Task SaveThemeInSettingsAsync(ElementTheme theme)
         {
-            await ApplicationData.Current.LocalSettings.SaveAsync<string>(SettingsKey, theme.ToString());
+                return ApplicationData.Current.LocalSettings.SaveAsync(SettingsKey, theme.ToString());
         }
     }
 }

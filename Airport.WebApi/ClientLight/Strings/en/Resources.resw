@@ -139,7 +139,7 @@
     <value>About this application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>Customer CRUD application sample to show the usage of the Windows Template Studio to create a full UWP application</value>
+    <value>Airport UWP Desctop Client application.</value>
   </data>
   <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
     <value>Privacy Terms</value>

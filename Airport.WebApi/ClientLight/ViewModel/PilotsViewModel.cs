@@ -8,25 +8,15 @@
 
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
-    using ClientLight.Services;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
-    using Microsoft.Practices.ServiceLocation;
 
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
     public class PilotsViewModel : ViewModelBase
     {
-        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-
-        const string NarrowStateName = "NarrowState";
-        const string WideStateName = "WideState";
-
-        private VisualState _currentState;
-
         public ICommand ItemClickCommand { get; private set; }
         public ICommand StateChangedCommand { get; private set; }
         public ICommand AddCustomerCommand { get; }
@@ -46,26 +36,17 @@
         public async Task LoadDataAsync(VisualState currentState)
         {
             await Initialize();
-            _currentState = currentState;
         }
-        
+
         private void OnStateChanged(VisualStateChangedEventArgs args)
         {
-            _currentState = args.NewState;
         }
 
         private void OnItemClick(ItemClickEventArgs args)
         {
             if (args?.ClickedItem is PilotDto item)
             {
-                if (_currentState.Name == NarrowStateName)
-                {
-                    NavigationService.Navigate(typeof(CustomerDetailViewModel).FullName, item);
-                }
-                else
-                {
-                    Selected = item;
-                }
+                Selected = item;
             }
         }
 
@@ -123,7 +104,7 @@
             }
         }
 
-        private async void DoAddCustomer()
+        private void DoAddCustomer()
         {
             var pilot = new PilotDto();
             Customers.Add(pilot);

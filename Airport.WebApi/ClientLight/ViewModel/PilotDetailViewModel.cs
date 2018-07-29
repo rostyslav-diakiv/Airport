@@ -12,19 +12,7 @@
 
     public class PilotDetailViewModel : ViewModelBase
     {
-
-        //public NavigationServiceEx NavigationService
-        //{
-        //    get
-        //    {
-        //        return Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-        //    }
-        //}
-
-        //const string NarrowStateName = "NarrowState";
-        //const string WideStateName = "WideState";
-
-        public ICommand StateChangedCommand { get; private set; }
+        public ICommand StateChangedCommand { get; }
 
         private PilotDto _item;
         public PilotDto Item
@@ -42,10 +30,6 @@
 
         private void OnStateChanged(VisualStateChangedEventArgs args)
         {
-            //if (args?.OldState?.Name == NarrowStateName && args.NewState?.Name == WideStateName)
-            //{
-               // _navigationService.GoBack();
-            //}
         }
     }
 }

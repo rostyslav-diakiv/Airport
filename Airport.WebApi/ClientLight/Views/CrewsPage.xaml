@@ -76,7 +76,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="300" />
+            <ColumnDefinition x:Name="MasterColumn" Width="350" />
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -188,8 +188,6 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
 
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -197,22 +195,15 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBlock Text="Name" VerticalAlignment="Center" Margin="10,0" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Text="Life Time Years" VerticalAlignment="Center" Margin="10,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock Text="Plane Type Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="3" Grid.Column="0"/>
-                        <TextBlock Text="Creation Date" VerticalAlignment="Center" Margin="10,0" Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock Text="Pilot Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Stewardesses Ids" VerticalAlignment="Center" Margin="10,0" Grid.Row="2" Grid.Column="0"/>
 
                         <TextBlock Text="{Binding Selected.Id, Mode=OneWay}" 
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="0" Grid.Column="1"/>
-                        <TextBox Text="{Binding Selected.Name, Mode=TwoWay}" 
+                        <TextBox Text="{Binding Selected.Pilot.Id, Mode=TwoWay}" 
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="1" Grid.Column="1"/>
-                        <TextBox Text="{Binding Selected.LifeTimeAge.Years, Mode=TwoWay}" 
+                        <TextBox Text="{Binding Selected.Pilot.Id, Mode=TwoWay}" 
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="2" Grid.Column="1"/>
-                        <TextBox Text="{Binding Selected.PlaneType.Id, Mode=TwoWay}" 
-                                 VerticalAlignment="Center" Margin="10,5" Grid.Row="3" Grid.Column="1"/>
-                        <CalendarDatePicker Date="{Binding Selected.CreationDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
-                                            VerticalAlignment="Center" Margin="10,5"
-                                            Grid.Row="4" Grid.Column="1"></CalendarDatePicker>
                     </Grid>
                 </ScrollViewer>
 
