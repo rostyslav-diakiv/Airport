@@ -114,14 +114,6 @@
             var s = new StewardessDto();
             Stewardesses.Add(s);
             Selected = s;
-
-            //if (Selected == null) return;
-
-            //var pilot = await _stewService.CreateEntitiesAsync(Selected);
-            //if (pilot != null)
-            //{
-            //    await Initialize(pilot.Id);
-            //}
         }
 
         private async void DoUpdateStewardess()

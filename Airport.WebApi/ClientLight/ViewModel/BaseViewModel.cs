@@ -18,7 +18,7 @@
 
     using Microsoft.Practices.ServiceLocation;
 
-    public class BaseViewModel<TDto, TKey> : ViewModelBase where TDto : IEntity<TKey>
+    public class BaseViewModel<TDto, TKey> : ViewModelBase where TDto : IEntity<TKey>, new()
     {
         public ICommand ItemClickCommand { get; private set; }
 
@@ -119,32 +119,52 @@
             }
         }
 
-        private async void DoAddStewardess()
+        private void DoAddStewardess()
         {
-            if (Selected == null) return;
+            var e = new TDto();
+            Entities.Add(e);
+            Selected = e;
 
-            var pilot = await _service.CreateEntitiesAsync(Selected);
-            if (pilot != null)
-            {
-                await Initialize(pilot.Id);
-            }
-            else
-            {
-                await ShowErrorAsync();
-            }
+            //if (Selected == null) return;
+
+            //var pilot = await _service.CreateEntitiesAsync(Selected);
+            //if (pilot != null)
+            //{
+            //    await Initialize(pilot.Id);
+            //}
+            //else
+            //{
+            //    await ShowErrorAsync();
+            //}
         }
 
         private async void DoUpdateStewardess()
         {
             if (Selected == null) return;
-            var result = await _service.UpdateEntitiesByIdAsync(Selected);
-            if (result)
+
+            if (Selected.Id.Equals(0) || Selected.Id.Equals(string.Empty))
             {
-                await Initialize(Selected.Id);
+                var pilot = await _service.CreateEntitiesAsync(Selected);
+                if (pilot != null)
+                {
+                    await Initialize(pilot.Id);
+                }
+                else
+                {
+                    await ShowErrorAsync();
+                }
             }
             else
             {
-                await ShowErrorAsync();
+                var result = await _service.UpdateEntitiesByIdAsync(Selected);
+                if (result)
+                {
+                    await Initialize(Selected.Id);
+                }
+                else
+                {
+                    await ShowErrorAsync();
+                }
             }
         }
 

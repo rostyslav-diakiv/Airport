@@ -36,25 +36,30 @@ namespace ClientLight.ViewModel
             else
             {
                 SimpleIoc.Default.Register<IDataService, DataService>();
-                SimpleIoc.Default.Register<IPilotsService, PilotService>();
-                SimpleIoc.Default.Register<ITicketsService, TicketsService>();
-                SimpleIoc.Default.Register<IStewardessesService, StewardessesService>();
+
+                SimpleIoc.Default.Register<ICrewsService, CrewsService>();
                 SimpleIoc.Default.Register<IDeparturesService, DeparturesService>();
+                SimpleIoc.Default.Register<IFlightsService, FlightsService>();
+                SimpleIoc.Default.Register<IPilotsService, PilotService>();
+
+                SimpleIoc.Default.Register<IPlanesService, PlanesService>();
+                SimpleIoc.Default.Register<IPlaneTypesService, PlaneTypesService>();
+                SimpleIoc.Default.Register<IStewardessesService, StewardessesService>();
+                SimpleIoc.Default.Register<ITicketsService, TicketsService>();
             }
 
             SimpleIoc.Default.Register(() => _navigationService);
             SimpleIoc.Default.Register<ShellViewModel>();
 
-            Register<TicketsViewModel, TicketsPage>();
-
-            Register<StewardessesViewModel, StewardessesPage>();
+            Register<CrewsViewModel, CrewsPage>();
             Register<DeparturesViewModel, DeparturesPage>();
-
-
-
-
-            Register<PilotsViewModel, PilotsPage>();
+            Register<FlightsViewModel, FlightsPage>();
             Register<PilotDetailViewModel, PilotDetailPage>();
+            Register<PilotsViewModel, PilotsPage>();
+            Register<PlanesViewModel, PlanesPage>();
+            Register<PlaneTypesViewModel, PlaneTypesPage>();
+            Register<StewardessesViewModel, StewardessesPage>();
+            Register<TicketsViewModel, TicketsPage>();
 
             Register<CustomerViewModel, CustomerPage>();
             Register<CustomerDetailViewModel, CustomerDetailPage>();

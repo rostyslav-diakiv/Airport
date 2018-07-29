@@ -125,24 +125,29 @@
 
         private async void DoAddCustomer()
         {
-            if (Selected == null) return;
-
-            var pilot = await _pilotService.CreatePilotAsync(Selected);
-            if (pilot != null)
-            {
-                await Initialize(pilot.Id);
-                //Customers.Add(pilot);
-                //Selected = pilot;
-            }
+            var pilot = new PilotDto();
+            Customers.Add(pilot);
+            Selected = pilot;
         }
 
         private async void DoUpdateCustomer()
         {
             if (Selected == null) return;
-            var result = await _pilotService.UpdatePilotByIdAsync(Selected);
-            if (result)
+            if (Selected.Id == 0)
             {
-                await Initialize(Selected.Id);
+                var dto = await _pilotService.CreatePilotAsync(Selected);
+                if (dto != null)
+                {
+                    await Initialize(dto.Id);
+                }
+            }
+            else
+            {
+                var result = await _pilotService.UpdatePilotByIdAsync(Selected);
+                if (result)
+                {
+                    await Initialize(Selected.Id);
+                }
             }
         }
     }

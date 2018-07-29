@@ -12,12 +12,9 @@ namespace ClientLight.ViewModel
 
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
-    using ClientLight.Services;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
-    using Microsoft.Practices.ServiceLocation;
 
     public class TicketsViewModel : ViewModelBase
     {
@@ -25,10 +22,6 @@ namespace ClientLight.ViewModel
         private TicketDto _selected;
         private ObservableCollection<TicketDto> tickets;
         private string _title = "Tickets Page";
-
-        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-
-        private VisualState _currentState;
 
         public ICommand ItemClickCommand { get; private set; }
         public ICommand StateChangedCommand { get; private set; }
@@ -49,26 +42,18 @@ namespace ClientLight.ViewModel
         public async Task LoadDataAsync(VisualState currentState)
         {
             await Initialize();
-            _currentState = currentState;
         }
 
         private void OnStateChanged(VisualStateChangedEventArgs args)
         {
-            _currentState = args.NewState;
         }
 
         private void OnItemClick(ItemClickEventArgs args)
         {
             if (args?.ClickedItem is TicketDto item)
             {
-                //if (_currentState.Name == NarrowStateName)
-                //{
-                //    NavigationService.Navigate(typeof(CustomerDetailViewModel).FullName, item);
-                //}
-                //else
-                //{
-                    Selected = item;
-                //}
+
+                Selected = item;
             }
         }
         public string Title
@@ -120,20 +105,11 @@ namespace ClientLight.ViewModel
             }
         }
 
-        private async void DoAddTicket()
+        private void DoAddTicket()
         {
             var s = new TicketDto();
             Tickets.Add(s);
             Selected = s;
-            //if (Selected == null) return;
-
-            //var pilot = await _ticketsService.CreateTicketAsync(Selected);
-            //if (pilot != null)
-            //{
-            //    await Initialize(pilot.Id);
-            //    //Tickets.Add(pilot);
-            //    //Selected = pilot;
-            //}
         }
 
         private async void DoUpdateTicket()

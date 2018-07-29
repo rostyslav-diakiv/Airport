@@ -131,11 +131,15 @@ namespace ClientLight.ViewModel
             // More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
             _primaryItems.Add(new ShellNavigationItem("Shell_Customer".GetLocalized(), Symbol.People, typeof(CustomerViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Pilots".GetLocalized(), Symbol.Emoji, typeof(PilotsViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Tickets".GetLocalized(), Symbol.Page, typeof(TicketsViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Stewardesses".GetLocalized(), Symbol.OtherUser, typeof(StewardessesViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Departures".GetLocalized(), Symbol.Map, typeof(DeparturesViewModel).FullName));
 
+            _primaryItems.Add(new ShellNavigationItem("Shell_Crews".GetLocalized(), Symbol.Camera, typeof(CrewsViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Departures".GetLocalized(), Symbol.Map, typeof(DeparturesViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Flights".GetLocalized(), Symbol.Help, typeof(FlightsViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Pilots".GetLocalized(), Symbol.Emoji, typeof(PilotsViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Planes".GetLocalized(), Symbol.Orientation, typeof(PlanesViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_PlaneTypes".GetLocalized(), Symbol.Play, typeof(PlaneTypesViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Stewardesses".GetLocalized(), Symbol.OtherUser, typeof(StewardessesViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Tickets".GetLocalized(), Symbol.Page, typeof(TicketsViewModel).FullName));
 
             // Low bar
             _secondaryItems.Add(new ShellNavigationItem("Shell_Settings".GetLocalized(), Symbol.Setting, typeof(SettingsViewModel).FullName));
