@@ -7,7 +7,7 @@
     {
         public CrewDto() { }
 
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
 
         public PilotDto Pilot { get; set; } = new PilotDto();
 

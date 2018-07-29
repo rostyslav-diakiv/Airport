@@ -8,7 +8,7 @@
     {
         public int Id { get; set; } = 0;
 
-        private float _price = 0;
+        private float _price;
         public float Price
         {
             get => _price;

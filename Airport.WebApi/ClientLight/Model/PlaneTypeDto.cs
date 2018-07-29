@@ -4,12 +4,12 @@
 
     public class PlaneTypeDto : IEntity<int>
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
 
-        public string PlaneModel { get; set; }
+        public string PlaneModel { get; set; } = string.Empty;
 
-        public int MaximalNumberOfPlaces { get; set; }
+        public int MaximalNumberOfPlaces { get; set; } = 0;
 
-        public int MaximalCarryingCapacityKg { get; set; }
+        public int MaximalCarryingCapacityKg { get; set; } = 0;
     }
 }

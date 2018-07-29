@@ -14,12 +14,12 @@
 
         public string Number { get; set; } = string.Empty;
 
-        public string PointOfDeparture { get; set; }
+        public string PointOfDeparture { get; set; } = string.Empty;
 
-        public DateTime DepartureTime { get; set; }
+        public DateTime DepartureTime { get; set; } = DateTime.Now;
 
-        public string Destination { get; set; }
+        public string Destination { get; set; } = string.Empty;
 
-        public DateTime DestinationArrivalTime { get; set; }
+        public DateTime DestinationArrivalTime { get; set; } = DateTime.Now.AddDays(4);
     }
 }

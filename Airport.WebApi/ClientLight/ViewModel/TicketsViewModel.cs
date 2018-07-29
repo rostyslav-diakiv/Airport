@@ -122,15 +122,18 @@ namespace ClientLight.ViewModel
 
         private async void DoAddTicket()
         {
-            if (Selected == null) return;
+            var s = new TicketDto();
+            Tickets.Add(s);
+            Selected = s;
+            //if (Selected == null) return;
 
-            var pilot = await _ticketsService.CreateTicketAsync(Selected);
-            if (pilot != null)
-            {
-                await Initialize(pilot.Id);
-                //Tickets.Add(pilot);
-                //Selected = pilot;
-            }
+            //var pilot = await _ticketsService.CreateTicketAsync(Selected);
+            //if (pilot != null)
+            //{
+            //    await Initialize(pilot.Id);
+            //    //Tickets.Add(pilot);
+            //    //Selected = pilot;
+            //}
         }
 
         private async void DoUpdateTicket()
