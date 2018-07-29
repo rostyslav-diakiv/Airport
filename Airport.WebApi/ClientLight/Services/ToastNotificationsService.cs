@@ -7,7 +7,7 @@ namespace ClientLight.Services
 {
     using ClientLight.Activation;
 
-    internal partial class ToastNotificationsService : ActivationHandler<ToastNotificationActivatedEventArgs>
+    internal class ToastNotificationsService : ActivationHandler<ToastNotificationActivatedEventArgs>
     {
         public void ShowToastNotification(ToastNotification toastNotification)
         {

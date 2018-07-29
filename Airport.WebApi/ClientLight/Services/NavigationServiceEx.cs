@@ -15,26 +15,12 @@ namespace ClientLight.Services
         private Frame _frame;
         public Frame Frame
         {
-            get
-            {
-                if (_frame == null)
-                {
-                    _frame = Window.Current.Content as Frame;
-                }
-
-                return _frame;
-            }
-            set
-            {
-                _frame = value;
-            }
+            get => _frame ?? (_frame = Window.Current.Content as Frame);
+            set => _frame = value;
         }
 
         public bool CanGoBack => Frame.CanGoBack;
-        public bool CanGoForward => Frame.CanGoForward;
-
         public void GoBack() => Frame.GoBack();
-        public void GoForward() => Frame.GoForward();
 
         public bool Navigate(string pageKey, object parameter = null, NavigationTransitionInfo infoOverride = null)
         {
@@ -75,10 +61,8 @@ namespace ClientLight.Services
                 {
                     return _pages.FirstOrDefault(p => p.Value == page).Key;
                 }
-                else
-                {
-                    throw new ArgumentException($"The page '{page.Name}' is unknown by the NavigationService");
-                }
+
+                throw new ArgumentException($"The page '{page.Name}' is unknown by the NavigationService");
             }
         }
     }

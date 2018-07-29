@@ -160,13 +160,17 @@
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Services\ToastNotificationsService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\CrewsViewModel.cs" />
     <Compile Include="ViewModel\CustomerDetailViewModel.cs" />
     <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\DeparturesViewModel.cs" />
+    <Compile Include="ViewModel\FlightsViewModel.cs" />
     <Compile Include="ViewModel\MyPageViewModel.cs" />
     <Compile Include="ViewModel\PilotDetailViewModel.cs" />
     <Compile Include="ViewModel\PilotsViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PlanesViewModel.cs" />
+    <Compile Include="ViewModel\PlaneTypesViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ShellNavigationItem.cs" />
     <Compile Include="ViewModel\ShellViewModel.cs" />
@@ -174,6 +178,9 @@
     <Compile Include="ViewModel\TicketDetailViewModel.cs" />
     <Compile Include="ViewModel\TicketsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\CrewsPage.xaml.cs">
+      <DependentUpon>CrewsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomerDetailControl.xaml.cs">
       <DependentUpon>CustomerDetailControl.xaml</DependentUpon>
     </Compile>
@@ -186,6 +193,9 @@
     <Compile Include="Views\DeparturesPage.xaml.cs">
       <DependentUpon>DeparturesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FlightsPage.xaml.cs">
+      <DependentUpon>FlightsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
@@ -197,6 +207,12 @@
     </Compile>
     <Compile Include="Views\PilotDetailControl.xaml.cs">
       <DependentUpon>PilotDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanesPage.xaml.cs">
+      <DependentUpon>PlanesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlaneTypesPage.xaml.cs">
+      <DependentUpon>PlaneTypesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -250,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\CrewsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CustomerDetailControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -266,6 +286,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FlightsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -279,6 +303,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PilotDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlanesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaneTypesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
