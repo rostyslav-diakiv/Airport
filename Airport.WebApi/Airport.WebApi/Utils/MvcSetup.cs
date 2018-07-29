@@ -11,7 +11,7 @@
     {
         public static Action<MvcJsonOptions> JsonSetupAction = mvcJsonOptions =>
             {
-                mvcJsonOptions.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                mvcJsonOptions.SerializerSettings.ContractResolver = new DefaultContractResolver();
                    // new Newtonsoft.Json.Serialization.DefaultContractResolver();
                 mvcJsonOptions.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 mvcJsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
