@@ -1,25 +1,19 @@
-﻿using Windows.UI.Xaml.Controls;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace ClientLight.Views
 {
     using System;
 
-    using Windows.UI.Xaml.Navigation;
-
     using ClientLight.ViewModel;
 
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class PilotsPage : Page
+    public sealed partial class CustomerPage : Page
     {
-        private PilotsViewModel ViewModel => DataContext as PilotsViewModel;
+        private CustomerViewModel ViewModel => DataContext as CustomerViewModel;
 
-        public PilotsPage()
+        public CustomerPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -34,5 +28,6 @@ namespace ClientLight.Views
                 //                throw;
             }
         }
+
     }
 }

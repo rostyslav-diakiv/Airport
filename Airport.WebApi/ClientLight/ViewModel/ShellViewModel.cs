@@ -1,36 +1,28 @@
-﻿namespace ClientLight.ViewModel
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+
+using Microsoft.Practices.ServiceLocation;
+
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+
+namespace ClientLight.ViewModel
 {
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
-
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Navigation;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
-    using GalaSoft.MvvmLight.Views;
+    using ClientLight.Helpers;
+    using ClientLight.Services;
 
     public class ShellViewModel : ViewModelBase
     {
-        //private const string PanoramicStateName = "PanoramicState";
-        //private const string WideStateName = "WideState";
-        //private const string NarrowStateName = "NarrowState";
+        private const string PanoramicStateName = "PanoramicState";
+        private const string WideStateName = "WideState";
+        private const string NarrowStateName = "NarrowState";
 
-        //public NavigationServiceEx NavigationService
-        //{
-        //    get
-        //    {
-        //        return Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-        //    }
-        //}
-
-        private readonly INavigationService _navigationService;
-        public ShellViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-        }
+        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
         private bool _isPaneOpen;
         public bool IsPaneOpen
@@ -97,7 +89,7 @@
             {
                 if (_stateChangedCommand == null)
                 {
-                    _stateChangedCommand = new RelayCommand<Windows.UI.Xaml.VisualStateChangedEventArgs>(OnStateChanged);
+                    _stateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
                 }
 
                 return _stateChangedCommand;
@@ -108,17 +100,17 @@
         {
             switch (args.NewState.Name)
             {
-                //case PanoramicStateName:
-                //    DisplayMode = SplitViewDisplayMode.CompactInline;
-                //    break;
-                //case WideStateName:
-                //    DisplayMode = SplitViewDisplayMode.CompactInline;
-                //    IsPaneOpen = false;
-                //    break;
-                //case NarrowStateName:
-                //    DisplayMode = SplitViewDisplayMode.Overlay;
-                //    IsPaneOpen = false;
-                //    break;
+                case PanoramicStateName:
+                    DisplayMode = SplitViewDisplayMode.CompactInline;
+                    break;
+                case WideStateName:
+                    DisplayMode = SplitViewDisplayMode.CompactInline;
+                    IsPaneOpen = false;
+                    break;
+                case NarrowStateName:
+                    DisplayMode = SplitViewDisplayMode.Overlay;
+                    IsPaneOpen = false;
+                    break;
                 default:
                     break;
             }
@@ -126,8 +118,8 @@
 
         public void Initialize(Frame frame)
         {
-            // _navigationService.Frame = frame;
-            // NavigationService.Frame.Navigated += NavigationService_Navigated;
+            NavigationService.Frame = frame;
+            NavigationService.Frame.Navigated += NavigationService_Navigated;
             PopulateNavItems();
         }
 
@@ -138,8 +130,11 @@
 
             // More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
-            _primaryItems.Add(new ShellNavigationItem("Shell_Customer", Symbol.People, ViewModelLocator.PilotsPagePageKey));
-            _secondaryItems.Add(new ShellNavigationItem("Shell_Settings", Symbol.Setting, ViewModelLocator.MyPageKey));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Customer".GetLocalized(), Symbol.People, typeof(CustomerViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Pilots".GetLocalized(), Symbol.Emoji, typeof(PilotsViewModel).FullName));
+
+            // Low bar
+            _secondaryItems.Add(new ShellNavigationItem("Shell_Settings".GetLocalized(), Symbol.Setting, typeof(SettingsViewModel).FullName));
         }
 
         private void ItemSelected(ShellNavigationItem e)
@@ -155,18 +150,18 @@
         {
             if (e != null)
             {
-                //var vm = _navigationService.GetNameOfRegisteredPage(e.SourcePageType);
-                //var item = PrimaryItems?.FirstOrDefault(i => i.ViewModelName == vm);
-                //if (item == null)
-                //{
-                //    item = SecondaryItems?.FirstOrDefault(i => i.ViewModelName == vm);
-                //}
+                var vm = NavigationService.GetNameOfRegisteredPage(e.SourcePageType);
+                var item = PrimaryItems?.FirstOrDefault(i => i.ViewModelName == vm);
+                if (item == null)
+                {
+                    item = SecondaryItems?.FirstOrDefault(i => i.ViewModelName == vm);
+                }
 
-                //if (item != null)
-                //{
-                //    ChangeSelected(_lastSelectedItem, item);
-                //    _lastSelectedItem = item;
-                //}
+                if (item != null)
+                {
+                    ChangeSelected(_lastSelectedItem, item);
+                    _lastSelectedItem = item;
+                }
             }
         }
 
@@ -184,10 +179,9 @@
 
         private void Navigate(object item)
         {
-            var navigationItem = item as ShellNavigationItem;
-            if (navigationItem != null)
+            if (item is ShellNavigationItem navigationItem)
             {
-                _navigationService.NavigateTo(navigationItem.ViewModelName);
+                NavigationService.Navigate(navigationItem.ViewModelName);
             }
         }
     }

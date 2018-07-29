@@ -90,6 +90,8 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Activation\ActivationHandler.cs" />
+    <Compile Include="Activation\DefaultLaunchActivationHandler.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -97,12 +99,18 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Enums\PageTokens.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
+    <Compile Include="Helpers\Json.cs" />
+    <Compile Include="Helpers\ResourceExtensions.cs" />
+    <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\Services\IPilotsService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Age.cs" />
     <Compile Include="Model\Country.cs" />
+    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\PilotDto.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
@@ -113,14 +121,31 @@
       <DependentUpon>SecondPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\ActivationService.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\LiveTileService.cs" />
+    <Compile Include="Services\NavigationServiceEx.cs" />
     <Compile Include="Services\PilotService.cs" />
+    <Compile Include="Services\ThemeSelectorService.cs" />
+    <Compile Include="Services\ToastNotificationsService.cs" />
+    <Compile Include="ViewModel\CustomerDetailViewModel.cs" />
+    <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\MyPageViewModel.cs" />
     <Compile Include="ViewModel\PilotDetailViewModel.cs" />
     <Compile Include="ViewModel\PilotsViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ShellNavigationItem.cs" />
     <Compile Include="ViewModel\ShellViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\CustomerDetailControl.xaml.cs">
+      <DependentUpon>CustomerDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerDetailPage.xaml.cs">
+      <DependentUpon>CustomerDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerPage.xaml.cs">
+      <DependentUpon>CustomerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
@@ -133,6 +158,9 @@
     <Compile Include="Views\PilotDetailControl.xaml.cs">
       <DependentUpon>PilotDetailControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +171,7 @@
     </AppxManifest>
     <PRIResource Include="Strings\en\Resources.resw" />
     <PRIResource Include="Resources.resw" />
+    <None Include="Customers.json" />
     <None Include="Win10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +201,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\CustomerDetailControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomerDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -188,9 +229,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ShellPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ShellPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +255,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>

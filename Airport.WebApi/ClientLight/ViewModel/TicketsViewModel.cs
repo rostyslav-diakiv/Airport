@@ -1,12 +1,16 @@
-﻿namespace ClientLight.ViewModel
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ClientLight.ViewModel
 {
-    using System;
     using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows.Input;
 
-    using ClientLight.Helpers;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
+    using ClientLight.Interfaces.Services;
     using ClientLight.Model;
     using ClientLight.Services;
 
@@ -15,17 +19,14 @@
 
     using Microsoft.Practices.ServiceLocation;
 
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-
-    using ClientLight.Interfaces.Services;
-
-    public class PilotsViewModel : ViewModelBase
+    public class TicketsViewModel : ViewModelBase
     {
-        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
+        private readonly IPilotsService _pilotService;
+        private TicketDto _selected;
+        private ObservableCollection<TicketDto> _customers;
+        private string _title = "Tickets Page";
 
-        const string NarrowStateName = "NarrowState";
-        const string WideStateName = "WideState";
+        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
         private VisualState _currentState;
 
@@ -35,7 +36,7 @@
         public ICommand DeleteCustomerCommand { get; }
         public ICommand UpdateCustomerCommand { get; }
 
-        public PilotsViewModel(IPilotsService service)
+        public TicketsViewModel(IPilotsService service)
         {
             _pilotService = service; // new PilotService();
             ItemClickCommand = new RelayCommand<ItemClickEventArgs>(OnItemClick);
@@ -50,7 +51,7 @@
             await Initialize();
             _currentState = currentState;
         }
-        
+
         private void OnStateChanged(VisualStateChangedEventArgs args)
         {
             _currentState = args.NewState;
@@ -58,37 +59,31 @@
 
         private void OnItemClick(ItemClickEventArgs args)
         {
-            if (args?.ClickedItem is PilotDto item)
+            if (args?.ClickedItem is TicketDto item)
             {
-                if (_currentState.Name == NarrowStateName)
-                {
-                    NavigationService.Navigate(typeof(CustomerDetailViewModel).FullName, item);
-                }
-                else
-                {
+                //if (_currentState.Name == NarrowStateName)
+                //{
+                //    NavigationService.Navigate(typeof(CustomerDetailViewModel).FullName, item);
+                //}
+                //else
+                //{
                     Selected = item;
-                }
+                //}
             }
         }
-
-        private readonly IPilotsService _pilotService;
-        private PilotDto _selected;
-
-        private string _title = "Pilots Page";
         public string Title
         {
             get => _title;
             set => Set(ref _title, value);
         }
 
-        private ObservableCollection<PilotDto> _customers;
-        public ObservableCollection<PilotDto> Customers
+        public ObservableCollection<TicketDto> Customers
         {
             get => _customers;
             set => Set(ref _customers, value);
         }
 
-        public PilotDto Selected
+        public TicketDto Selected
         {
             get => _selected;
             set => Set(ref _selected, value);
@@ -98,7 +93,7 @@
         {
             try
             {
-                Customers = new ObservableCollection<PilotDto>();
+                Customers = new ObservableCollection<TicketDto>();
                 var pilots = await _pilotService.GetAllPilots();
 
                 foreach (var p in pilots)

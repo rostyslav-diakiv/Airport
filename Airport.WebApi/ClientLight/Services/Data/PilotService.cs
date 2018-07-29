@@ -1,4 +1,4 @@
-﻿namespace ClientLight.Services
+﻿namespace ClientLight.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -9,10 +9,11 @@
     using Windows.Web.Http.Filters;
 
     using ClientLight.Extensions;
+    using ClientLight.Interfaces.Services;
     using ClientLight.Model;
     using ClientLight.Requests;
 
-    public class PilotService
+    public class PilotService : IPilotsService
     {
         public PilotService() { }
 

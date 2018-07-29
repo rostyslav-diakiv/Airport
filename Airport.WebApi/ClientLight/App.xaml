@@ -10,10 +10,14 @@
              RequestedTheme="Light">
 
     <Application.Resources>
-        
+
+        <ResourceDictionary>
+            <vm:ViewModelLocator x:Key="Locator" />
+        </ResourceDictionary>
+
         <!--Global View Model Locator-->
-        <vm:ViewModelLocator x:Key="Locator"
-                             d:IsDataSource="True" />
+        <!--<vm:ViewModelLocator x:Key="Locator"
+                             d:IsDataSource="True" />-->
         
     </Application.Resources>
 </Application>

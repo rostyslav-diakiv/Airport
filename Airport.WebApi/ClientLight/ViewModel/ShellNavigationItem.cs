@@ -1,11 +1,11 @@
-﻿namespace ClientLight.ViewModel
+using GalaSoft.MvvmLight;
+
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+
+namespace ClientLight.ViewModel
 {
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Media;
-
-    using GalaSoft.MvvmLight;
-
     public class ShellNavigationItem : ViewModelBase
     {
         private bool _isSelected;
@@ -48,6 +48,12 @@
         private SolidColorBrush GetStandardTextColorBrush()
         {
             var result = Application.Current.Resources["SystemControlForegroundBaseHighBrush"] as SolidColorBrush;
+
+            if (!Services.ThemeSelectorService.IsLightThemeEnabled)
+            {
+                result = Application.Current.Resources["SystemControlForegroundAltHighBrush"] as SolidColorBrush;
+            }
+
             return result;
         }
 
@@ -55,7 +61,9 @@
         {
             this.Label = label;
             this.Symbol = symbol;
-            this.ViewModelName = viewModelName; 
+            this.ViewModelName = viewModelName;
+
+            Services.ThemeSelectorService.OnThemeChanged += (s, e) => { if (!IsSelected) SelectedForeground = GetStandardTextColorBrush(); };
         }
     }
 }
