@@ -93,8 +93,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Enums\PageTokens.cs" />
+    <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -106,19 +108,33 @@
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\PilotRequest.cs" />
     <Compile Include="SecondPage.xaml.cs">
       <DependentUpon>SecondPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\PilotService.cs" />
     <Compile Include="ViewModel\MyPageViewModel.cs" />
+    <Compile Include="ViewModel\PilotDetailViewModel.cs" />
     <Compile Include="ViewModel\PilotsViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ShellNavigationItem.cs" />
+    <Compile Include="ViewModel\ShellViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PilotsView.xaml.cs">
-      <DependentUpon>PilotsView.xaml</DependentUpon>
+    <Compile Include="Views\PilotDetailPage.xaml.cs">
+      <DependentUpon>PilotDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PilotsPage.xaml.cs">
+      <DependentUpon>PilotsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PilotDetailControl.xaml.cs">
+      <DependentUpon>PilotDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShellPage.xaml.cs">
+      <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +176,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PilotsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\PilotDetailPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PilotsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PilotDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShellPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -63,7 +63,7 @@ namespace ClientLight.ViewModel
             {
                 return _navigateCommand
                        ?? (_navigateCommand = new RelayCommand<string>(
-                           p => _navigationService.NavigateTo(ViewModelLocator.MyPageKey, p),
+                           p => _navigationService.NavigateTo(ViewModelLocator.PilotsPagePageKey, p),
 
                            // p => _navigationService.NavigateTo(ViewModelLocator.SecondPageKey, p),
                            p => !string.IsNullOrEmpty(p)));

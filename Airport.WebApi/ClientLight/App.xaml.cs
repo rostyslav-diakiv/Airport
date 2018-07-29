@@ -9,8 +9,14 @@ using GalaSoft.MvvmLight.Threading;
 
 namespace ClientLight
 {
+    using ClientLight.Services;
+    using ClientLight.Views;
+
     sealed partial class App
     {
+        private Lazy<ActivationService> _activationService;
+        private ActivationService ActivationService { get { return _activationService.Value; } }
+
         public App()
         {
             InitializeComponent();
@@ -18,12 +24,30 @@ namespace ClientLight
         }
 
         /// <summary>
+        /// Invoked when the application is activated by some means other than normal launching.
+        /// </summary>
+        /// <param name="args">Event data for the event.</param>
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            await ActivationService.ActivateAsync(args);
+        }
+
+        //private ActivationService CreateActivationService()
+        //{
+        //    return new ActivationService(this, typeof(ViewModels.CustomerViewModel), new Views.ShellPage());
+        //}
+
+        /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override  void OnLaunched(LaunchActivatedEventArgs e)
         {
+            //if (!e.PrelaunchActivated)
+            //{
+            //    await ActivationService.ActivateAsync(e);
+            //}
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
