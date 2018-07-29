@@ -5,12 +5,12 @@
 
     public interface IService<TDto, TKey>
     {
-        Task<IEnumerable<TDto>> GetAllEntities();
+        Task<IEnumerable<TDto>> GetAllEntitiesAsync();
 
-        Task<TDto> CreateEntitiesAsync(TDto dto);
+        Task<TDto> CreateEntityAsync(TDto dto);
 
-        Task<bool> UpdateEntitiesByIdAsync(TDto dto);
+        Task<bool> UpdateEntityByIdAsync(TDto dto);
 
-        Task<bool> DeleteEntitiesByIdAsync(TKey id);
+        Task<bool> DeleteEntityByIdAsync(TKey id);
     }
 }

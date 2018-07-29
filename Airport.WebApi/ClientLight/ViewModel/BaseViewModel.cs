@@ -88,7 +88,7 @@
             try
             {
                 Entities = new ObservableCollection<TDto>();
-                var en = await _service.GetAllEntities();
+                var en = await _service.GetAllEntitiesAsync();
 
                 foreach (var e in en)
                 {
@@ -108,7 +108,7 @@
         private async void DoDeleteStewardess()
         {
             if (Selected == null) return;
-            var result = await _service.DeleteEntitiesByIdAsync(Selected.Id);
+            var result = await _service.DeleteEntityByIdAsync(Selected.Id);
             if (result)
             {
                 await Initialize();
@@ -127,7 +127,7 @@
 
             //if (Selected == null) return;
 
-            //var pilot = await _service.CreateEntitiesAsync(Selected);
+            //var pilot = await _service.CreateEntityAsync(Selected);
             //if (pilot != null)
             //{
             //    await Initialize(pilot.Id);
@@ -144,7 +144,7 @@
 
             if (Selected.Id.Equals(0) || Selected.Id.Equals(string.Empty))
             {
-                var pilot = await _service.CreateEntitiesAsync(Selected);
+                var pilot = await _service.CreateEntityAsync(Selected);
                 if (pilot != null)
                 {
                     await Initialize(pilot.Id);
@@ -156,7 +156,7 @@
             }
             else
             {
-                var result = await _service.UpdateEntitiesByIdAsync(Selected);
+                var result = await _service.UpdateEntityByIdAsync(Selected);
                 if (result)
                 {
                     await Initialize(Selected.Id);

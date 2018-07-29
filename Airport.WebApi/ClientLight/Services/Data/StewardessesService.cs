@@ -11,26 +11,26 @@
     {
         public const string Ctrl_Name = "Stewardesses";
 
-        public Task<IEnumerable<StewardessDto>> GetAllEntities()
+        public Task<IEnumerable<StewardessDto>> GetAllEntitiesAsync()
         {
             return base.GetAllEntities(Ctrl_Name);
         }
 
-        public Task<StewardessDto> CreateEntitiesAsync(StewardessDto dto)
+        public Task<StewardessDto> CreateEntityAsync(StewardessDto dto)
         {
             var request = new StewardessRequest(dto);
 
             return base.CreateEntitiesAsync(request, Ctrl_Name);
         }
 
-        public Task<bool> UpdateEntitiesByIdAsync(StewardessDto dto)
+        public Task<bool> UpdateEntityByIdAsync(StewardessDto dto)
         {
             var request = new StewardessRequest(dto);
 
             return base.UpdateEntitiesByIdAsync(request, dto.Id, Ctrl_Name);
         }
 
-        public Task<bool> DeleteEntitiesByIdAsync(int id)
+        public Task<bool> DeleteEntityByIdAsync(int id)
         {
             return base.DeleteEntitiesByIdAsync(id, Ctrl_Name);
         }

@@ -84,7 +84,7 @@
             try
             {
                 Stewardesses = new ObservableCollection<StewardessDto>();
-                var pilots = await _stewService.GetAllEntities();
+                var pilots = await _stewService.GetAllEntitiesAsync();
 
                 foreach (var p in pilots)
                 {
@@ -102,7 +102,7 @@
         private async void DoDeleteStewardess()
         {
             if (Selected == null) return;
-            var result = await _stewService.DeleteEntitiesByIdAsync(Selected.Id);
+            var result = await _stewService.DeleteEntityByIdAsync(Selected.Id);
             if (result)
             {
                 await Initialize();
@@ -121,7 +121,7 @@
             if (Selected == null) return;
             if (Selected.Id == 0)
             {
-                var dto = await _stewService.CreateEntitiesAsync(Selected);
+                var dto = await _stewService.CreateEntityAsync(Selected);
                 if (dto != null)
                 {
                     await Initialize(dto.Id);
@@ -129,7 +129,7 @@
             }
             else
             {
-                var result = await _stewService.UpdateEntitiesByIdAsync(Selected);
+                var result = await _stewService.UpdateEntityByIdAsync(Selected);
                 if (result)
                 {
                     await Initialize(Selected.Id);

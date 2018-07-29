@@ -5,27 +5,34 @@
 
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
+    using ClientLight.Requests;
 
-    public class PlaneTypesService : IPlaneTypesService
+    public class PlaneTypesService : BaseService<PlaneTypeDto, PlaneTypeRequest, int>, IPlaneTypesService
     {
-        public Task<IEnumerable<PlaneTypeDto>> GetAllEntities()
+        public const string Ctrl_Name = "PlaneTypes";
+
+        public Task<IEnumerable<PlaneTypeDto>> GetAllEntitiesAsync()
         {
-            throw new System.NotImplementedException();
+            return base.GetAllEntities(Ctrl_Name);
         }
 
-        public Task<PlaneTypeDto> CreateEntitiesAsync(PlaneTypeDto dto)
+        public Task<PlaneTypeDto> CreateEntityAsync(PlaneTypeDto dto)
         {
-            throw new System.NotImplementedException();
+            var request = new PlaneTypeRequest(dto);
+
+            return base.CreateEntitiesAsync(request, Ctrl_Name);
         }
 
-        public Task<bool> UpdateEntitiesByIdAsync(PlaneTypeDto dto)
+        public Task<bool> UpdateEntityByIdAsync(PlaneTypeDto dto)
         {
-            throw new System.NotImplementedException();
+            var request = new PlaneTypeRequest(dto);
+
+            return base.UpdateEntitiesByIdAsync(request, dto.Id, Ctrl_Name);
         }
 
-        public Task<bool> DeleteEntitiesByIdAsync(int id)
+        public Task<bool> DeleteEntityByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return base.DeleteEntitiesByIdAsync(id, Ctrl_Name);
         }
     }
 }
