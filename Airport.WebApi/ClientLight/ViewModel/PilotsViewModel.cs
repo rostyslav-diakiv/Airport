@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    using ClientLight.Helpers;
+    using ClientLight.Interfaces.Services;
     using ClientLight.Model;
     using ClientLight.Services;
 
@@ -17,8 +17,6 @@
 
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
-
-    using ClientLight.Interfaces.Services;
 
     public class PilotsViewModel : ViewModelBase
     {

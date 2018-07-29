@@ -2,9 +2,11 @@
 {
     using System;
 
+    using ClientLight.Interfaces;
+
     using GalaSoft.MvvmLight;
 
-    public class PilotDto : ViewModelBase
+    public class PilotDto : ViewModelBase, IEntity<int>
     {
         public PilotDto() { }
 

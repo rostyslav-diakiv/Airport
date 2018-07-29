@@ -12,13 +12,13 @@ namespace ClientLight.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TicketsPage : Page
+    public sealed partial class StewardessesPage : Page
     {
-        private TicketsViewModel ViewModel => DataContext as TicketsViewModel;
+        private StewardessesViewModel ViewModel => DataContext as StewardessesViewModel;
 
-        public TicketsPage()
+        public StewardessesPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

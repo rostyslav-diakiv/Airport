@@ -1,10 +1,18 @@
 ﻿namespace ClientLight.Model
 {
     using System;
-    
-    public class FlightDto
+
+    using ClientLight.Interfaces;
+
+    public class FlightDto : IEntity<string>
     {
-        public string Number { get; set; }
+        public string Id
+        {
+            get => Number;
+            set => Number = value;
+        }
+
+        public string Number { get; set; } = string.Empty;
 
         public string PointOfDeparture { get; set; }
 

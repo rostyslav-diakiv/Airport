@@ -11,8 +11,8 @@
 
         public DateTime CreationDate { get; set; }
 
-        public Age LifeTimeAge { get; set; }
+        public Age LifeTimeAge { get; set; } = new Age();
 
-        public PlaneTypeDto PlaneType { get; set; }
+        public PlaneTypeDto PlaneType { get; set; } = new PlaneTypeDto();
     }
 }

@@ -132,6 +132,10 @@ namespace ClientLight.ViewModel
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
             _primaryItems.Add(new ShellNavigationItem("Shell_Customer".GetLocalized(), Symbol.People, typeof(CustomerViewModel).FullName));
             _primaryItems.Add(new ShellNavigationItem("Shell_Pilots".GetLocalized(), Symbol.Emoji, typeof(PilotsViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Tickets".GetLocalized(), Symbol.Page, typeof(TicketsViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Stewardesses".GetLocalized(), Symbol.OtherUser, typeof(StewardessesViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Departures".GetLocalized(), Symbol.Map, typeof(DeparturesViewModel).FullName));
+
 
             // Low bar
             _secondaryItems.Add(new ShellNavigationItem("Shell_Settings".GetLocalized(), Symbol.Setting, typeof(SettingsViewModel).FullName));

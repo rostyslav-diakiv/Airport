@@ -21,9 +21,9 @@ namespace ClientLight.ViewModel
 
     public class TicketsViewModel : ViewModelBase
     {
-        private readonly IPilotsService _pilotService;
+        private readonly ITicketsService _ticketsService;
         private TicketDto _selected;
-        private ObservableCollection<TicketDto> _customers;
+        private ObservableCollection<TicketDto> tickets;
         private string _title = "Tickets Page";
 
         public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
@@ -32,18 +32,18 @@ namespace ClientLight.ViewModel
 
         public ICommand ItemClickCommand { get; private set; }
         public ICommand StateChangedCommand { get; private set; }
-        public ICommand AddCustomerCommand { get; }
-        public ICommand DeleteCustomerCommand { get; }
-        public ICommand UpdateCustomerCommand { get; }
+        public ICommand AddTicketCommand { get; }
+        public ICommand DeleteTicketCommand { get; }
+        public ICommand UpdateTicketCommand { get; }
 
-        public TicketsViewModel(IPilotsService service)
+        public TicketsViewModel(ITicketsService service)
         {
-            _pilotService = service; // new PilotService();
+            _ticketsService = service;
             ItemClickCommand = new RelayCommand<ItemClickEventArgs>(OnItemClick);
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
-            AddCustomerCommand = new RelayCommand(DoAddCustomer);
-            DeleteCustomerCommand = new RelayCommand(DoDeleteCustomer);
-            UpdateCustomerCommand = new RelayCommand(DoUpdateCustomer);
+            AddTicketCommand = new RelayCommand(DoAddTicket);
+            DeleteTicketCommand = new RelayCommand(DoDeleteTicket);
+            UpdateTicketCommand = new RelayCommand(DoUpdateTicket);
         }
 
         public async Task LoadDataAsync(VisualState currentState)
@@ -77,10 +77,10 @@ namespace ClientLight.ViewModel
             set => Set(ref _title, value);
         }
 
-        public ObservableCollection<TicketDto> Customers
+        public ObservableCollection<TicketDto> Tickets
         {
-            get => _customers;
-            set => Set(ref _customers, value);
+            get => tickets;
+            set => Set(ref tickets, value);
         }
 
         public TicketDto Selected
@@ -93,15 +93,15 @@ namespace ClientLight.ViewModel
         {
             try
             {
-                Customers = new ObservableCollection<TicketDto>();
-                var pilots = await _pilotService.GetAllPilots();
+                Tickets = new ObservableCollection<TicketDto>();
+                var pilots = await _ticketsService.GetAllTicketsAsync();
 
                 foreach (var p in pilots)
                 {
-                    Customers.Add(p);
+                    Tickets.Add(p);
                 }
 
-                Selected = Customers.FirstOrDefault(p => p.Id == selectedId);
+                Selected = Tickets.FirstOrDefault(p => p.Id == selectedId);
             }
             catch (Exception ex)
             {
@@ -110,33 +110,33 @@ namespace ClientLight.ViewModel
             }
         }
 
-        private async void DoDeleteCustomer()
+        private async void DoDeleteTicket()
         {
             if (Selected == null) return;
-            var result = await _pilotService.DeletePilotByIdAsync(Selected.Id);
+            var result = await _ticketsService.DeleteTicketByIdAsync(Selected.Id);
             if (result)
             {
                 await Initialize();
             }
         }
 
-        private async void DoAddCustomer()
+        private async void DoAddTicket()
         {
             if (Selected == null) return;
 
-            var pilot = await _pilotService.CreatePilotAsync(Selected);
+            var pilot = await _ticketsService.CreateTicketAsync(Selected);
             if (pilot != null)
             {
                 await Initialize(pilot.Id);
-                //Customers.Add(pilot);
+                //Tickets.Add(pilot);
                 //Selected = pilot;
             }
         }
 
-        private async void DoUpdateCustomer()
+        private async void DoUpdateTicket()
         {
             if (Selected == null) return;
-            var result = await _pilotService.UpdatePilotByIdAsync(Selected);
+            var result = await _ticketsService.UpdateTicketByIdAsync(Selected);
             if (result)
             {
                 await Initialize(Selected.Id);

@@ -11,6 +11,7 @@ namespace ClientLight.ViewModel
     using ClientLight.Views;
 
     using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Views;
 
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -26,6 +27,7 @@ namespace ClientLight.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            SimpleIoc.Default.Register<IDialogService, DialogService>();
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
@@ -36,12 +38,19 @@ namespace ClientLight.ViewModel
                 SimpleIoc.Default.Register<IDataService, DataService>();
                 SimpleIoc.Default.Register<IPilotsService, PilotService>();
                 SimpleIoc.Default.Register<ITicketsService, TicketsService>();
+                SimpleIoc.Default.Register<IStewardessesService, StewardessesService>();
+                SimpleIoc.Default.Register<IDeparturesService, DeparturesService>();
             }
 
             SimpleIoc.Default.Register(() => _navigationService);
             SimpleIoc.Default.Register<ShellViewModel>();
 
             Register<TicketsViewModel, TicketsPage>();
+
+            Register<StewardessesViewModel, StewardessesPage>();
+            Register<DeparturesViewModel, DeparturesPage>();
+
+
 
 
             Register<PilotsViewModel, PilotsPage>();
@@ -54,6 +63,10 @@ namespace ClientLight.ViewModel
 
         public PilotDetailViewModel PilotDetailViewModel => ServiceLocator.Current.GetInstance<PilotDetailViewModel>();
         public PilotsViewModel PilotsViewModel => ServiceLocator.Current.GetInstance<PilotsViewModel>();
+
+        public TicketsViewModel TicketsViewModel => ServiceLocator.Current.GetInstance<TicketsViewModel>();
+        public StewardessesViewModel StewardessesViewModel => ServiceLocator.Current.GetInstance<StewardessesViewModel>();
+        public DeparturesViewModel DeparturesViewModel => ServiceLocator.Current.GetInstance<DeparturesViewModel>();
 
 
         public CustomerDetailViewModel CustomerDetailViewModel => ServiceLocator.Current.GetInstance<CustomerDetailViewModel>();

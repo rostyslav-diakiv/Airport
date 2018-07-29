@@ -96,39 +96,73 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Enums\PageTokens.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
+    <Compile Include="Helpers\FilterProvider.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\Services\ICrewsService.cs" />
+    <Compile Include="Interfaces\Services\IDeparturesService.cs" />
+    <Compile Include="Interfaces\Services\IFlightsService.cs" />
     <Compile Include="Interfaces\Services\IPilotsService.cs" />
+    <Compile Include="Interfaces\Services\IPlanesService.cs" />
+    <Compile Include="Interfaces\Services\IPlaneTypesService.cs" />
+    <Compile Include="Interfaces\Services\IService.cs" />
+    <Compile Include="Interfaces\Services\IStewardessesService.cs" />
+    <Compile Include="Interfaces\Services\ITicketsService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Age.cs" />
     <Compile Include="Model\Country.cs" />
+    <Compile Include="Model\CrewDto.cs" />
     <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\DepartureDto.cs" />
+    <Compile Include="Model\FlightDto.cs" />
     <Compile Include="Model\PilotDto.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Model\PlaneDto.cs" />
+    <Compile Include="Model\PlaneTypeDto.cs" />
+    <Compile Include="Model\StewardessDto.cs" />
+    <Compile Include="Model\TicketDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\CrewRequest.cs" />
+    <Compile Include="Requests\DepartureRequest.cs" />
+    <Compile Include="Requests\FlightRequest.cs" />
     <Compile Include="Requests\PilotRequest.cs" />
+    <Compile Include="Requests\PlaneRequest.cs" />
+    <Compile Include="Requests\PlaneTypeRequest.cs" />
+    <Compile Include="Requests\StewardessRequest.cs" />
+    <Compile Include="Requests\TicketRequest.cs" />
     <Compile Include="SecondPage.xaml.cs">
       <DependentUpon>SecondPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\Data\BaseService.cs" />
+    <Compile Include="Services\Data\CrewsService.cs" />
+    <Compile Include="Services\Data\DeparturesService.cs" />
+    <Compile Include="Services\Data\FlightsService.cs" />
+    <Compile Include="Services\Data\PlanesService.cs" />
+    <Compile Include="Services\Data\PlaneTypesService.cs" />
+    <Compile Include="Services\Data\StewardessesService.cs" />
+    <Compile Include="Services\Data\TicketsService.cs" />
     <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\NavigationServiceEx.cs" />
-    <Compile Include="Services\PilotService.cs" />
+    <Compile Include="Services\Data\PilotService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Services\ToastNotificationsService.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CustomerDetailViewModel.cs" />
     <Compile Include="ViewModel\CustomerViewModel.cs" />
+    <Compile Include="ViewModel\DeparturesViewModel.cs" />
     <Compile Include="ViewModel\MyPageViewModel.cs" />
     <Compile Include="ViewModel\PilotDetailViewModel.cs" />
     <Compile Include="ViewModel\PilotsViewModel.cs" />
@@ -136,6 +170,9 @@
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ShellNavigationItem.cs" />
     <Compile Include="ViewModel\ShellViewModel.cs" />
+    <Compile Include="ViewModel\StewardessesViewModel.cs" />
+    <Compile Include="ViewModel\TicketDetailViewModel.cs" />
+    <Compile Include="ViewModel\TicketsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\CustomerDetailControl.xaml.cs">
       <DependentUpon>CustomerDetailControl.xaml</DependentUpon>
@@ -145,6 +182,9 @@
     </Compile>
     <Compile Include="Views\CustomerPage.xaml.cs">
       <DependentUpon>CustomerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DeparturesPage.xaml.cs">
+      <DependentUpon>DeparturesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
@@ -163,6 +203,15 @@
     </Compile>
     <Compile Include="Views\ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StewardessesPage.xaml.cs">
+      <DependentUpon>StewardessesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TicketDetailControl.xaml.cs">
+      <DependentUpon>TicketDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TicketsPage.xaml.cs">
+      <DependentUpon>TicketsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\DeparturesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -236,6 +289,18 @@
     <Page Include="Views\ShellPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\StewardessesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TicketDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TicketsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -62,7 +62,7 @@
 
             using (var client = new HttpClient(FilterProvider.GetFilter()))
             {
-                var response = await client.PutAsJsonAsync(new Uri($"http://localhost:10297/api/Pilots/{ticketDto.Id}"), request);
+                var response = await client.PutAsJsonAsync(new Uri($"http://localhost:10297/api/Tickets/{ticketDto.Id}"), request);
 
                 return response.IsSuccessStatusCode;
             }
@@ -72,7 +72,7 @@
         {
             using (var client = new HttpClient(FilterProvider.GetFilter()))
             {
-                var response = await client.DeleteAsync(new Uri($"http://localhost:10297/api/Pilots/{id}"));
+                var response = await client.DeleteAsync(new Uri($"http://localhost:10297/api/Tickets/{id}"));
 
                 return response.IsSuccessStatusCode;
             }

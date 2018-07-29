@@ -9,8 +9,8 @@
 
         public int Id { get; set; }
 
-        public PilotDto Pilot { get; set; }
+        public PilotDto Pilot { get; set; } = new PilotDto();
 
-        public IEnumerable<StewardessDto> Stewardesses{ get; set; }
+        public IEnumerable<StewardessDto> Stewardesses { get; set; } = new List<StewardessDto>();
     }
 }

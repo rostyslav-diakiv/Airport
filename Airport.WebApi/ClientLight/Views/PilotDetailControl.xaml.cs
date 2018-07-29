@@ -12,8 +12,8 @@ namespace ClientLight.Views
     {
         public PilotDto MasterMenuItem
         {
-            get { return GetValue(MasterMenuItemProperty) as PilotDto; }
-            set { SetValue(MasterMenuItemProperty, value); }
+            get => GetValue(MasterMenuItemProperty) as PilotDto;
+            set => SetValue(MasterMenuItemProperty, value);
         }
 
         public static DependencyProperty MasterMenuItemProperty = DependencyProperty.Register(

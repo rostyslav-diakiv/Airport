@@ -10,10 +10,10 @@
         
         public DateTime DepartureTime { get; set; }
 
-        public FlightDto Flight { get; set; }
+        public FlightDto Flight { get; set; } = new FlightDto();
 
         public int CrewId { get; set; }
 
-        public PlaneDto Plane { get; set; }
+        public PlaneDto Plane { get; set; } = new PlaneDto();
     }
 }

@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
 
     using ClientLight.Model;
-    using ClientLight.Services;
+    using ClientLight.Services.Data;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Views;
@@ -13,7 +13,6 @@
     public class MyPageViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
-        private readonly INavigationService _navigationService;
         private PilotService _pilotService;
 
         public MyPageViewModel(
@@ -21,7 +20,6 @@
             INavigationService navigationService)
         {
             _dataService = dataService;
-            _navigationService = navigationService;
              Initialize();
         }
 

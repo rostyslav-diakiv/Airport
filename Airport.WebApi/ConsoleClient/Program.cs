@@ -2,6 +2,7 @@
 
 namespace ConsoleClient
 {
+    using System.ComponentModel;
     using System.Net.Http;
     using System.Threading;
 
@@ -9,6 +10,12 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
+            var a = 4.00M;
+            var b = string.Format("{0}.00", a);
+
+            Console.WriteLine(b);
+            Console.ReadKey();
+
             Thread.Sleep(20000);
             using (var handler = new HttpClientHandler())
             using (var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5000/api/") })
@@ -22,8 +29,6 @@ namespace ConsoleClient
                     serializedPilots = crewsTask.Content.ReadAsStringAsync().Result;
                     Console.WriteLine(serializedPilots);
                 }
-
-           
 
                 // var pilotDtos = JsonConvert.DeserializeObject<List<PilotDto>>(serializedPilots);
 
