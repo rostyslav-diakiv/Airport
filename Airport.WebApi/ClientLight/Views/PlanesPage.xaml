@@ -110,16 +110,16 @@
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding AddEntityCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE709;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="8" Foreground="Red" />
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="8" Foreground="Green" />
                         </Grid>
                     </Grid>
                 </Button>
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding DeleteEntityCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE709;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE738;" FontSize="8" Foreground="Red" />
                         </Grid>
@@ -128,9 +128,9 @@
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding UpdateEntityCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE709;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74e;" FontSize="8" Foreground="Red" />
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74e;" FontSize="8" Foreground="Blue" />
                         </Grid>
                     </Grid>
                 </Button>

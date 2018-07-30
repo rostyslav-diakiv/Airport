@@ -94,19 +94,20 @@
 
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your master content.-->
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,4">
+                                   
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding AddCustomerCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="8" Foreground="Red" />
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" FontSize="8" Foreground="Green" />
                         </Grid>
                     </Grid>
                 </Button>
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding DeleteCustomerCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE738;" FontSize="8" Foreground="Red" />
                         </Grid>
@@ -115,9 +116,9 @@
                 <Button Width="48" Height="48" BorderThickness="0" Background="Transparent" 
                         Command="{Binding UpdateCustomerCommand}">
                     <Grid>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="16"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77b;" FontSize="24"/>
                         <Grid Background="White" Margin="16,16,0,0" Width="8" Height="8">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74e;" FontSize="8" Foreground="Red" />
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74e;" FontSize="8" Foreground="Blue" />
                         </Grid>
                     </Grid>
                 </Button>
