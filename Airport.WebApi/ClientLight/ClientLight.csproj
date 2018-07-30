@@ -115,6 +115,7 @@
     <Compile Include="Interfaces\Services\ITicketsService.cs" />
     <Compile Include="Model\Age.cs" />
     <Compile Include="Model\CrewDto.cs" />
+    <Compile Include="Model\CrewVmDto.cs" />
     <Compile Include="Model\DepartureDto.cs" />
     <Compile Include="Model\FlightDto.cs" />
     <Compile Include="Model\PilotDto.cs" />

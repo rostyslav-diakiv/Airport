@@ -18,7 +18,7 @@
         </TransitionCollection>
     </Page.Transitions>
     <Page.Resources>
-        <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:CrewDto">
+        <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:CrewVmDto">
             <Grid Margin="12,12,12,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width = "Auto" />
@@ -32,7 +32,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock 
                     Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="0"
                     Text="#" 
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
 
@@ -202,7 +202,7 @@
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="0" Grid.Column="1"/>
                         <TextBox Text="{Binding Selected.Pilot.Id, Mode=TwoWay}" 
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="1" Grid.Column="1"/>
-                        <TextBox Text="{Binding Selected.Pilot.Id, Mode=TwoWay}" 
+                        <TextBox Text="{Binding Selected.StewardessesIds, Mode=TwoWay}" 
                          VerticalAlignment="Center" Margin="10,5" Grid.Row="2" Grid.Column="1"/>
                     </Grid>
                 </ScrollViewer>

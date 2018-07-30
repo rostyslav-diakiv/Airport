@@ -2,7 +2,7 @@
 {
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
-    public class CrewsViewModel : BaseViewModel<CrewDto, int>
+    public class CrewsViewModel : BaseViewModel<CrewVmDto, int>
     {
         public CrewsViewModel(ICrewsService service) : base(service)
         {
