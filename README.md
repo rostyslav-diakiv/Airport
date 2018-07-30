@@ -1,15 +1,24 @@
 # Airport
 HomeTask #11. BSA 2018. .Net stream
 
-To be able to use Desctop client you should download the latest version of Web API project:
+To be able to use Desktop client you should download the latest version of Web API project:
 
 ## Web API project
  - Download Airport WEB API project, branch: UWP-feature from:
  - https://github.com/rostyslav-diakiv/Airport/tree/UWP-feature
  - Use IIS as a web server, or if you want use Kestrel, change the configuration(url) of Desctop Client in: BaseService.cs
 
-## Desctop client project
- - Click Run =)
+## Desktop client project
+ - Желательно запускать на Винде обновленной до последней версии)
+
+ ## Important about buttons above the lists of entities
+ ### button: + (Create)
+    - Creates empty entity localy in Collection
+ ### button - (Delete)
+    - Deletes selected Entity
+ ### button [] (Save, Store, Edit)
+    - If you selected already existing item and save changes you made it updates this entity
+    - If you created empty entity in local collection, filled the empty from then it will create new Entity with your data
 
 #11 Task Description
 
