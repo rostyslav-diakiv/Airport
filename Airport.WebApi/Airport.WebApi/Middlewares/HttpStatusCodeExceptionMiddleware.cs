@@ -48,7 +48,14 @@ namespace Airport.WebApi.Middlewares
 
                 if (ex is HttpStatusCodeException httpException)
                 {
-                    context.Response.StatusCode = (int)httpException.StatusCode;
+                    if (httpException.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        context.Response.StatusCode = 452; // Custom status core for Client reasons
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = (int)httpException.StatusCode;
+                    }
                     context.Response.ContentType = httpException.ContentType;
                 }
                 else
@@ -58,7 +65,7 @@ namespace Airport.WebApi.Middlewares
                     _logger.LogError(0, ex, "An unhandled exception has occurred: " + ex.Message);
                 }
 
-                var result = JsonConvert.SerializeObject(new {error = ex.Message});
+                var result = JsonConvert.SerializeObject(new ErrorResponse(ex.Message));
 
                 await context.Response.WriteAsync(result);
             }

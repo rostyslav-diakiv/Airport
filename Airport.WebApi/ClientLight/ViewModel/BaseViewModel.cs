@@ -18,6 +18,8 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
+    using ClientLight.Exceptions;
+
     public class BaseViewModel<TDto, TKey> : ViewModelBase where TDto : IEntity<TKey>, new()
     {
         public virtual ICommand ItemClickCommand { get; private set; }
@@ -101,7 +103,6 @@
             {
                 var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
                 await dialog.ShowMessage(ex.Message, "Error occurred");
-                Title = ex.Message;
             }
         }
 
@@ -159,6 +160,20 @@
                         await ShowMessageAsync();
                     }
                 }
+            }
+            catch (ModelStateException modelStateException)
+            {
+                var mess = string.Empty;
+                foreach (var key in modelStateException.ModelErrors.Keys)
+                {
+                    mess += $"{key}: {string.Join(", \n", modelStateException.ModelErrors[key])} \n";
+                }
+
+                await ShowMessageAsync(mess, "Model state invalid!");
+            }
+            catch (HttpStatusCodeException httpException)
+            {
+                await ShowMessageAsync($"{httpException.StatusCode}\n {httpException.Message}", "Model state invalid!");
             }
             catch (Exception e)
             {

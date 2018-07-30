@@ -9,6 +9,10 @@
 
     using Windows.Web.Http;
 
+    using ClientLight.Exceptions;
+
+    using Newtonsoft.Json;
+
     public abstract class BaseService<TDto, TRequest, TKey> 
     {
         public virtual async Task<IEnumerable<TDto>> GetAllEntities(string ctrl)
@@ -31,7 +35,10 @@
             {
                 var response = await client.PostAsJsonAsync(new Uri($"http://localhost:10297/api/{ctrl}"), request);
 
-                if (!response.IsSuccessStatusCode) return default(TDto);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return await OperateNonSuccessfullStatusCode(response);
+                }
 
                 var dto = await response.Content.ReadAsJsonAsync<TDto>();
 
@@ -45,6 +52,11 @@
             {
                 var response = await client.PutAsJsonAsync(new Uri($"http://localhost:10297/api/{ctrl}/{id}"), request);
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    await OperateNonSuccessfullStatusCode(response);
+                }
+
                 return response.IsSuccessStatusCode;
             }
         }
@@ -57,6 +69,28 @@
 
                 return response.IsSuccessStatusCode;
             }
+        }
+
+        protected async Task<TDto> OperateNonSuccessfullStatusCode(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                var deserializedErrors = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
+
+                throw new ModelStateException(HttpStatusCode.BadRequest, deserializedErrors);
+            }
+            else if ((int)response.StatusCode == 452)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(content);
+
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorResponse.ErrorMessage);
+            }
+
+            return default(TDto);
         }
     }
 }

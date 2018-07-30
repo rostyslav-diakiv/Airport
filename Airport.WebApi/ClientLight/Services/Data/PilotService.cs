@@ -4,16 +4,16 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Windows.Security.Cryptography.Certificates;
-    using Windows.Web.Http;
-    using Windows.Web.Http.Filters;
-
     using ClientLight.Extensions;
     using ClientLight.Interfaces.Services;
     using ClientLight.Model;
     using ClientLight.Requests;
 
-    public class PilotService : IPilotsService
+    using Windows.Security.Cryptography.Certificates;
+    using Windows.Web.Http;
+    using Windows.Web.Http.Filters;
+
+    public class PilotService : BaseService<PilotDto, PilotRequest, int>, IPilotsService
     {
         public PilotService() { }
 
@@ -27,9 +27,7 @@
             using (var client = new HttpClient(filter))
             {
                 HttpResponseMessage msg = await client.GetAsync(new Uri("http://localhost:10297/api/Pilots"));
-
-                // HttpResponseMessage msg = await client.GetAsync(new Uri("https://localhost:5001/api/Pilots"));
-
+                
                 if (!msg.IsSuccessStatusCode) return null;
 
                 var pilotDtos = await msg.Content.ReadAsJsonAsync<List<PilotDto>>();
@@ -57,7 +55,10 @@
             {
                 var response = await client.PostAsJsonAsync(new Uri("http://localhost:10297/api/Pilots"), request);
 
-                if (!response.IsSuccessStatusCode) return null;
+                if (!response.IsSuccessStatusCode)
+                {
+                    return await OperateNonSuccessfullStatusCode(response);
+                }
 
                 var createdPilotDto = await response.Content.ReadAsJsonAsync<PilotDto>();
 
@@ -82,15 +83,14 @@
 
             using (var client = new HttpClient(filter))
             {
-                // HttpResponseMessage msg = await client.GetAsync(new Uri("http://localhost:10297/api/Pilots"));
                 var response = await client.PutAsJsonAsync(new Uri($"http://localhost:10297/api/Pilots/{pilotDto.Id}"), request);
 
-                if (!response.IsSuccessStatusCode) return false;
+                if (!response.IsSuccessStatusCode)
+                {
+                    await OperateNonSuccessfullStatusCode(response);
+                }
 
-                 // TODO: need to reload to update age, exper age
-                //var pilotDtos = JsonConvert.DeserializeObject<List<PilotDto>>(serializedPilots);
-
-                return true;
+                return response.IsSuccessStatusCode;
             }
         }
 

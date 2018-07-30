@@ -97,6 +97,9 @@
     </Compile>
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
+    <Compile Include="Exceptions\ErrorResponse.cs" />
+    <Compile Include="Exceptions\HttpStatusCodeException.cs" />
+    <Compile Include="Exceptions\ModelStateException.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Helpers\FilterProvider.cs" />
     <Compile Include="Helpers\Json.cs" />

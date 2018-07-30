@@ -15,6 +15,12 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
+    using ClientLight.Exceptions;
+
+    using GalaSoft.MvvmLight.Views;
+
+    using Microsoft.Practices.ServiceLocation;
+
     public class PilotsViewModel : ViewModelBase
     {
         public ICommand ItemClickCommand { get; private set; }
@@ -25,7 +31,7 @@
 
         public PilotsViewModel(IPilotsService service)
         {
-            _pilotService = service; // new PilotService();
+            _pilotService = service;
             ItemClickCommand = new RelayCommand<ItemClickEventArgs>(OnItemClick);
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
             AddCustomerCommand = new RelayCommand(DoAddCustomer);
@@ -89,18 +95,23 @@
             }
             catch (Exception ex)
             {
-                // Report error here
-                Title = ex.Message;
+                await ShowMessageAsync(ex.Message, "Error occurred");
             }
         }
 
         private async void DoDeleteCustomer()
         {
             if (Selected == null) return;
+
             var result = await _pilotService.DeletePilotByIdAsync(Selected.Id);
             if (result)
             {
+                await ShowMessageAsync("Pilot was deleted successful", "Success!!!");
                 await Initialize();
+            }
+            else
+            {
+                await ShowMessageAsync();
             }
         }
 
@@ -114,22 +125,60 @@
         private async void DoUpdateCustomer()
         {
             if (Selected == null) return;
-            if (Selected.Id == 0)
+
+            try
             {
-                var dto = await _pilotService.CreatePilotAsync(Selected);
-                if (dto != null)
+                if (Selected.Id == 0)
                 {
-                    await Initialize(dto.Id);
+                    var dto = await _pilotService.CreatePilotAsync(Selected);
+                    if (dto != null)
+                    {
+                        await ShowMessageAsync("Pilot was successfully created", "Success!!!");
+                        await Initialize(dto.Id);
+                    }
+                    else
+                    {
+                        await ShowMessageAsync();
+                    }
+                }
+                else
+                {
+                    var result = await _pilotService.UpdatePilotByIdAsync(Selected);
+                    if (result)
+                    {
+                        await ShowMessageAsync("Pilot was updated successful", "Success!!!");
+                        await Initialize(Selected.Id);
+                    }
+                    else
+                    {
+                        await ShowMessageAsync();
+                    }
                 }
             }
-            else
+            catch (ModelStateException modelStateException)
             {
-                var result = await _pilotService.UpdatePilotByIdAsync(Selected);
-                if (result)
+                var mess = string.Empty;
+                foreach (var key in modelStateException.ModelErrors.Keys)
                 {
-                    await Initialize(Selected.Id);
+                    mess += $"{key}: {string.Join(", \n", modelStateException.ModelErrors[key])} \n";
                 }
+
+                await ShowMessageAsync(mess, "Model state invalid!");
             }
+            catch (HttpStatusCodeException httpException)
+            {
+                await ShowMessageAsync($"{httpException.StatusCode}\n {httpException.Message}", "Model state invalid!");
+            }
+            catch (Exception e)
+            {
+                await ShowMessageAsync(e.Message, "Validation Error");
+            }
+        }
+
+        protected Task ShowMessageAsync(string message = "Model is invalid! Try again with right data!", string title = "Error occurred")
+        {
+            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
+            return dialog.ShowMessage(message, title);
         }
     }
 }

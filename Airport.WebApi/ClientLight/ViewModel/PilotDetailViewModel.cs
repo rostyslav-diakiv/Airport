@@ -8,7 +8,6 @@
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-    using GalaSoft.MvvmLight.Views;
 
     public class PilotDetailViewModel : ViewModelBase
     {
@@ -20,16 +19,12 @@
             get { return _item; }
             set { Set(ref _item, value); }
         }
-
-        private readonly INavigationService _navigationService;
-        public PilotDetailViewModel(INavigationService navigationService)
+        
+        public PilotDetailViewModel()
         {
-            _navigationService = navigationService;
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
         }
 
-        private void OnStateChanged(VisualStateChangedEventArgs args)
-        {
-        }
+        private void OnStateChanged(VisualStateChangedEventArgs args) { }
     }
 }
