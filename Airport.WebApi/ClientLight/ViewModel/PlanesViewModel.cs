@@ -6,7 +6,7 @@
     {
         public PlanesViewModel(IPlanesService service) : base(service)
         {
-            Title = "Planes Page";
+            Title = "Planes";
         }
     }
 }

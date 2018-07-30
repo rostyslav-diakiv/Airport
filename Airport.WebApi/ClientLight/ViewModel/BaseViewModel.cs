@@ -35,9 +35,9 @@
             _service = service;
             ItemClickCommand = new RelayCommand<ItemClickEventArgs>(OnItemClick);
             StateChangedCommand = new RelayCommand<VisualStateChangedEventArgs>(OnStateChanged);
-            AddEntityCommand = new RelayCommand(DoAddStewardess);
-            DeleteEntityCommand = new RelayCommand(DoDeleteStewardess);
-            UpdateEntityCommand = new RelayCommand(DoUpdateStewardess);
+            AddEntityCommand = new RelayCommand(DoAddEntity);
+            DeleteEntityCommand = new RelayCommand(DoDeleteEntity);
+            UpdateEntityCommand = new RelayCommand(DoUpdateEntity);
         }
 
         public virtual Task LoadDataAsync(VisualState currentState)
@@ -105,58 +105,68 @@
             }
         }
 
-        protected virtual async void DoDeleteStewardess()
+        protected virtual async void DoDeleteEntity()
         {
             if (Selected == null) return;
             var result = await _service.DeleteEntityByIdAsync(Selected.Id);
             if (result)
             {
+                await ShowMessageAsync("Entity was deleted successful", "Success!!!");
                 await Initialize();
             }
             else
             {
-                await ShowErrorAsync();
+                await ShowMessageAsync();
             }
         }
 
-        protected virtual void DoAddStewardess()
+        protected virtual void DoAddEntity()
         {
             var e = new TDto();
             Entities.Add(e);
             Selected = e;
         }
 
-        protected virtual async void DoUpdateStewardess()
+        protected virtual async void DoUpdateEntity()
         {
             if (Selected == null) return;
 
-            if (Selected.Id.Equals(0) || Selected.Id.Equals(string.Empty))
+            try
             {
-                var pilot = await _service.CreateEntityAsync(Selected);
-                if (pilot != null)
+                if (Selected.Id.Equals(0) || Selected.Id.Equals(string.Empty))
                 {
-                    await Initialize(pilot.Id);
+                    var pilot = await _service.CreateEntityAsync(Selected);
+                    if (pilot != null)
+                    {
+                        await ShowMessageAsync("Entity was successfully created", "Success!!!");
+                        await Initialize(pilot.Id);
+                    }
+                    else
+                    {
+                        await ShowMessageAsync();
+                    }
                 }
                 else
                 {
-                    await ShowErrorAsync();
+                    var result = await _service.UpdateEntityByIdAsync(Selected);
+                    if (result)
+                    {
+                        await ShowMessageAsync("Entity was update successful", "Success!!!");
+                        await Initialize(Selected.Id);
+                    }
+                    else
+                    {
+                        await ShowMessageAsync();
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                var result = await _service.UpdateEntityByIdAsync(Selected);
-                if (result)
-                {
-                    await Initialize(Selected.Id);
-                }
-                else
-                {
-                    await ShowErrorAsync();
-                }
+                await ShowMessageAsync(e.Message, "Validation Error");
             }
         }
 
-        protected Task ShowErrorAsync(string message = "Model is invalid! Try again with right data!", string title = "Error occurred")
+        protected Task ShowMessageAsync(string message = "Model is invalid! Try again with right data!", string title = "Error occurred")
         {
             var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
             return dialog.ShowMessage(message, title);

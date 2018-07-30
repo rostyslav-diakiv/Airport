@@ -7,7 +7,7 @@
     {
         public TicketsViewModel(ITicketsService service) : base(service)
         {
-            Title = "Tickets Page";
+            Title = "Tickets";
         }
     }
 }

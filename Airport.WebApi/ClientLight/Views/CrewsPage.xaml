@@ -21,9 +21,9 @@
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:CrewVmDto">
             <Grid Margin="12,12,12,12">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width = "Auto" />
-                    <ColumnDefinition Width = "Auto" />
-                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "*" />
+                    <ColumnDefinition Width = "*" />
+                    <ColumnDefinition Width = "*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
@@ -76,7 +76,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="350" />
+            <ColumnDefinition x:Name="MasterColumn" Width="200" />
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 

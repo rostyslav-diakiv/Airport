@@ -21,10 +21,11 @@
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:DepartureDto">
             <Grid Margin="12,12,12,12">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width= "Auto" />
-                    <ColumnDefinition Width ="Auto" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -32,22 +33,38 @@
                 <TextBlock 
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="{x:Bind Id}" 
+                    Text="#" 
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
-
-                <TextBlock 
+                <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
-                    Text="{x:Bind Flight.Number}" 
+                    Text="{x:Bind Id}"
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
-
+                <TextBlock 
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Text="Flight #" 
+                    FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock 
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Text="{x:Bind Flight.Number}"
+                    FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
-
+                    Grid.ColumnSpan="3"
                     Opacity="0.6"
+                    Text="Departure time:"
+                    FontSize="14" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    Opacity="0.6"
+                    TextAlignment="End"
                     Text="{x:Bind DepartureTime}"
-                    FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                    FontSize="14" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
             </Grid>
         </DataTemplate>
         <converters:DateTimeConverter x:Key="DateTimeConverter" />
@@ -62,7 +79,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="296" />
+            <ColumnDefinition x:Name="MasterColumn" Width="330" />
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -78,7 +95,7 @@
             Grid.Row="1"
             Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="MasterRow" Height="48"/>
+                <RowDefinition x:Name="MasterRow" Height="50"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -149,19 +166,35 @@
             Padding="24,0,0,0">
 
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock
-            x:Name="TitlePage2"
-            Text="{Binding Selected.Id, Mode=OneWay}"
-            FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" 
-            TextWrapping="NoWrap" VerticalAlignment="Center"
-            Margin="0,0,12,7"/>
+                    Grid.Row="0" 
+                    Grid.Column="0"
+                    Text="Departure id:"
+                    FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" 
+                    TextWrapping="NoWrap" VerticalAlignment="Center"
+                    Margin="0,0,12,7"/>
 
-                <ScrollViewer Grid.Row="1"
+                <TextBlock
+                    Grid.Row="0" 
+                    Grid.Column="1"
+                    x:Name="TitlePage2"
+                    Text="{Binding Selected.Id, Mode=OneWay}"
+                    FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" 
+                    TextWrapping="NoWrap" VerticalAlignment="Center"
+                    Margin="0,0,12,7"/>
+
+                <ScrollViewer Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1" 
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             ScrollViewer.VerticalScrollMode="Auto">
@@ -182,7 +215,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBlock Text="Flight.Number" VerticalAlignment="Center" Margin="10,0" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Flight Number" VerticalAlignment="Center" Margin="10,0" Grid.Row="1" Grid.Column="0"/>
                         <TextBlock Text="Crew Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock Text="Departure Time" VerticalAlignment="Center" Margin="10,0" Grid.Row="3" Grid.Column="0"/>
                         <TextBlock Text="Plane Id" VerticalAlignment="Center" Margin="10,0" Grid.Row="4" Grid.Column="0"/>

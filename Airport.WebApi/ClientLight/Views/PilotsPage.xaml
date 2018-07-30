@@ -19,18 +19,38 @@
     <Page.Resources>
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:PilotDto">
             <Grid Margin="12,12,12,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    TextAlignment="End"
+                    Padding="0, 0, 20, 0"
                     Text="{x:Bind Name}" 
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
                 <TextBlock
-                    Grid.Row="1"
-                    Opacity="0.6"
+                    Grid.Row="0"
+                    Grid.Column="1"
                     Text="{x:Bind FamilyName}"
-                    FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                    FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Opacity="0.6"
+                    Text="Date of birth:" 
+                    FontSize="12" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Opacity="0.6"
+                    Text="{x:Bind DateOfBirth}" 
+                    FontSize="12" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -45,7 +65,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="296" />
+            <ColumnDefinition x:Name="MasterColumn" Width="300" />
             <ColumnDefinition x:Name="DetailColumn" Width="*" />
         </Grid.ColumnDefinitions>
 

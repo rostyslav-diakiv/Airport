@@ -53,7 +53,7 @@
         private readonly IPilotsService _pilotService;
         private PilotDto _selected;
 
-        private string _title = "Pilots Page";
+        private string _title = "Pilots";
         public string Title
         {
             get => _title;

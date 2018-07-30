@@ -6,7 +6,7 @@
     {
         public DeparturesViewModel(IDeparturesService service) : base(service)
         {
-            Title = "Departures Page";
+            Title = "Departures";
         }
     }
 }

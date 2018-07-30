@@ -21,10 +21,11 @@
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:PlaneTypeDto">
             <Grid Margin="12,12,12,12">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width= "Auto" />
-                    <ColumnDefinition Width ="Auto" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -34,26 +35,35 @@
                     Grid.Column="0"
                     Text="#" 
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
-
-                <TextBlock 
+                <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
-                    Text="{x:Bind Id}" 
+                    Text="{x:Bind Id}"
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
-
                 <TextBlock 
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Text="Plane Model:" 
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Text="Plane model:" 
+                    FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock 
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Text="{x:Bind PlaneModel}"
                     FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
-
                 <TextBlock
                     Grid.Row="1"
-                    Grid.Column="1"
-
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
                     Opacity="0.6"
-                    Text="{x:Bind PlaneModel}"
-                    FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                    Text="Max # of places:"
+                    FontSize="14" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    Opacity="0.6"
+                    Text="{x:Bind MaximalNumberOfPlaces}"
+                    FontSize="14" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
             </Grid>
         </DataTemplate>
         <converters:DateTimeConverter x:Key="DateTimeConverter" />

@@ -1,6 +1,8 @@
 ﻿namespace ClientLight.Services.Data
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using ClientLight.Interfaces.Services;
@@ -14,9 +16,9 @@
         {
             return base.GetAllEntities(Ctrl_Name);
         }
-
         public Task<FlightDto> CreateEntityAsync(FlightDto dto)
         {
+            dto.Number = GetGeneratedNumber();
             var request = new FlightRequest(dto);
 
             return base.CreateEntitiesAsync(request, Ctrl_Name);
@@ -32,6 +34,15 @@
         public Task<bool> DeleteEntityByIdAsync(string id)
         {
             return base.DeleteEntitiesByIdAsync(id, Ctrl_Name);
+        }
+
+
+        private static Random random = new Random();
+        private string GetGeneratedNumber()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 7) // Length of number = 7
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
